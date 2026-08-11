@@ -122,7 +122,22 @@
             --white: #ffffff;
         }
 
-        html { scroll-behavior: smooth; overflow-x: hidden; }
+        html { scroll-behavior: smooth; overflow-x: hidden; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+        /* ===== TOUCH / CROSS-DEVICE BASE ===== */
+        a, button {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        /* Only apply hover-lift/glow effects on devices that truly support hover (mouse/trackpad).
+           On touch devices, :hover otherwise "sticks" after tapping — this fixes that. */
+        @media (hover: none) {
+            .pcard:hover { transform: none; }
+            .btn-gold:hover, .btn-ghost:hover, .btn-buy:hover, .nav-links a:hover, .lang-btn:hover, .footer-social:hover, .wa-float:hover {
+                transform: none;
+                box-shadow: none !important;
+            }
+        }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -281,6 +296,7 @@
             align-items: center;
             gap: 6px;
             padding: 8px 14px;
+            min-height: 40px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 100px;
@@ -288,9 +304,12 @@
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.3s;
         }
-        .lang-btn:hover { background: rgba(255,255,255,0.1); }
+        .lang-btn:active { background: rgba(255,255,255,0.15); }
+        @media (hover: hover) {
+            .lang-btn:hover { background: rgba(255,255,255,0.1); }
+        }
         .lang-dropdown {
             position: absolute;
             top: calc(100% + 8px);
@@ -627,6 +646,10 @@
             box-shadow: 0 14px 44px rgba(201, 169, 110, 0.5);
         }
 
+        .btn-gold:active {
+            transform: scale(0.97);
+        }
+
         .btn-ghost {
             display: inline-flex;
             align-items: center;
@@ -648,6 +671,10 @@
             background: rgba(255,255,255,0.1);
             border-color: rgba(255,255,255,0.25);
             transform: translateY(-2px);
+        }
+
+        .btn-ghost:active {
+            transform: scale(0.97);
         }
 
         .hero-scroll {
@@ -1058,6 +1085,10 @@
             box-shadow: 0 12px 36px rgba(201, 169, 110, 0.45);
         }
 
+        .btn-buy:active {
+            transform: scale(0.96);
+        }
+
         .btn-buy i { width: 16px; height: 16px; transition: transform 0.3s; }
         .btn-buy:hover i { transform: translateX(3px); }
 
@@ -1325,18 +1356,35 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .nav-mobile-btn { display: block; }
+            .nav-mobile-btn { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
             .hero-logo-circle { width: 100px; height: 100px; }
             .products-grid { grid-template-columns: 1fr; max-width: 460px; }
             .pcard-img { height: 280px; }
             .pcard-foot { flex-direction: column; align-items: stretch; gap: 16px; }
             .pcard-foot .pcard-price { flex-direction: row; align-items: baseline; justify-content: space-between; }
-            .btn-buy { width: 100%; justify-content: center; padding: 18px; font-size: 14px; }
+            .btn-buy { width: 100%; justify-content: center; padding: 18px; font-size: 14px; min-height: 52px; }
             .trust-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
             .footer-top { grid-template-columns: 1fr; gap: 32px; }
             .hero-actions { flex-direction: column; width: 100%; max-width: 320px; margin: 0 auto; }
-            .btn-gold, .btn-ghost { width: 100%; justify-content: center; }
+            .btn-gold, .btn-ghost { width: 100%; justify-content: center; min-height: 52px; }
             .delivery-inner { gap: 28px; }
+            .mobile-menu a { min-height: 44px; display: flex; align-items: center; }
+            .mobile-lang button { min-height: 44px; min-width: 44px; }
+            .mobile-close { min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+            .wa-float {
+                bottom: max(20px, env(safe-area-inset-bottom));
+                right: max(20px, env(safe-area-inset-right));
+                width: 56px; height: 56px;
+            }
+            .wa-float svg { width: 26px; height: 26px; }
+        }
+
+        /* ===== TABLET (between mobile and desktop nav) ===== */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .nav-links a { padding: 8px 12px; font-size: 12px; }
+            .nav-cta { padding: 8px 14px !important; }
+            .lang-btn span:not(#langBtnLabel) { display: none; }
+            .lang-btn { padding: 8px 10px; }
         }
 
         @media (max-width: 480px) {
@@ -1349,6 +1397,19 @@
             .trust-grid { grid-template-columns: repeat(2, 1fr); }
             .pcard-price-val { font-size: 30px; }
             .pcard-img { height: 240px; }
+            .hero-title { font-size: clamp(32px, 9vw, 46px); }
+            .hero-sub { font-size: 14px; padding: 0 8px; }
+            .hero-badge { font-size: 9px; padding: 6px 14px; }
+            .btn-gold, .btn-ghost { padding: 15px 24px; font-size: 13px; }
+            .lang-dropdown { right: -8px; min-width: 160px; }
+        }
+
+        /* Very small phones (iPhone SE and similar, 320-360px) */
+        @media (max-width: 360px) {
+            .hero-logo-circle { width: 84px; height: 84px; margin-bottom: 24px; }
+            .hero-title { font-size: clamp(28px, 9vw, 38px); }
+            .trust-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .trust-icon { width: 44px; height: 44px; }
         }
     </style>
 </head>
