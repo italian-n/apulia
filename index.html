@@ -9,7 +9,7 @@
     <meta name="description" data-i18n="meta_desc" content="Prémiový extra panenský olivový olej přímo z Apulie, Itálie. Lisování za studena, bez zprostředkovatelů. Doprava po celé ČR, osobní odběr v Brně. Objednejte na WhatsApp.">
     <meta name="keywords" content="olivový olej, extra panenský olivový olej, olivový olej Brno, italský olivový olej, olio di oliva, Apulia, oliwa z oliwek, оливковая олия, оливкова олія Брно">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://italian-n.github.io/apulia/">
+    <link rel="canonical" href="https://apuliaoliveoil.cz/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
     <meta property="og:title" data-i18n-attr="meta_title" content="Apulia Olive Oil CZ — Prémiový olivový olej z Itálie">
     <meta property="og:description" data-i18n-attr="meta_desc" content="Prémiový extra panenský olivový olej přímo z Apulie, Itálie. Lisování za studena, bez zprostředkovatelů. Doprava po celé ČR.">
     <meta property="og:image" content="https://z-cdn-media.chatglm.cn/files/c536d43d-cc21-4939-a3cf-a806319c5370.png?auth_key=1882224957-385b00bbd34646c3b7bdae4c82ce7fdb-0-763fb0ae96c2521ea7aaa26ac73adcc2">
-    <meta property="og:url" content="https://italian-n.github.io/apulia/">
+    <meta property="og:url" content="https://apuliaoliveoil.cz/">
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:locale:alternate" content="uk_UA">
@@ -34,8 +34,8 @@
 
     <!-- hreflang: poки jedna URL, viditelný obsah se mění přes JS přepínač.
          Až budou hotové samostatné jazykové podstránky, sem doplníme skutečné /en/, /uk/ atd. -->
-    <link rel="alternate" hreflang="cs" href="https://italian-n.github.io/apulia/">
-    <link rel="alternate" hreflang="x-default" href="https://italian-n.github.io/apulia/">
+    <link rel="alternate" hreflang="cs" href="https://apuliaoliveoil.cz/">
+    <link rel="alternate" hreflang="x-default" href="https://apuliaoliveoil.cz/">
 
     <!-- JSON-LD structured data -->
     <script type="application/ld+json">
@@ -43,7 +43,7 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Apulia Olive Oil CZ",
-      "url": "https://italian-n.github.io/apulia/",
+      "url": "https://apuliaoliveoil.cz/",
       "logo": "https://z-cdn-media.chatglm.cn/files/c536d43d-cc21-4939-a3cf-a806319c5370.png",
       "areaServed": "CZ",
       "contactPoint": {
@@ -1462,6 +1462,23 @@
             .trust-icon { width: 44px; height: 44px; }
         }
     </style>
+
+    <!-- Google Ads tag (gtag.js) — loaded with Consent Mode: ad/analytics
+         storage defaults to denied until the visitor accepts cookies via
+         the banner below, per GDPR requirements for EU visitors. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18385297819"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied'
+      });
+      gtag('js', new Date());
+      gtag('config', 'AW-18385297819');
+    </script>
 </head>
 <body>
 
@@ -2258,11 +2275,16 @@
         const declineBtn = document.getElementById('cookieDecline');
 
         function loadMarketingScripts() {
-            // Placeholder: Google tag / Meta Pixel loader goes here,
-            // only after the visitor has explicitly consented, e.g.
-            // fbq('init', 'YOUR_PIXEL_ID'); fbq('track', 'PageView');
-            // gtag('config', 'AW-XXXXXXX');
-            console.log('Marketing consent granted — analytics/ad pixels can load here.');
+            // Grant consent to Google's Consent Mode — this unlocks ad
+            // conversion tracking and remarketing for Google Ads.
+            if (typeof gtag === 'function') {
+                gtag('consent', 'update', {
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
+                    'analytics_storage': 'granted'
+                });
+            }
         }
 
         let consent = null;
