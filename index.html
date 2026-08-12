@@ -9,7 +9,7 @@
     <meta name="description" data-i18n="meta_desc" content="Prémiový extra panenský olivový olej přímo z Apulie, Itálie. Lisování za studena, bez zprostředkovatelů. Doprava po celé ČR, osobní odběr v Brně. Objednejte na WhatsApp.">
     <meta name="keywords" content="olivový olej, extra panenský olivový olej, olivový olej Brno, italský olivový olej, olio di oliva, Apulia, oliwa z oliwek, оливковая олия, оливкова олія Брно">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.apuliaoliveoil.cz/">
+    <link rel="canonical" href="https://italian-n.github.io/apulia/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
     <meta property="og:title" data-i18n-attr="meta_title" content="Apulia Olive Oil CZ — Prémiový olivový olej z Itálie">
     <meta property="og:description" data-i18n-attr="meta_desc" content="Prémiový extra panenský olivový olej přímo z Apulie, Itálie. Lisování za studena, bez zprostředkovatelů. Doprava po celé ČR.">
     <meta property="og:image" content="https://z-cdn-media.chatglm.cn/files/c536d43d-cc21-4939-a3cf-a806319c5370.png?auth_key=1882224957-385b00bbd34646c3b7bdae4c82ce7fdb-0-763fb0ae96c2521ea7aaa26ac73adcc2">
-    <meta property="og:url" content="https://www.apuliaoliveoil.cz/">
+    <meta property="og:url" content="https://italian-n.github.io/apulia/">
     <meta property="og:locale" content="cs_CZ">
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:locale:alternate" content="uk_UA">
@@ -34,8 +34,8 @@
 
     <!-- hreflang: poки jedna URL, viditelný obsah se mění přes JS přepínač.
          Až budou hotové samostatné jazykové podstránky, sem doplníme skutečné /en/, /uk/ atd. -->
-    <link rel="alternate" hreflang="cs" href="https://www.apuliaoliveoil.cz/">
-    <link rel="alternate" hreflang="x-default" href="https://www.apuliaoliveoil.cz/">
+    <link rel="alternate" hreflang="cs" href="https://italian-n.github.io/apulia/">
+    <link rel="alternate" hreflang="x-default" href="https://italian-n.github.io/apulia/">
 
     <!-- JSON-LD structured data -->
     <script type="application/ld+json">
@@ -43,7 +43,7 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Apulia Olive Oil CZ",
-      "url": "https://www.apuliaoliveoil.cz/",
+      "url": "https://italian-n.github.io/apulia/",
       "logo": "https://z-cdn-media.chatglm.cn/files/c536d43d-cc21-4939-a3cf-a806319c5370.png",
       "areaServed": "CZ",
       "contactPoint": {
@@ -1329,6 +1329,55 @@
 
         .wa-float svg { width: 30px; height: 30px; fill: white; }
 
+        /* ===== COOKIE CONSENT BANNER ===== */
+        .cookie-banner {
+            position: fixed;
+            left: 0; right: 0; bottom: 0;
+            z-index: 2000;
+            background: rgba(7, 14, 7, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(201, 169, 110, 0.25);
+            padding: 20px 24px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .cookie-banner.show { display: flex; }
+        .cookie-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.65);
+            max-width: 640px;
+        }
+        .cookie-text a { color: var(--gold-400); text-decoration: underline; }
+        .cookie-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .cookie-btn {
+            padding: 11px 22px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+            min-height: 40px;
+        }
+        .cookie-accept {
+            background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+            color: var(--darker);
+        }
+        .cookie-decline {
+            background: rgba(255,255,255,0.08);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        @media (max-width: 600px) {
+            .cookie-banner { padding: 16px; gap: 14px; }
+            .cookie-actions { width: 100%; }
+            .cookie-btn { flex: 1; }
+        }
+
         @keyframes waPulse {
             0%, 100% { box-shadow: 0 6px 28px rgba(37, 211, 102, 0.4); }
             50% { box-shadow: 0 6px 28px rgba(37, 211, 102, 0.4), 0 0 0 14px rgba(37, 211, 102, 0.08); }
@@ -1809,7 +1858,7 @@
                 <a href="https://wa.me/420604264270" target="_blank"><i data-lucide="message-circle"></i> WhatsApp</a>
                 <a href="https://tiktok.com/@apuliaoliveoilcz" target="_blank"><i data-lucide="video"></i> TikTok</a>
                 <a href="tel:+420604264270"><i data-lucide="phone"></i> +420 604 264 270</a>
-                <a href="https://tetiana-a.github.io/aiAutomationDev/" target="_blank"><i data-lucide="message-circle"></i>Web creator T.K</a>
+                <a href="https://tetianakotolup.com/" target="_blank" rel="noopener"><i data-lucide="code"></i>Web: Tetiana Kotolup</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1822,6 +1871,17 @@
 <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20m%C3%A1m%20z%C3%A1jem%20o%20olivov%C3%BD%20olej." target="_blank" class="wa-float" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
+<!-- Cookie Consent Banner -->
+<div class="cookie-banner" id="cookieBanner">
+    <p class="cookie-text" data-i18n="cookie_text">
+        Tento web používá cookies pro analytiku a marketingovou reklamu (Google, Meta). Kliknutím na "Souhlasím" nám pomůžete zlepšovat nabídku. Více v <a href="#" data-i18n="cookie_link">zásadách ochrany soukromí</a>.
+    </p>
+    <div class="cookie-actions">
+        <button class="cookie-btn cookie-decline" id="cookieDecline" data-i18n="cookie_decline">Pouze nezbytné</button>
+        <button class="cookie-btn cookie-accept" id="cookieAccept" data-i18n="cookie_accept">Souhlasím</button>
+    </div>
+</div>
 
 <script>
     lucide.createIcons();
@@ -1863,6 +1923,8 @@
             footer_desc: "Exkluzivní distribuce prémiového olivového oleje z Apulie v České republice. Přímý dovoz od výrobce — bez zprostředkovatelů.",
             footer_prices_h: "Ceny", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exkluzivní distribuce pro ČR",
+            cookie_text: "Tento web používá cookies pro analytiku a marketingovou reklamu (Google, Meta). Kliknutím na \"Souhlasím\" nám pomůžete zlepšovat nabídku. Více v <a href=\"#\">zásadách ochrany soukromí</a>.",
+            cookie_accept: "Souhlasím", cookie_decline: "Pouze nezbytné",
             meta_title: "Apulia Olive Oil CZ — Prémiový olivový olej z Itálie | Brno, Česká republika",
             meta_desc: "Prémiový extra panenský olivový olej přímo z Apulie, Itálie. Lisování za studena, bez zprostředkovatelů. Doprava po celé ČR, osobní odběr v Brně."
         },
@@ -1901,6 +1963,8 @@
             footer_desc: "Exclusive distribution of premium olive oil from Apulia in the Czech Republic. Direct import from the producer — no middlemen.",
             footer_prices_h: "Prices", footer_contact_h: "Contact",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exclusive distribution for Czechia",
+            cookie_text: "This site uses cookies for analytics and marketing ads (Google, Meta). Clicking \"Accept\" helps us improve our offering. More in our <a href=\"#\">privacy policy</a>.",
+            cookie_accept: "Accept", cookie_decline: "Essential only",
             meta_title: "Apulia Olive Oil CZ — Premium Italian Olive Oil | Brno, Czech Republic",
             meta_desc: "Premium extra virgin olive oil direct from Apulia, Italy. Cold-pressed, no middlemen. Delivery across Czechia, pickup in Brno."
         },
@@ -1939,6 +2003,8 @@
             footer_desc: "Ексклюзивна дистрибуція преміальної оливкової олії з Апулії в Чехії. Прямий імпорт від виробника — без посередників.",
             footer_prices_h: "Ціни", footer_contact_h: "Контакти",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Ексклюзивна дистрибуція для Чехії",
+            cookie_text: "Цей сайт використовує cookies для аналітики та маркетингової реклами (Google, Meta). Натискаючи \"Погоджуюсь\", ви допомагаєте нам покращувати пропозицію. Детальніше в <a href=\"#\">політиці конфіденційності</a>.",
+            cookie_accept: "Погоджуюсь", cookie_decline: "Лише необхідні",
             meta_title: "Apulia Olive Oil CZ — Преміальна італійська оливкова олія | Брно, Чехія",
             meta_desc: "Преміальна оливкова олія Extra Virgin напряму з Апулії, Італія. Холодний віджим, без посередників. Доставка по всій Чехії, самовивіз у Брно."
         },
@@ -1977,6 +2043,8 @@
             footer_desc: "Эксклюзивная дистрибуция премиального оливкового масла из Апулии в Чехии. Прямой импорт от производителя — без посредников.",
             footer_prices_h: "Цены", footer_contact_h: "Контакты",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Эксклюзивная дистрибуция для Чехии",
+            cookie_text: "Этот сайт использует cookies для аналитики и маркетинговой рекламы (Google, Meta). Нажимая \"Согласен\", вы помогаете нам улучшать предложение. Подробнее в <a href=\"#\">политике конфиденциальности</a>.",
+            cookie_accept: "Согласен", cookie_decline: "Только необходимые",
             meta_title: "Apulia Olive Oil CZ — Премиальное итальянское оливковое масло | Брно, Чехия",
             meta_desc: "Премиальное оливковое масло Extra Virgin напрямую из Апулии, Италия. Холодный отжим, без посредников. Доставка по всей Чехии, самовывоз в Брно."
         },
@@ -2015,6 +2083,8 @@
             footer_desc: "Distribuzione esclusiva di olio d'oliva premium dalla Puglia nella Repubblica Ceca. Importazione diretta dal produttore — senza intermediari.",
             footer_prices_h: "Prezzi", footer_contact_h: "Contatti",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Distribuzione esclusiva per la Rep. Ceca",
+            cookie_text: "Questo sito utilizza cookie per analisi e pubblicità marketing (Google, Meta). Cliccando \"Accetto\" ci aiuti a migliorare la nostra offerta. Maggiori info nella <a href=\"#\">informativa sulla privacy</a>.",
+            cookie_accept: "Accetto", cookie_decline: "Solo essenziali",
             meta_title: "Apulia Olive Oil CZ — Olio d'oliva italiano premium | Brno, Repubblica Ceca",
             meta_desc: "Olio extravergine di oliva premium direttamente dalla Puglia, Italia. Spremitura a freddo, senza intermediari. Consegna in tutta la Rep. Ceca, ritiro a Brno."
         },
@@ -2053,6 +2123,8 @@
             footer_desc: "Exklusiver Vertrieb von Premium-Olivenöl aus Apulien in der Tschechischen Republik. Direktimport vom Hersteller — ohne Zwischenhändler.",
             footer_prices_h: "Preise", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exklusiver Vertrieb für Tschechien",
+            cookie_text: "Diese Website verwendet Cookies für Analytics und Marketing-Werbung (Google, Meta). Mit Klick auf \"Zustimmen\" helfen Sie uns, unser Angebot zu verbessern. Mehr in unserer <a href=\"#\">Datenschutzerklärung</a>.",
+            cookie_accept: "Zustimmen", cookie_decline: "Nur notwendige",
             meta_title: "Apulia Olive Oil CZ — Premium italienisches Olivenöl | Brünn, Tschechien",
             meta_desc: "Premium natives Olivenöl extra direkt aus Apulien, Italien. Kaltgepresst, ohne Zwischenhändler. Lieferung in ganz Tschechien, Abholung in Brünn."
         },
@@ -2091,6 +2163,8 @@
             footer_desc: "Ekskluzywna dystrybucja premium oliwy z oliwek z Apulii w Czechach. Import bezpośrednio od producenta — bez pośredników.",
             footer_prices_h: "Ceny", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Ekskluzywna dystrybucja dla Czech",
+            cookie_text: "Ta strona używa plików cookie do analityki i reklam marketingowych (Google, Meta). Klikając \"Zgadzam się\", pomagasz nam ulepszać ofertę. Więcej w <a href=\"#\">polityce prywatności</a>.",
+            cookie_accept: "Zgadzam się", cookie_decline: "Tylko niezbędne",
             meta_title: "Apulia Olive Oil CZ — Premium włoska oliwa z oliwek | Brno, Czechy",
             meta_desc: "Premium oliwa Extra Virgin bezpośrednio z Apulii, Włochy. Tłoczenie na zimno, bez pośredników. Dostawa na terenie całych Czech, odbiór w Brnie."
         },
@@ -2129,6 +2203,8 @@
             footer_desc: "Exkluzívna distribúcia prémiového olivového oleja z Apúlie v Českej republike. Priamy dovoz od výrobcu — bez sprostredkovateľov.",
             footer_prices_h: "Ceny", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exkluzívna distribúcia pre ČR",
+            cookie_text: "Táto stránka používa cookies na analytiku a marketingovú reklamu (Google, Meta). Kliknutím na \"Súhlasím\" nám pomôžete zlepšovať ponuku. Viac v <a href=\"#\">zásadách ochrany súkromia</a>.",
+            cookie_accept: "Súhlasím", cookie_decline: "Iba nevyhnutné",
             meta_title: "Apulia Olive Oil CZ — Prémiový taliansky olivový olej | Brno, Česká republika",
             meta_desc: "Prémiový extra panenský olivový olej priamo z Apúlie, Taliansko. Lisovanie za studena, bez sprostredkovateľov. Doprava po celej ČR, osobný odber v Brne."
         }
@@ -2168,10 +2244,47 @@
         let saved = null;
         try { saved = localStorage.getItem('apulia_lang'); } catch(e) {}
         if (saved && translations[saved]) { applyLang(saved); return; }
-        const browserLang = (navigator.language || 'cs').slice(0, 2).toLowerCase();
-        applyLang(translations[browserLang] ? browserLang : 'cs');
+        // Always default to Czech on first visit — the site targets the Czech
+        // market, so CS is the correct starting language regardless of the
+        // visitor's browser/OS language setting.
+        applyLang('cs');
     })();
     /* ===================== /i18n ===================== */
+
+    /* ===================== Cookie Consent ===================== */
+    (function cookieConsent() {
+        const banner = document.getElementById('cookieBanner');
+        const acceptBtn = document.getElementById('cookieAccept');
+        const declineBtn = document.getElementById('cookieDecline');
+
+        function loadMarketingScripts() {
+            // Placeholder: Google tag / Meta Pixel loader goes here,
+            // only after the visitor has explicitly consented, e.g.
+            // fbq('init', 'YOUR_PIXEL_ID'); fbq('track', 'PageView');
+            // gtag('config', 'AW-XXXXXXX');
+            console.log('Marketing consent granted — analytics/ad pixels can load here.');
+        }
+
+        let consent = null;
+        try { consent = localStorage.getItem('apulia_cookie_consent'); } catch(e) {}
+
+        if (consent === 'accepted') {
+            loadMarketingScripts();
+        } else if (consent !== 'declined') {
+            banner.classList.add('show');
+        }
+
+        acceptBtn.addEventListener('click', () => {
+            try { localStorage.setItem('apulia_cookie_consent', 'accepted'); } catch(e) {}
+            banner.classList.remove('show');
+            loadMarketingScripts();
+        });
+        declineBtn.addEventListener('click', () => {
+            try { localStorage.setItem('apulia_cookie_consent', 'declined'); } catch(e) {}
+            banner.classList.remove('show');
+        });
+    })();
+    /* ===================== /Cookie Consent ===================== */
 
     const cg=document.getElementById('cursorGlow');
     let mx=0,my=0,gx=0,gy=0;
