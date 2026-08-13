@@ -1146,6 +1146,77 @@
             border-bottom: 1px solid rgba(88,129,87,0.08);
         }
 
+        /* ===== CERTIFICATES ===== */
+        .certs-banner {
+            padding: 64px 24px;
+            background: var(--darker);
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+        .certs-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .certs-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 3.5vw, 34px);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .certs-sub {
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 36px;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .cert-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 22px 14px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--white);
+            transition: all 0.3s;
+            min-height: 44px;
+        }
+        .cert-btn:active { transform: scale(0.97); }
+        @media (hover: hover) {
+            .cert-btn:hover {
+                border-color: rgba(201,169,110,0.3);
+                background: rgba(201,169,110,0.06);
+                transform: translateY(-3px);
+            }
+        }
+        .cert-btn-icon {
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: rgba(201,169,110,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-400);
+        }
+        .cert-btn-label {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        @media (max-width: 768px) {
+            .certs-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         .delivery-inner {
             max-width: 900px;
             margin: 0 auto;
@@ -1654,7 +1725,7 @@
                         <span class="pcard-price-lbl" data-i18n="price_label">Cena</span>
                         <div>
                             <span class="pcard-price-val">1 290<span class="cur">CZK</span></span>
-                            <div class="pcard-per-liter">258 Kč / <span data-i18n="per_liter">litr</span></div>
+                            <div class="pcard-per-liter">258 Kč / <span data-i18n="per_liter">litr</span> · ~10,6 €</div>
                         </div>
                     </div>
                     <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20chci%20objednat%3A%20Extra%20Panensk%C3%BD%20Olivov%C3%BD%20Olej%205L%20-%201%20290%20CZK" target="_blank" class="btn-buy" onclick="if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-18385297819/moROCNWrmeAcEJvD5b5E','value':1290.0,'currency':'CZK'});}">
@@ -1713,7 +1784,7 @@
                         <span class="pcard-price-lbl" data-i18n="price_label">Cena</span>
                         <div>
                             <span class="pcard-price-val">1 690<span class="cur">CZK</span></span>
-                            <div class="pcard-per-liter">169 Kč / <span data-i18n="per_liter">litr</span></div>
+                            <div class="pcard-per-liter">169 Kč / <span data-i18n="per_liter">litr</span> · ~7,0 €</div>
                         </div>
                     </div>
                     <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20chci%20objednat%3A%20Olivov%C3%BD%20Olej%20Vergine%2010L%20-%201%20690%20CZK" target="_blank" class="btn-buy" onclick="if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-18385297819/moROCNWrmeAcEJvD5b5E','value':1690.0,'currency':'CZK'});}">
@@ -1772,7 +1843,7 @@
                         <span class="pcard-price-lbl" data-i18n="price_label">Cena</span>
                         <div>
                             <span class="pcard-price-val">1 490<span class="cur">CZK</span></span>
-                            <div class="pcard-per-liter">149 Kč / <span data-i18n="per_liter">litr</span></div>
+                            <div class="pcard-per-liter">149 Kč / <span data-i18n="per_liter">litr</span> · ~6,1 €</div>
                         </div>
                     </div>
                     <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20chci%20objednat%3A%20Olivov%C3%BD%20Olej%20na%20Sma%C5%BEen%C3%AD%2010L%20-%201%20490%20CZK" target="_blank" class="btn-buy" onclick="if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-18385297819/moROCNWrmeAcEJvD5b5E','value':1490.0,'currency':'CZK'});}">
@@ -1844,6 +1915,32 @@
 </section>
 
 <!-- Footer -->
+<!-- Certificates -->
+<section class="certs-banner" id="certificates">
+    <div class="certs-inner">
+        <h2 class="certs-heading" data-i18n="certs_heading">Certifikáty a rozbory</h2>
+        <p class="certs-sub" data-i18n="certs_sub">Kvalita ověřená nezávislou laboratoří. Stáhněte si oficiální technické listy a rozbory přímo od výrobce.</p>
+        <div class="certs-grid">
+            <a href="certificates/technicky-list-extra-virgin.pdf" target="_blank" class="cert-btn">
+                <div class="cert-btn-icon"><i data-lucide="file-text" style="width:20px;height:20px;"></i></div>
+                <span class="cert-btn-label" data-i18n="cert1_label">Technický list<br>Extra Virgin</span>
+            </a>
+            <a href="certificates/technicky-list-vergine.pdf" target="_blank" class="cert-btn">
+                <div class="cert-btn-icon"><i data-lucide="file-text" style="width:20px;height:20px;"></i></div>
+                <span class="cert-btn-label" data-i18n="cert2_label">Technický list<br>Vergine</span>
+            </a>
+            <a href="certificates/technicky-list-smazeni.pdf" target="_blank" class="cert-btn">
+                <div class="cert-btn-icon"><i data-lucide="file-text" style="width:20px;height:20px;"></i></div>
+                <span class="cert-btn-label" data-i18n="cert3_label">Technický list<br>Na smažení</span>
+            </a>
+            <a href="certificates/analiza-vergine.pdf" target="_blank" class="cert-btn">
+                <div class="cert-btn-icon"><i data-lucide="flask-conical" style="width:20px;height:20px;"></i></div>
+                <span class="cert-btn-label" data-i18n="cert4_label">Laboratorní<br>rozbor</span>
+            </a>
+        </div>
+    </div>
+</section>
+
 <footer class="footer">
     <div class="footer-container">
         <div class="footer-top">
@@ -1942,6 +2039,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exkluzivní distribuce pro ČR",
             cookie_text: "Tento web používá cookies pro analytiku a marketingovou reklamu (Google, Meta). Kliknutím na \"Souhlasím\" nám pomůžete zlepšovat nabídku. Více v <a href=\"#\">zásadách ochrany soukromí</a>.",
             cookie_accept: "Souhlasím", cookie_decline: "Pouze nezbytné",
+            certs_heading: "Certifikáty a rozbory", certs_sub: "Kvalita ověřená nezávislou laboratoří. Stáhněte si oficiální technické listy a rozbory přímo od výrobce.",
+            cert1_label: "Technický list<br>Extra Virgin", cert2_label: "Technický list<br>Vergine", cert3_label: "Technický list<br>Na smažení", cert4_label: "Laboratorní<br>rozbor",
             meta_title: "Apulia Olive Oil CZ — Prémiový olivový olej z Itálie | Brno, Česká republika",
             meta_desc: "Prémiový extra panenský olivový olej přímo z Apulie, Itálie. Lisování za studena, bez zprostředkovatelů. Doprava po celé ČR, osobní odběr v Brně."
         },
@@ -1982,6 +2081,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exclusive distribution for Czechia",
             cookie_text: "This site uses cookies for analytics and marketing ads (Google, Meta). Clicking \"Accept\" helps us improve our offering. More in our <a href=\"#\">privacy policy</a>.",
             cookie_accept: "Accept", cookie_decline: "Essential only",
+            certs_heading: "Certificates & Lab Reports", certs_sub: "Quality verified by an independent laboratory. Download official technical data sheets and analyses directly from the producer.",
+            cert1_label: "Technical Sheet<br>Extra Virgin", cert2_label: "Technical Sheet<br>Vergine", cert3_label: "Technical Sheet<br>For Frying", cert4_label: "Lab<br>Analysis",
             meta_title: "Apulia Olive Oil CZ — Premium Italian Olive Oil | Brno, Czech Republic",
             meta_desc: "Premium extra virgin olive oil direct from Apulia, Italy. Cold-pressed, no middlemen. Delivery across Czechia, pickup in Brno."
         },
@@ -2022,6 +2123,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Ексклюзивна дистрибуція для Чехії",
             cookie_text: "Цей сайт використовує cookies для аналітики та маркетингової реклами (Google, Meta). Натискаючи \"Погоджуюсь\", ви допомагаєте нам покращувати пропозицію. Детальніше в <a href=\"#\">політиці конфіденційності</a>.",
             cookie_accept: "Погоджуюсь", cookie_decline: "Лише необхідні",
+            certs_heading: "Сертифікати та аналізи", certs_sub: "Якість підтверджена незалежною лабораторією. Завантажте офіційні технічні листи та аналізи прямо від виробника.",
+            cert1_label: "Технічний лист<br>Extra Virgin", cert2_label: "Технічний лист<br>Vergine", cert3_label: "Технічний лист<br>Для смаження", cert4_label: "Лабораторний<br>аналіз",
             meta_title: "Apulia Olive Oil CZ — Преміальна італійська оливкова олія | Брно, Чехія",
             meta_desc: "Преміальна оливкова олія Extra Virgin напряму з Апулії, Італія. Холодний віджим, без посередників. Доставка по всій Чехії, самовивіз у Брно."
         },
@@ -2062,6 +2165,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Эксклюзивная дистрибуция для Чехии",
             cookie_text: "Этот сайт использует cookies для аналитики и маркетинговой рекламы (Google, Meta). Нажимая \"Согласен\", вы помогаете нам улучшать предложение. Подробнее в <a href=\"#\">политике конфиденциальности</a>.",
             cookie_accept: "Согласен", cookie_decline: "Только необходимые",
+            certs_heading: "Сертификаты и анализы", certs_sub: "Качество подтверждено независимой лабораторией. Скачайте официальные технические листы и анализы напрямую от производителя.",
+            cert1_label: "Технический лист<br>Extra Virgin", cert2_label: "Технический лист<br>Vergine", cert3_label: "Технический лист<br>Для жарки", cert4_label: "Лабораторный<br>анализ",
             meta_title: "Apulia Olive Oil CZ — Премиальное итальянское оливковое масло | Брно, Чехия",
             meta_desc: "Премиальное оливковое масло Extra Virgin напрямую из Апулии, Италия. Холодный отжим, без посредников. Доставка по всей Чехии, самовывоз в Брно."
         },
@@ -2102,6 +2207,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Distribuzione esclusiva per la Rep. Ceca",
             cookie_text: "Questo sito utilizza cookie per analisi e pubblicità marketing (Google, Meta). Cliccando \"Accetto\" ci aiuti a migliorare la nostra offerta. Maggiori info nella <a href=\"#\">informativa sulla privacy</a>.",
             cookie_accept: "Accetto", cookie_decline: "Solo essenziali",
+            certs_heading: "Certificati e analisi", certs_sub: "Qualità verificata da un laboratorio indipendente. Scarica le schede tecniche e le analisi ufficiali direttamente dal produttore.",
+            cert1_label: "Scheda tecnica<br>Extra Vergine", cert2_label: "Scheda tecnica<br>Vergine", cert3_label: "Scheda tecnica<br>Per friggere", cert4_label: "Analisi di<br>laboratorio",
             meta_title: "Apulia Olive Oil CZ — Olio d'oliva italiano premium | Brno, Repubblica Ceca",
             meta_desc: "Olio extravergine di oliva premium direttamente dalla Puglia, Italia. Spremitura a freddo, senza intermediari. Consegna in tutta la Rep. Ceca, ritiro a Brno."
         },
@@ -2142,6 +2249,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exklusiver Vertrieb für Tschechien",
             cookie_text: "Diese Website verwendet Cookies für Analytics und Marketing-Werbung (Google, Meta). Mit Klick auf \"Zustimmen\" helfen Sie uns, unser Angebot zu verbessern. Mehr in unserer <a href=\"#\">Datenschutzerklärung</a>.",
             cookie_accept: "Zustimmen", cookie_decline: "Nur notwendige",
+            certs_heading: "Zertifikate & Analysen", certs_sub: "Qualität von einem unabhängigen Labor bestätigt. Laden Sie offizielle technische Datenblätter und Analysen direkt vom Hersteller herunter.",
+            cert1_label: "Datenblatt<br>Extra Nativ", cert2_label: "Datenblatt<br>Vergine", cert3_label: "Datenblatt<br>Zum Braten", cert4_label: "Labor-<br>analyse",
             meta_title: "Apulia Olive Oil CZ — Premium italienisches Olivenöl | Brünn, Tschechien",
             meta_desc: "Premium natives Olivenöl extra direkt aus Apulien, Italien. Kaltgepresst, ohne Zwischenhändler. Lieferung in ganz Tschechien, Abholung in Brünn."
         },
@@ -2182,6 +2291,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Ekskluzywna dystrybucja dla Czech",
             cookie_text: "Ta strona używa plików cookie do analityki i reklam marketingowych (Google, Meta). Klikając \"Zgadzam się\", pomagasz nam ulepszać ofertę. Więcej w <a href=\"#\">polityce prywatności</a>.",
             cookie_accept: "Zgadzam się", cookie_decline: "Tylko niezbędne",
+            certs_heading: "Certyfikaty i analizy", certs_sub: "Jakość potwierdzona przez niezależne laboratorium. Pobierz oficjalne karty techniczne i analizy bezpośrednio od producenta.",
+            cert1_label: "Karta techniczna<br>Extra Virgin", cert2_label: "Karta techniczna<br>Vergine", cert3_label: "Karta techniczna<br>Do smażenia", cert4_label: "Analiza<br>laboratoryjna",
             meta_title: "Apulia Olive Oil CZ — Premium włoska oliwa z oliwek | Brno, Czechy",
             meta_desc: "Premium oliwa Extra Virgin bezpośrednio z Apulii, Włochy. Tłoczenie na zimno, bez pośredników. Dostawa na terenie całych Czech, odbiór w Brnie."
         },
@@ -2222,6 +2333,8 @@
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exkluzívna distribúcia pre ČR",
             cookie_text: "Táto stránka používa cookies na analytiku a marketingovú reklamu (Google, Meta). Kliknutím na \"Súhlasím\" nám pomôžete zlepšovať ponuku. Viac v <a href=\"#\">zásadách ochrany súkromia</a>.",
             cookie_accept: "Súhlasím", cookie_decline: "Iba nevyhnutné",
+            certs_heading: "Certifikáty a rozbory", certs_sub: "Kvalita overená nezávislým laboratóriom. Stiahnite si oficiálne technické listy a rozbory priamo od výrobcu.",
+            cert1_label: "Technický list<br>Extra Virgin", cert2_label: "Technický list<br>Vergine", cert3_label: "Technický list<br>Na vyprážanie", cert4_label: "Laboratórny<br>rozbor",
             meta_title: "Apulia Olive Oil CZ — Prémiový taliansky olivový olej | Brno, Česká republika",
             meta_desc: "Prémiový extra panenský olivový olej priamo z Apúlie, Taliansko. Lisovanie za studena, bez sprostredkovateľov. Doprava po celej ČR, osobný odber v Brne."
         }
