@@ -19,14 +19,41 @@
         line-height: 1.7; -webkit-font-smoothing: antialiased;
     }
     a { color: var(--gold-400); }
-    .wrap { max-width: 880px; margin: 0 auto; padding: 60px 24px 120px; }
+    .topbar {
+        display: flex; align-items: center; justify-content: space-between;
+        max-width: 880px; margin: 0 auto; padding: 28px 24px 0;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 20px 24px 120px; }
     .back-link {
         display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-        color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500; margin-bottom: 40px;
+        color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500;
     }
+    /* ---- lang switcher (same pattern as main site) ---- */
+    .lang-switch { position: relative; }
+    .lang-btn {
+        display: flex; align-items: center; gap: 6px; padding: 8px 14px; min-height: 40px;
+        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 100px; color: var(--white); font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    .lang-dropdown {
+        position: absolute; top: calc(100% + 8px); right: 0;
+        background: rgba(12,22,12,0.98); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 14px; padding: 6px; min-width: 190px; backdrop-filter: blur(20px);
+        display: none; flex-direction: column; gap: 2px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); z-index: 1100;
+    }
+    .lang-dropdown.open { display: flex; }
+    .lang-option {
+        display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 9px;
+        color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; cursor: pointer;
+        background: none; border: none; text-align: left; width: 100%;
+    }
+    .lang-option:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+    .lang-option.active { color: var(--gold-400); background: rgba(201,169,110,0.1); }
+    .lang-code { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.35); width: 20px; }
+
     .page-title {
         font-family: 'Playfair Display', serif; font-size: clamp(30px, 5vw, 44px);
-        font-weight: 700; margin-bottom: 8px;
+        font-weight: 700; margin-bottom: 8px; margin-top: 24px;
     }
     .page-sub { color: rgba(255,255,255,0.4); font-size: 14px; margin-bottom: 48px; }
     .toc {
@@ -54,7 +81,7 @@
         border-radius: 16px; padding: 22px 26px; margin-bottom: 20px;
     }
     .seller-box div { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
-    .seller-box strong { display: block; font-size: 16px; margin-bottom: 8px; color: var(--gold-400); }
+    .seller-box .sb-title { display: block; font-size: 16px; margin-bottom: 8px; color: var(--gold-400); font-weight: 700; }
     .note {
         font-size: 12px; color: rgba(255,255,255,0.35); font-style: italic;
         border-left: 2px solid rgba(201,169,110,0.3); padding-left: 12px; margin: 16px 0;
@@ -68,7 +95,7 @@
     }
     .withdraw-box .field { margin-bottom: 14px; }
     .withdraw-box label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
-    .withdraw-box input, .withdraw-box textarea {
+    .withdraw-box input {
         width: 100%; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: inherit; font-size: 14px;
     }
@@ -78,122 +105,98 @@
         font-weight: 700; font-size: 13px;
     }
     .withdraw-confirm { display: none; margin-top: 16px; padding: 14px; border-radius: 10px; background: rgba(88,129,87,0.15); color: var(--olive-400); font-size: 13px; }
+    .legal-note { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 60px; }
 </style>
 </head>
 <body>
+
+<div class="topbar">
+    <a href="/" class="back-link" data-i18n="back">
+        <i data-lucide="arrow-left" style="width:14px;height:14px;"></i> <span data-i18n-text="back">Zpět na obchod</span>
+    </a>
+    <div class="lang-switch">
+        <button class="lang-btn" id="langBtn">
+            <i data-lucide="globe" style="width:14px;height:14px;"></i>
+            <span id="langBtnLabel">CS</span>
+            <i data-lucide="chevron-down" style="width:12px;height:12px;"></i>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+            <button class="lang-option" data-lang="cs"><span class="lang-code">CZ</span> Čeština</button>
+            <button class="lang-option" data-lang="en"><span class="lang-code">GB</span> English</button>
+            <button class="lang-option" data-lang="uk"><span class="lang-code">UA</span> Українська</button>
+            <button class="lang-option" data-lang="ru"><span class="lang-code">RU</span> Русский</button>
+            <button class="lang-option" data-lang="it"><span class="lang-code">IT</span> Italiano</button>
+            <button class="lang-option" data-lang="de"><span class="lang-code">DE</span> Deutsch</button>
+            <button class="lang-option" data-lang="pl"><span class="lang-code">PL</span> Polski</button>
+            <button class="lang-option" data-lang="sk"><span class="lang-code">SK</span> Slovenčina</button>
+        </div>
+    </div>
+</div>
+
 <div class="wrap">
 
-    <a href="/" class="back-link"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Zpět na obchod</a>
-
-    <h1 class="page-title">Právní informace</h1>
-    <p class="page-sub">Obchodní podmínky, reklamační řád, ochrana osobních údajů a informace o dodání a platbě internetového obchodu apuliaoliveoil.cz.</p>
+    <h1 class="page-title" data-i18n-text="pageTitle">Právní informace</h1>
+    <p class="page-sub" data-i18n-text="pageSub">Obchodní podmínky, reklamační řád, ochrana osobních údajů a informace o dodání a platbě internetového obchodu apuliaoliveoil.cz.</p>
 
     <div class="seller-box">
-        <strong>Prodávající</strong>
-        <div><strong style="display:inline;color:var(--white);font-size:13px;">Eduard Korolov</strong>, podnikající fyzická osoba (OSVČ)</div>
-        <!-- TODO: ověř s účetním, zda je Eduard plátcem DPH; pokud ano, doplň DIČ na tomto řádku -->
-        <div>IČO: 22154396 &nbsp;·&nbsp; není plátcem DPH</div>
-        <div>Sídlo: Terezy Novákové 178/29, Řečkovice, 621 00 Brno, Česká republika</div>
-        <div>Zapsán v živnostenském rejstříku vedeném Magistrátem města Brna</div>
-        <!-- TODO: potvrď, jaký kontaktní e-mail a telefon má zákazník vidět (zákaznický vs. Eduardův osobní) -->
-        <div>E-mail: eddigood2020@gmail.com &nbsp;·&nbsp; Telefon / WhatsApp: +420 604 264 270</div>
-        <div>Provozovna: Terezy Novákové 178/29, Řečkovice, 621 00 Brno (SZPI reg. č. SZPI-OPPP/2026/44)</div>
+        <span class="sb-title" data-i18n-text="sbTitle">Prodávající</span>
+        <div><strong style="color:var(--white);font-size:13px;">Eduard Korolov</strong>, <span data-i18n-text="sbOsvc">podnikající fyzická osoba (OSVČ)</span></div>
+        <div><span data-i18n-text="sbIco">IČO</span>: 22154396 &nbsp;·&nbsp; <span data-i18n-text="sbVat">není plátcem DPH</span></div>
+        <div><span data-i18n-text="sbAddr">Sídlo</span>: Terezy Novákové 178/29, Řečkovice, 621 00 Brno, <span data-i18n-text="sbCountry">Česká republika</span></div>
+        <div><span data-i18n-text="sbReg">Zapsán v živnostenském rejstříku vedeném Magistrátem města Brna</span></div>
+        <div><span data-i18n-text="sbEmail">E-mail</span>: eddigood2020@gmail.com &nbsp;·&nbsp; <span data-i18n-text="sbPhone">Telefon / WhatsApp</span>: +420 604 264 270</div>
+        <div><span data-i18n-text="sbShop">Provozovna</span>: Terezy Novákové 178/29, Řečkovice, 621 00 Brno (SZPI reg. č. SZPI-OPPP/2026/44)</div>
     </div>
 
     <div class="toc">
-        <a href="#obchodni-podminky">Obchodní podmínky</a>
-        <a href="#dodani-platba">Dodání a platba</a>
-        <a href="#odstoupeni">Odstoupení od smlouvy</a>
-        <a href="#reklamace">Reklamační řád</a>
-        <a href="#gdpr">Ochrana osobních údajů</a>
+        <a href="#obchodni-podminky" data-i18n-text="toc1">Obchodní podmínky</a>
+        <a href="#dodani-platba" data-i18n-text="toc2">Dodání a platba</a>
+        <a href="#odstoupeni" data-i18n-text="toc3">Odstoupení od smlouvy</a>
+        <a href="#reklamace" data-i18n-text="toc4">Reklamační řád</a>
+        <a href="#gdpr" data-i18n-text="toc5">Ochrana osobních údajů</a>
     </div>
 
     <section id="obchodni-podminky">
-        <h2>1. Všeobecné obchodní podmínky</h2>
-
-        <h3>1.1 Úvodní ustanovení</h3>
-        <p>Tyto obchodní podmínky (dále jen „<strong>obchodní podmínky</strong>“) prodávajícího Eduarda Korolova, IČO 22154396, se sídlem Terezy Novákové 178/29, Řečkovice, 621 00 Brno (dále jen „<strong>prodávající</strong>“), upravují vzájemná práva a povinnosti smluvních stran vzniklé v souvislosti nebo na základě kupní smlouvy uzavírané mezi prodávajícím a jinou fyzickou osobou (dále jen „<strong>kupující</strong>“) prostřednictvím internetového obchodu prodávajícího provozovaného na webové stránce umístěné na internetové adrese <strong>apuliaoliveoil.cz</strong> (dále jen „<strong>e-shop</strong>“).</p>
-        <p>Ustanovení obchodních podmínek jsou nedílnou součástí kupní smlouvy. Kupní smlouva a obchodní podmínky jsou vyhotoveny v českém jazyce.</p>
-
-        <h3>1.2 Uzavření kupní smlouvy</h3>
-        <p>E-shop obsahuje seznam zboží nabízeného prodávajícím k prodeji, a to včetně uvedení cen jednotlivého nabízeného zboží. Ceny nabízeného zboží jsou uvedeny včetně všech souvisejících poplatků. Nabídka prodeje zboží a ceny tohoto zboží zůstávají v platnosti po dobu, kdy jsou zobrazovány v e-shopu.</p>
-        <p>Pro objednání zboží vyplní kupující objednávkový formulář v e-shopu (košík) obsahující zejména informace o objednávaném zboží, způsobu úhrady kupní ceny, požadovaném způsobu doručení a nákladech spojených s dodáním zboží (dále společně jen jako „<strong>objednávka</strong>“).</p>
-        <p>Před zasláním objednávky prodávajícímu je kupujícímu umožněno zkontrolovat a měnit údaje, které do objednávky kupující vložil. Objednávku odešle kupující prodávajícímu kliknutím na tlačítko „Zaplatit kartou“ / dokončením objednávky přes WhatsApp. Údaje uvedené v objednávce jsou prodávajícím považovány za správné.</p>
-        <p>Smluvní vztah mezi prodávajícím a kupujícím vzniká doručením přijetí objednávky (akceptací), jež je prodávajícím zasláno kupujícímu elektronickou poštou, a to na adresu elektronické pošty kupujícího.</p>
-
-        <h3>1.3 Cena zboží a platební podmínky</h3>
-        <p>Cenu zboží dle kupní smlouvy může kupující uhradit prodávajícímu následujícími způsoby:</p>
-        <ul>
-            <li>bezhotovostně platební kartou prostřednictvím platební brány třetí strany;</li>
-            <li>v hotovosti při osobním odběru v Brně;</li>
-            <li>bezhotovostním převodem na účet prodávajícího, na základě dohody s prodávajícím.</li>
-        </ul>
-        <p>V případě bezhotovostní platby je kupní cena splatná do 7 dnů od uzavření kupní smlouvy. V případě bezhotovostní platby je kupující povinen uhrazovat kupní cenu zboží společně s uvedením variabilního symbolu platby. V případě bezhotovostní platby je závazek kupujícího uhradit kupní cenu splněn okamžikem připsání příslušné částky na účet prodávajícího nebo potvrzením platební brány o úspěšné transakci.</p>
-
-        <h3>1.4 Práva z vadného plnění a záruka</h3>
-        <p>Práva a povinnosti smluvních stran ohledně práv z vadného plnění se řídí příslušnými obecně závaznými právními předpisy, zejména ustanoveními § 2158 a násl. zákona č. 89/2012 Sb., občanského zákoníku, a zákonem č. 634/1992 Sb., o ochraně spotřebitele.</p>
-        <p class="note">U potravinářského zboží (olivový olej) neplatí obecná 24měsíční záruční doba jako u trvanlivého spotřebního zboží — rozhodné je datum minimální trvanlivosti uvedené na obalu. Kupující má právo reklamovat vadu, kterou zboží mělo v okamžiku převzetí, po celou dobu použitelnosti zboží.</p>
-
-        <h3>1.5 Mimosoudní řešení spotřebitelských sporů</h3>
-        <p>K mimosoudnímu řešení spotřebitelských sporů z kupní smlouvy je příslušná <strong>Česká obchodní inspekce</strong>, se sídlem Štěpánská 567/15, 120 00 Praha 2, IČO: 000 20 869, internetová adresa: <a href="https://www.coi.cz" target="_blank">https://www.coi.cz</a>. Platformu pro řešení sporů on-line nacházející se na internetové adrese <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a> je možné využít při řešení sporů mezi prodávajícím a kupujícím z kupní smlouvy.</p>
+        <h2 data-i18n-text="toc1">Obchodní podmínky</h2>
+        <div data-i18n-html="sec1"></div>
     </section>
 
     <section id="dodani-platba">
-        <h2>2. Dodání a platba</h2>
-
-        <h3>2.1 Způsoby doručení</h3>
-        <table>
-            <tr><th>Způsob doručení</th><th>Cena</th><th>Doba dodání</th></tr>
-            <tr><td>Balíkovna (výdejní box Česká pošta)</td><td>dle aktuálního ceníku v košíku</td><td>2–4 pracovní dny</td></tr>
-            <tr><td>Balík Do ruky (Česká pošta)</td><td>dle aktuálního ceníku v košíku</td><td>1–3 pracovní dny</td></tr>
-            <tr><td>Osobní odběr v Brně</td><td>zdarma</td><td>dle domluvy na WhatsApp</td></tr>
-        </table>
-        <p class="note">Přesné aktuální ceny dopravy jsou vždy zobrazeny v košíku před dokončením objednávky. Vzhledem k hmotnosti balení (5–10 l) se ceny mohou lišit od standardního lehkého tarifu České pošty.</p>
-
-        <h3>2.2 Způsoby platby</h3>
-        <ul>
-            <li>Platební kartou online (Visa, Mastercard) prostřednictvím zabezpečené platební brány;</li>
-            <li>V hotovosti při osobním odběru;</li>
-            <li>Bankovním převodem po individuální domluvě.</li>
-        </ul>
-
-        <h3>2.3 Dodací lhůta</h3>
-        <p>Zboží je zpravidla expedováno do 2 pracovních dnů od přijetí platby (nebo od potvrzení objednávky v případě platby při odběru). O odeslání zboží je kupující informován prostřednictvím WhatsApp nebo e-mailu.</p>
+        <h2 data-i18n-text="toc2">Dodání a platba</h2>
+        <div data-i18n-html="sec2"></div>
     </section>
 
     <section id="odstoupeni">
-        <h2>3. Odstoupení od smlouvy</h2>
-        <p>V souladu s § 1829 občanského zákoníku má kupující – spotřebitel právo odstoupit od smlouvy uzavřené distančním způsobem <strong>bez udání důvodu ve lhůtě 14 dnů</strong> ode dne převzetí zboží, a to i bez uvedení důvodu.</p>
-        <p>Pro dodržení lhůty postačí odeslat odstoupení před jejím uplynutím. Zboží, prosím, vracejte nepoškozené, pokud možno v původním obalu; pokud kupující zboží použil nad rámec nutný k seznámení se s jeho povahou a vlastnostmi, odpovídá prodávajícímu za snížení hodnoty zboží.</p>
-        <p>Právo na odstoupení se <strong>nevztahuje</strong> na zboží, které bylo po dodání nenávratně smíseno s jiným zbožím, nebo jehož obal byl z hygienických důvodů porušen způsobem znemožňujícím jeho další prodej (netýká se běžného otevření neporušeného balení oleje pro kontrolu).</p>
+        <h2 data-i18n-text="toc3">Odstoupení od smlouvy</h2>
+        <div data-i18n-html="sec3"></div>
 
-        <h3>Formulář pro odstoupení od smlouvy</h3>
-        <p class="note">V souladu s novelou účinnou od 19. 6. 2026 je níže k dispozici online formulář pro odstoupení, který lze odeslat přímo z webu bez nutnosti tisku či poštovního podání.</p>
+        <h3 data-i18n-text="formTitle">Formulář pro odstoupení od smlouvy</h3>
+        <p class="note" data-i18n-text="formNote">V souladu s novelou účinnou od 19. 6. 2026 je níže k dispozici online formulář pro odstoupení, který lze odeslat přímo z webu bez nutnosti tisku či poštovního podání.</p>
 
         <div class="withdraw-box">
             <form id="withdrawForm">
                 <div class="field">
-                    <label>Jméno a příjmení</label>
+                    <label data-i18n-text="fName">Jméno a příjmení</label>
                     <input type="text" name="name" required>
                 </div>
                 <div class="field">
-                    <label>E-mail / telefon</label>
+                    <label data-i18n-text="fContact">E-mail / telefon</label>
                     <input type="text" name="contact" required>
                 </div>
                 <div class="field">
-                    <label>Číslo objednávky a datum převzetí zboží</label>
+                    <label data-i18n-text="fOrder">Číslo objednávky a datum převzetí zboží</label>
                     <input type="text" name="order" required>
                 </div>
                 <div class="field">
-                    <label>Zboží, kterého se odstoupení týká</label>
+                    <label data-i18n-text="fGoods">Zboží, kterého se odstoupení týká</label>
                     <input type="text" name="goods" required>
                 </div>
                 <div class="field">
-                    <label>Číslo účtu pro vrácení peněz</label>
+                    <label data-i18n-text="fAccount">Číslo účtu pro vrácení peněz</label>
                     <input type="text" name="account" required>
                 </div>
-                <button type="submit" class="withdraw-btn">Odeslat odstoupení od smlouvy</button>
-                <div class="withdraw-confirm" id="withdrawConfirm">
+                <button type="submit" class="withdraw-btn" data-i18n-text="fSubmit">Odeslat odstoupení od smlouvy</button>
+                <div class="withdraw-confirm" id="withdrawConfirm" data-i18n-text="fConfirm">
                     Odstoupení bylo připraveno k odeslání na WhatsApp prodávajícímu. Potvrzení o přijetí obdržíte na uvedený kontakt.
                 </div>
             </form>
@@ -201,71 +204,557 @@
     </section>
 
     <section id="reklamace">
-        <h2>4. Reklamační řád</h2>
-
-        <h3>4.1 Uplatnění reklamace</h3>
-        <p>Kupující je oprávněn uplatnit reklamaci u prodávajícího, a to prostřednictvím WhatsApp (+420 604 264 270) nebo e-mailu (eddigood2020@gmail.com), a to nejlépe s doložením data nákupu (potvrzení objednávky), popisem vady a fotodokumentací.</p>
-
-        <h3>4.2 Lhůta pro vyřízení reklamace</h3>
-        <p>Prodávající rozhodne o reklamaci ihned, ve složitých případech do tří pracovních dnů. Reklamace včetně odstranění vady musí být vyřízena bez zbytečného odkladu, nejpozději do <strong>30 dnů</strong> ode dne uplatnění reklamace, pokud se prodávající s kupujícím nedohodnou na delší lhůtě.</p>
-
-        <h3>4.3 Vady zboží</h3>
-        <p>Vzhledem k povaze potravinářského zboží se za vadu považuje zejména: poškozený obal se znehodnocením obsahu, netěsnící uzávěr, znatelné zkažení/žluknutí oleje před uplynutím doby minimální trvanlivosti, nebo rozpor s popisem produktu na e-shopu. Reklamaci lze uplatnit nejpozději do konce doby použitelnosti vyznačené na obalu.</p>
-
-        <h3>4.4 Náklady na reklamaci</h3>
-        <p>V případě oprávněné reklamace hradí náklady spojené s vrácením zboží prodávající. V případě neoprávněné reklamace nese náklady kupující.</p>
+        <h2 data-i18n-text="toc4">Reklamační řád</h2>
+        <div data-i18n-html="sec4"></div>
     </section>
 
     <section id="gdpr">
-        <h2>5. Zásady ochrany osobních údajů</h2>
-
-        <h3>5.1 Správce osobních údajů</h3>
-        <p>Správcem osobních údajů je Eduard Korolov, IČO 22154396, se sídlem Terezy Novákové 178/29, Řečkovice, 621 00 Brno (dále jen „<strong>správce</strong>“), v souladu s Nařízením Evropského parlamentu a Rady (EU) 2016/679 (GDPR).</p>
-
-        <h3>5.2 Jaké údaje zpracováváme</h3>
-        <ul>
-            <li>Identifikační a kontaktní údaje: jméno, příjmení, adresa, e-mail, telefon;</li>
-            <li>Údaje o objednávkách: objednané zboží, cena, způsob platby a doručení;</li>
-            <li>Údaje z cookies a analytických nástrojů (Google Ads, Google Analytics) – pouze po udělení souhlasu prostřednictvím cookie lišty.</li>
-        </ul>
-
-        <h3>5.3 Účel a právní základ zpracování</h3>
-        <table>
-            <tr><th>Účel</th><th>Právní základ</th><th>Doba uchování</th></tr>
-            <tr><td>Vyřízení objednávky, doručení zboží</td><td>plnění smlouvy</td><td>po dobu vyřízení + 3 roky (promlčecí lhůta)</td></tr>
-            <tr><td>Vystavení účetních dokladů</td><td>plnění zákonné povinnosti</td><td>10 let dle zákona o účetnictví</td></tr>
-            <tr><td>Marketing a remarketing (Google Ads)</td><td>souhlas subjektu údajů</td><td>do odvolání souhlasu, max. 24 měsíců</td></tr>
-        </table>
-
-        <h3>5.4 Příjemci osobních údajů</h3>
-        <p>Osobní údaje mohou být předány: poskytovateli platební brány (za účelem zpracování platby), dopravci (Česká pošta – za účelem doručení zásilky), poskytovatelům účetních a IT služeb, a to výhradně v rozsahu nezbytném pro plnění smlouvy.</p>
-
-        <h3>5.5 Práva subjektu údajů</h3>
-        <p>Kupující má právo požadovat od správce přístup ke svým osobním údajům, jejich opravu nebo výmaz, popřípadě omezení zpracování, právo vznést námitku proti zpracování a právo na přenositelnost údajů. Kupující má dále právo podat stížnost u Úřadu pro ochranu osobních údajů (uoou.gov.cz).</p>
-
-        <h3>5.6 Cookies</h3>
-        <p>Web apuliaoliveoil.cz používá nezbytné cookies pro fungování e-shopu a volitelné analytické a marketingové cookies (Google Ads, Google Analytics), které jsou aktivovány pouze po udělení souhlasu prostřednictvím cookie lišty v souladu se zásadou Consent Mode v2.</p>
-        <p>Svůj souhlas s cookies může kupující kdykoli odvolat smazáním souborů cookies ve svém prohlížeči.</p>
+        <h2 data-i18n-text="toc5">Ochrana osobních údajů</h2>
+        <div data-i18n-html="sec5"></div>
     </section>
 
-    <p class="note" style="margin-top:60px;">Tento dokument nabývá účinnosti dnem zveřejnění a nahrazuje veškerá předchozí znění obchodních podmínek. Poslední aktualizace: 11. 9. 2026.</p>
+    <p class="legal-note" data-i18n-text="legalNote">Právně závazné je pouze znění v českém jazyce. Ostatní jazykové verze jsou pouze informativní a v případě rozporu má přednost česká verze. Tento dokument nabývá účinnosti dnem zveřejnění. Poslední aktualizace: 11. 9. 2026.</p>
 </div>
 
 <script>
-    lucide.createIcons();
+lucide.createIcons();
 
-    document.getElementById('withdrawForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const fd = new FormData(e.target);
-        const text = "Odstoupeni od smlouvy:\n" +
-            "Jmeno: " + fd.get('name') + "\n" +
-            "Kontakt: " + fd.get('contact') + "\n" +
-            "Objednavka: " + fd.get('order') + "\n" +
-            "Zbozi: " + fd.get('goods') + "\n" +
-            "Ucet pro vraceni: " + fd.get('account');
-        window.open('https://wa.me/420604264270?text=' + encodeURIComponent(text), '_blank');
-        document.getElementById('withdrawConfirm').style.display = 'block';
+const T = {
+cs: {
+back: "Zpět na obchod",
+pageTitle: "Právní informace",
+pageSub: "Obchodní podmínky, reklamační řád, ochrana osobních údajů a informace o dodání a platbě internetového obchodu apuliaoliveoil.cz.",
+sbTitle: "Prodávající", sbOsvc: "podnikající fyzická osoba (OSVČ)", sbIco: "IČO", sbVat: "není plátcem DPH",
+sbAddr: "Sídlo", sbCountry: "Česká republika", sbReg: "Zapsán v živnostenském rejstříku vedeném Magistrátem města Brna",
+sbEmail: "E-mail", sbPhone: "Telefon / WhatsApp", sbShop: "Provozovna",
+toc1: "Obchodní podmínky", toc2: "Dodání a platba", toc3: "Odstoupení od smlouvy", toc4: "Reklamační řád", toc5: "Ochrana osobních údajů",
+formTitle: "Formulář pro odstoupení od smlouvy",
+formNote: "V souladu s novelou účinnou od 19. 6. 2026 je níže k dispozici online formulář pro odstoupení, který lze odeslat přímo z webu bez nutnosti tisku či poštovního podání.",
+fName: "Jméno a příjmení", fContact: "E-mail / telefon", fOrder: "Číslo objednávky a datum převzetí zboží",
+fGoods: "Zboží, kterého se odstoupení týká", fAccount: "Číslo účtu pro vrácení peněz", fSubmit: "Odeslat odstoupení od smlouvy",
+fConfirm: "Odstoupení bylo připraveno k odeslání na WhatsApp prodávajícímu. Potvrzení o přijetí obdržíte na uvedený kontakt.",
+legalNote: "Právně závazné je pouze znění v českém jazyce. Ostatní jazykové verze jsou pouze informativní a v případě rozporu má přednost česká verze. Tento dokument nabývá účinnosti dnem zveřejnění. Poslední aktualizace: 11. 9. 2026.",
+sec1: `<h3>1.1 Úvodní ustanovení</h3>
+<p>Tyto obchodní podmínky prodávajícího Eduarda Korolova, IČO 22154396, se sídlem Terezy Novákové 178/29, Řečkovice, 621 00 Brno, upravují vzájemná práva a povinnosti smluvních stran vzniklé v souvislosti s kupní smlouvou uzavíranou prostřednictvím e-shopu <strong>apuliaoliveoil.cz</strong>.</p>
+<h3>1.2 Uzavření kupní smlouvy</h3>
+<p>E-shop obsahuje seznam zboží včetně cen. Objednávku odešle kupující kliknutím na tlačítko „Zaplatit kartou" nebo dokončením objednávky přes WhatsApp. Smluvní vztah vzniká doručením přijetí objednávky kupujícímu e-mailem.</p>
+<h3>1.3 Cena a platební podmínky</h3>
+<p>Kupní cenu lze uhradit: platební kartou přes platební bránu, v hotovosti při osobním odběru, nebo bankovním převodem po dohodě. Bezhotovostní platba je splatná do 7 dnů od uzavření smlouvy.</p>
+<h3>1.4 Práva z vadného plnění</h3>
+<p>Řídí se § 2158 a násl. zákona č. 89/2012 Sb. a zákonem č. 634/1992 Sb., o ochraně spotřebitele.</p>
+<p class="note">U potravinářského zboží (olivový olej) neplatí obecná 24měsíční záruka — rozhodné je datum minimální trvanlivosti na obalu.</p>
+<h3>1.5 Mimosoudní řešení sporů</h3>
+<p>Příslušná je <strong>Česká obchodní inspekce</strong>, Štěpánská 567/15, 120 00 Praha 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, nebo platforma <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Způsoby doručení</h3>
+<table><tr><th>Způsob</th><th>Cena</th><th>Doba dodání</th></tr>
+<tr><td>Balíkovna</td><td>dle ceníku v košíku</td><td>2–4 pracovní dny</td></tr>
+<tr><td>Balík Do ruky (Česká pošta)</td><td>dle ceníku v košíku</td><td>1–3 pracovní dny</td></tr>
+<tr><td>Osobní odběr v Brně</td><td>zdarma</td><td>dle domluvy na WhatsApp</td></tr></table>
+<p class="note">Přesné ceny dopravy jsou zobrazeny v košíku před dokončením objednávky.</p>
+<h3>2.2 Způsoby platby</h3>
+<ul><li>Platební kartou online</li><li>V hotovosti při osobním odběru</li><li>Bankovním převodem po domluvě</li></ul>
+<h3>2.3 Dodací lhůta</h3>
+<p>Zboží je expedováno do 2 pracovních dnů od přijetí platby. O odeslání je kupující informován přes WhatsApp nebo e-mail.</p>`,
+sec3: `<p>V souladu s § 1829 občanského zákoníku má kupující – spotřebitel právo odstoupit od smlouvy <strong>bez udání důvodu ve lhůtě 14 dnů</strong> ode dne převzetí zboží.</p>
+<p>Zboží vracejte nepoškozené, pokud možno v původním obalu. Právo na odstoupení se nevztahuje na zboží, jehož obal byl porušen způsobem znemožňujícím jeho další prodej.</p>`,
+sec4: `<h3>4.1 Uplatnění reklamace</h3>
+<p>Reklamaci uplatníte přes WhatsApp (+420 604 264 270) nebo e-mail (eddigood2020@gmail.com), s doložením data nákupu a popisem vady.</p>
+<h3>4.2 Lhůta pro vyřízení</h3>
+<p>Reklamace musí být vyřízena nejpozději do <strong>30 dnů</strong> ode dne uplatnění.</p>
+<h3>4.3 Vady zboží</h3>
+<p>Za vadu se považuje: poškozený obal, netěsnící uzávěr, zkažení oleje před uplynutím doby trvanlivosti, nebo rozpor s popisem produktu.</p>
+<h3>4.4 Náklady</h3>
+<p>U oprávněné reklamace hradí náklady na vrácení prodávající, u neoprávněné kupující.</p>`,
+sec5: `<h3>5.1 Správce údajů</h3>
+<p>Eduard Korolov, IČO 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brno, v souladu s nařízením GDPR.</p>
+<h3>5.2 Zpracovávané údaje</h3>
+<ul><li>Identifikační a kontaktní údaje (jméno, adresa, e-mail, telefon)</li><li>Údaje o objednávkách</li><li>Cookies a analytika (po souhlasu)</li></ul>
+<h3>5.3 Účel a doba uchování</h3>
+<table><tr><th>Účel</th><th>Právní základ</th><th>Doba</th></tr>
+<tr><td>Vyřízení objednávky</td><td>plnění smlouvy</td><td>vyřízení + 3 roky</td></tr>
+<tr><td>Účetní doklady</td><td>zákonná povinnost</td><td>10 let</td></tr>
+<tr><td>Marketing (Google Ads)</td><td>souhlas</td><td>do odvolání, max. 24 měsíců</td></tr></table>
+<h3>5.4 Příjemci údajů</h3>
+<p>Poskytovatel platební brány, Česká pošta, poskytovatelé účetních a IT služeb.</p>
+<h3>5.5 Práva subjektu údajů</h3>
+<p>Právo na přístup, opravu, výmaz, omezení zpracování, námitku a přenositelnost údajů. Stížnost lze podat u Úřadu pro ochranu osobních údajů (uoou.gov.cz).</p>
+<h3>5.6 Cookies</h3>
+<p>Web používá nezbytné cookies a volitelné analytické/marketingové cookies (Google Ads, Analytics) po udělení souhlasu.</p>`
+},
+en: {
+back: "Back to shop",
+pageTitle: "Legal information",
+pageSub: "Terms and conditions, complaints procedure, privacy policy and delivery/payment information for the apuliaoliveoil.cz online store.",
+sbTitle: "Seller", sbOsvc: "self-employed individual (OSVČ)", sbIco: "Company ID (IČO)", sbVat: "not a VAT payer",
+sbAddr: "Registered address", sbCountry: "Czech Republic", sbReg: "Registered in the Trade Licensing Register kept by the Brno Municipal Authority",
+sbEmail: "Email", sbPhone: "Phone / WhatsApp", sbShop: "Business premises",
+toc1: "Terms & Conditions", toc2: "Delivery & Payment", toc3: "Right of withdrawal", toc4: "Complaints procedure", toc5: "Privacy policy",
+formTitle: "Withdrawal form",
+formNote: "In line with the amendment effective 19 June 2026, an online withdrawal form is available below, which can be submitted directly from the website without printing or postal filing.",
+fName: "Full name", fContact: "Email / phone", fOrder: "Order number and date of receipt of goods",
+fGoods: "Goods concerned by the withdrawal", fAccount: "Bank account number for refund", fSubmit: "Submit withdrawal",
+fConfirm: "The withdrawal has been prepared for sending to the seller via WhatsApp. You will receive confirmation of receipt at the contact provided.",
+legalNote: "Only the Czech-language version is legally binding. Other language versions are for information only; in case of discrepancy, the Czech version prevails. This document takes effect on the date of publication. Last updated: 11 September 2026.",
+sec1: `<h3>1.1 Introductory provisions</h3>
+<p>These terms and conditions of the seller Eduard Korolov, Company ID 22154396, registered at Terezy Novákové 178/29, Řečkovice, 621 00 Brno, govern the rights and obligations arising from purchase contracts concluded through the e-shop <strong>apuliaoliveoil.cz</strong>.</p>
+<h3>1.2 Conclusion of the purchase contract</h3>
+<p>The e-shop lists goods with prices. The order is sent by clicking "Pay by card" or by completing an order via WhatsApp. The contract is concluded upon delivery of the order confirmation to the buyer's email.</p>
+<h3>1.3 Price and payment terms</h3>
+<p>The price may be paid by: card via the payment gateway, cash on personal pick-up, or bank transfer by agreement. Non-cash payment is due within 7 days of concluding the contract.</p>
+<h3>1.4 Rights from defective performance</h3>
+<p>Governed by Section 2158 et seq. of Act No. 89/2012 Coll. and Act No. 634/1992 Coll. on Consumer Protection.</p>
+<p class="note">For food products (olive oil), the general 24-month warranty does not apply — the best-before date printed on the packaging is decisive.</p>
+<h3>1.5 Out-of-court dispute resolution</h3>
+<p>The competent body is the <strong>Czech Trade Inspection Authority</strong>, Štěpánská 567/15, 120 00 Prague 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, or the platform <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Delivery methods</h3>
+<table><tr><th>Method</th><th>Price</th><th>Delivery time</th></tr>
+<tr><td>Balíkovna (parcel box)</td><td>as shown in cart</td><td>2–4 business days</td></tr>
+<tr><td>Czech Post (courier)</td><td>as shown in cart</td><td>1–3 business days</td></tr>
+<tr><td>Personal pick-up in Brno</td><td>free</td><td>arranged via WhatsApp</td></tr></table>
+<p class="note">Exact shipping prices are shown in the cart before checkout.</p>
+<h3>2.2 Payment methods</h3>
+<ul><li>Online card payment</li><li>Cash on personal pick-up</li><li>Bank transfer by agreement</li></ul>
+<h3>2.3 Delivery time</h3>
+<p>Goods are dispatched within 2 business days of receiving payment. The buyer is notified of shipping via WhatsApp or email.</p>`,
+sec3: `<p>Under Section 1829 of the Civil Code, a consumer has the right to withdraw from a distance contract <strong>without giving any reason within 14 days</strong> of receiving the goods.</p>
+<p>Please return goods undamaged, ideally in original packaging. The right of withdrawal does not apply to goods whose packaging has been damaged in a way that prevents their resale.</p>`,
+sec4: `<h3>4.1 Filing a complaint</h3>
+<p>Complaints can be filed via WhatsApp (+420 604 264 270) or email (eddigood2020@gmail.com), with proof of purchase date and a description of the defect.</p>
+<h3>4.2 Resolution deadline</h3>
+<p>Complaints must be resolved within <strong>30 days</strong> of being filed.</p>
+<h3>4.3 Defects</h3>
+<p>A defect includes: damaged packaging, a leaking seal, spoilage of the oil before the best-before date, or discrepancy with the product description.</p>
+<h3>4.4 Costs</h3>
+<p>For a justified complaint, return costs are covered by the seller; for an unjustified one, by the buyer.</p>`,
+sec5: `<h3>5.1 Data controller</h3>
+<p>Eduard Korolov, Company ID 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brno, in accordance with the GDPR.</p>
+<h3>5.2 Data processed</h3>
+<ul><li>Identification and contact data (name, address, email, phone)</li><li>Order data</li><li>Cookies and analytics (with consent)</li></ul>
+<h3>5.3 Purpose and retention period</h3>
+<table><tr><th>Purpose</th><th>Legal basis</th><th>Retention</th></tr>
+<tr><td>Order processing</td><td>contract performance</td><td>processing + 3 years</td></tr>
+<tr><td>Accounting records</td><td>legal obligation</td><td>10 years</td></tr>
+<tr><td>Marketing (Google Ads)</td><td>consent</td><td>until withdrawn, max. 24 months</td></tr></table>
+<h3>5.4 Recipients of data</h3>
+<p>Payment gateway provider, Czech Post, accounting and IT service providers.</p>
+<h3>5.5 Data subject rights</h3>
+<p>Right to access, rectification, erasure, restriction of processing, objection and data portability. Complaints may be filed with the Office for Personal Data Protection (uoou.gov.cz).</p>
+<h3>5.6 Cookies</h3>
+<p>The site uses essential cookies and optional analytics/marketing cookies (Google Ads, Analytics) after consent is given.</p>`
+},
+uk: {
+back: "Назад до магазину",
+pageTitle: "Правова інформація",
+pageSub: "Умови продажу, порядок рекламацій, політика конфіденційності та інформація про доставку й оплату інтернет-магазину apuliaoliveoil.cz.",
+sbTitle: "Продавець", sbOsvc: "фізична особа-підприємець (OSVČ)", sbIco: "ІПН/IČO", sbVat: "не є платником ПДВ",
+sbAddr: "Юридична адреса", sbCountry: "Чеська Республіка", sbReg: "Зареєстрований у реєстрі підприємців магістрату міста Брно",
+sbEmail: "Email", sbPhone: "Телефон / WhatsApp", sbShop: "Місце діяльності",
+toc1: "Умови продажу", toc2: "Доставка та оплата", toc3: "Відмова від договору", toc4: "Порядок рекламацій", toc5: "Захист персональних даних",
+formTitle: "Форма відмови від договору",
+formNote: "Відповідно до поправки, чинної з 19.06.2026, нижче доступна онлайн-форма відмови, яку можна надіслати прямо з сайту без друку чи поштового подання.",
+fName: "Ім'я та прізвище", fContact: "Email / телефон", fOrder: "Номер замовлення та дата отримання товару",
+fGoods: "Товар, якого стосується відмова", fAccount: "Номер рахунку для повернення коштів", fSubmit: "Надіслати відмову від договору",
+fConfirm: "Відмову підготовлено для надсилання продавцю через WhatsApp. Підтвердження отримання прийде на вказаний контакт.",
+legalNote: "Юридично обов'язковою є лише чеськомовна версія. Інші мовні версії носять інформаційний характер; у разі розбіжностей перевагу має чеська версія. Документ набуває чинності з дня публікації. Останнє оновлення: 11.09.2026.",
+sec1: `<h3>1.1 Вступні положення</h3>
+<p>Ці умови продавця Едуарда Королова, IČO 22154396, за адресою Terezy Novákové 178/29, Řečkovice, 621 00 Brno, регулюють права й обов'язки сторін договору купівлі-продажу, укладеного через інтернет-магазин <strong>apuliaoliveoil.cz</strong>.</p>
+<h3>1.2 Укладення договору</h3>
+<p>Магазин містить перелік товарів із цінами. Замовлення надсилається натисканням кнопки «Оплатити карткою» або через WhatsApp. Договір вважається укладеним з моменту отримання покупцем підтвердження на email.</p>
+<h3>1.3 Ціна та умови оплати</h3>
+<p>Оплата можлива: карткою через платіжний шлюз, готівкою при особистому отриманні, або банківським переказом за домовленістю. Безготівкова оплата — протягом 7 днів від укладення договору.</p>
+<h3>1.4 Права з неналежного виконання</h3>
+<p>Регулюється § 2158 і далі Закону № 89/2012 Сб. та Законом № 634/1992 Сб. про захист прав споживачів.</p>
+<p class="note">Для харчових продуктів (олія) не діє загальна 24-місячна гарантія — вирішальним є термін мінімальної придатності на упаковці.</p>
+<h3>1.5 Позасудове вирішення спорів</h3>
+<p>Компетентний орган — <strong>Чеська торгова інспекція</strong>, Štěpánská 567/15, 120 00 Praha 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, або платформа <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Способи доставки</h3>
+<table><tr><th>Спосіб</th><th>Ціна</th><th>Термін</th></tr>
+<tr><td>Balíkovna (поштомат)</td><td>за прайсом у кошику</td><td>2–4 робочих дні</td></tr>
+<tr><td>Česká pošta (кур'єр)</td><td>за прайсом у кошику</td><td>1–3 робочих дні</td></tr>
+<tr><td>Особисте отримання в Брно</td><td>безкоштовно</td><td>за домовленістю у WhatsApp</td></tr></table>
+<p class="note">Точні ціни доставки показуються в кошику перед оформленням замовлення.</p>
+<h3>2.2 Способи оплати</h3>
+<ul><li>Онлайн-оплата карткою</li><li>Готівкою при особистому отриманні</li><li>Банківський переказ за домовленістю</li></ul>
+<h3>2.3 Термін доставки</h3>
+<p>Товар відправляється протягом 2 робочих днів після отримання оплати. Про відправку повідомляємо через WhatsApp або email.</p>`,
+sec3: `<p>Згідно з § 1829 Цивільного кодексу споживач має право відмовитися від договору, укладеного дистанційно, <strong>без пояснення причин протягом 14 днів</strong> з дня отримання товару.</p>
+<p>Товар слід повернути неушкодженим, бажано в оригінальній упаковці. Право відмови не поширюється на товар, упаковку якого пошкоджено так, що подальший продаж неможливий.</p>`,
+sec4: `<h3>4.1 Подання рекламації</h3>
+<p>Рекламацію можна подати через WhatsApp (+420 604 264 270) або email (eddigood2020@gmail.com), із підтвердженням дати покупки та описом дефекту.</p>
+<h3>4.2 Термін розгляду</h3>
+<p>Рекламація має бути розглянута не пізніше <strong>30 днів</strong> з дня подання.</p>
+<h3>4.3 Дефекти товару</h3>
+<p>Дефектом вважається: пошкоджена упаковка, негерметичність кришки, псування олії до закінчення терміну придатності, або невідповідність опису товару.</p>
+<h3>4.4 Витрати</h3>
+<p>При обґрунтованій рекламації витрати на повернення несе продавець, при необґрунтованій — покупець.</p>`,
+sec5: `<h3>5.1 Розпорядник даних</h3>
+<p>Едуард Королов, IČO 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brno, відповідно до GDPR.</p>
+<h3>5.2 Оброблювані дані</h3>
+<ul><li>Ідентифікаційні та контактні дані (ім'я, адреса, email, телефон)</li><li>Дані про замовлення</li><li>Cookies та аналітика (за згодою)</li></ul>
+<h3>5.3 Мета та термін зберігання</h3>
+<table><tr><th>Мета</th><th>Правова підстава</th><th>Термін</th></tr>
+<tr><td>Обробка замовлення</td><td>виконання договору</td><td>обробка + 3 роки</td></tr>
+<tr><td>Бухгалтерські документи</td><td>законна вимога</td><td>10 років</td></tr>
+<tr><td>Маркетинг (Google Ads)</td><td>згода</td><td>до відкликання, макс. 24 міс.</td></tr></table>
+<h3>5.4 Отримувачі даних</h3>
+<p>Постачальник платіжного шлюзу, Česká pošta, постачальники бухгалтерських та ІТ-послуг.</p>
+<h3>5.5 Права суб'єкта даних</h3>
+<p>Право на доступ, виправлення, видалення, обмеження обробки, заперечення та перенесення даних. Скарги можна подати до Управління із захисту персональних даних (uoou.gov.cz).</p>
+<h3>5.6 Cookies</h3>
+<p>Сайт використовує необхідні cookies та опціональні аналітичні/маркетингові cookies (Google Ads, Analytics) після надання згоди.</p>`
+},
+ru: {
+back: "Назад в магазин",
+pageTitle: "Правовая информация",
+pageSub: "Условия продажи, порядок рекламаций, политика конфиденциальности и информация о доставке и оплате интернет-магазина apuliaoliveoil.cz.",
+sbTitle: "Продавец", sbOsvc: "физическое лицо-предприниматель (OSVČ)", sbIco: "ИНН/IČO", sbVat: "не является плательщиком НДС",
+sbAddr: "Юридический адрес", sbCountry: "Чешская Республика", sbReg: "Зарегистрирован в реестре предпринимателей магистрата города Брно",
+sbEmail: "Email", sbPhone: "Телефон / WhatsApp", sbShop: "Место деятельности",
+toc1: "Условия продажи", toc2: "Доставка и оплата", toc3: "Отказ от договора", toc4: "Порядок рекламаций", toc5: "Защита персональных данных",
+formTitle: "Форма отказа от договора",
+formNote: "В соответствии с поправкой, действующей с 19.06.2026, ниже доступна онлайн-форма отказа, которую можно отправить прямо с сайта без печати и почтовой подачи.",
+fName: "Имя и фамилия", fContact: "Email / телефон", fOrder: "Номер заказа и дата получения товара",
+fGoods: "Товар, которого касается отказ", fAccount: "Номер счёта для возврата средств", fSubmit: "Отправить отказ от договора",
+fConfirm: "Отказ подготовлен для отправки продавцу через WhatsApp. Подтверждение получения придёт на указанный контакт.",
+legalNote: "Юридически обязательной является только версия на чешском языке. Остальные языковые версии носят информационный характер; при расхождениях приоритет имеет чешская версия. Документ вступает в силу со дня публикации. Последнее обновление: 11.09.2026.",
+sec1: `<h3>1.1 Вводные положения</h3>
+<p>Настоящие условия продавца Эдуарда Королова, IČO 22154396, по адресу Terezy Novákové 178/29, Řečkovice, 621 00 Brno, регулируют права и обязанности сторон договора купли-продажи, заключённого через интернет-магазин <strong>apuliaoliveoil.cz</strong>.</p>
+<h3>1.2 Заключение договора</h3>
+<p>Магазин содержит перечень товаров с ценами. Заказ отправляется нажатием кнопки «Оплатить картой» или через WhatsApp. Договор считается заключённым с момента получения покупателем подтверждения на email.</p>
+<h3>1.3 Цена и условия оплаты</h3>
+<p>Оплата возможна: картой через платёжный шлюз, наличными при личном получении, или банковским переводом по договорённости. Безналичная оплата — в течение 7 дней с момента заключения договора.</p>
+<h3>1.4 Права из ненадлежащего исполнения</h3>
+<p>Регулируется § 2158 и далее Закона № 89/2012 Сб. и Законом № 634/1992 Сб. о защите прав потребителей.</p>
+<p class="note">Для пищевых продуктов (масло) не действует общая 24-месячная гарантия — решающим является срок минимальной годности на упаковке.</p>
+<h3>1.5 Внесудебное разрешение споров</h3>
+<p>Компетентный орган — <strong>Чешская торговая инспекция</strong>, Štěpánská 567/15, 120 00 Praha 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, либо платформа <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Способы доставки</h3>
+<table><tr><th>Способ</th><th>Цена</th><th>Срок</th></tr>
+<tr><td>Balíkovna (постамат)</td><td>по прайсу в корзине</td><td>2–4 рабочих дня</td></tr>
+<tr><td>Česká pošta (курьер)</td><td>по прайсу в корзине</td><td>1–3 рабочих дня</td></tr>
+<tr><td>Личное получение в Брно</td><td>бесплатно</td><td>по договорённости в WhatsApp</td></tr></table>
+<p class="note">Точные цены доставки показаны в корзине перед оформлением заказа.</p>
+<h3>2.2 Способы оплаты</h3>
+<ul><li>Онлайн-оплата картой</li><li>Наличными при личном получении</li><li>Банковский перевод по договорённости</li></ul>
+<h3>2.3 Срок доставки</h3>
+<p>Товар отправляется в течение 2 рабочих дней после получения оплаты. Об отправке сообщаем через WhatsApp или email.</p>`,
+sec3: `<p>Согласно § 1829 Гражданского кодекса потребитель вправе отказаться от договора, заключённого дистанционно, <strong>без объяснения причин в течение 14 дней</strong> со дня получения товара.</p>
+<p>Товар следует вернуть неповреждённым, желательно в оригинальной упаковке. Право отказа не распространяется на товар, упаковка которого повреждена так, что дальнейшая продажа невозможна.</p>`,
+sec4: `<h3>4.1 Подача рекламации</h3>
+<p>Рекламацию можно подать через WhatsApp (+420 604 264 270) или email (eddigood2020@gmail.com), с подтверждением даты покупки и описанием дефекта.</p>
+<h3>4.2 Срок рассмотрения</h3>
+<p>Рекламация должна быть рассмотрена не позднее <strong>30 дней</strong> со дня подачи.</p>
+<h3>4.3 Дефекты товара</h3>
+<p>Дефектом считается: повреждённая упаковка, негерметичность крышки, порча масла до истечения срока годности, либо несоответствие описанию товара.</p>
+<h3>4.4 Расходы</h3>
+<p>При обоснованной рекламации расходы на возврат несёт продавец, при необоснованной — покупатель.</p>`,
+sec5: `<h3>5.1 Распорядитель данных</h3>
+<p>Эдуард Королов, IČO 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brno, в соответствии с GDPR.</p>
+<h3>5.2 Обрабатываемые данные</h3>
+<ul><li>Идентификационные и контактные данные (имя, адрес, email, телефон)</li><li>Данные о заказах</li><li>Cookies и аналитика (с согласия)</li></ul>
+<h3>5.3 Цель и срок хранения</h3>
+<table><tr><th>Цель</th><th>Правовое основание</th><th>Срок</th></tr>
+<tr><td>Обработка заказа</td><td>исполнение договора</td><td>обработка + 3 года</td></tr>
+<tr><td>Бухгалтерские документы</td><td>законное требование</td><td>10 лет</td></tr>
+<tr><td>Маркетинг (Google Ads)</td><td>согласие</td><td>до отзыва, макс. 24 мес.</td></tr></table>
+<h3>5.4 Получатели данных</h3>
+<p>Поставщик платёжного шлюза, Česká pošta, поставщики бухгалтерских и ИТ-услуг.</p>
+<h3>5.5 Права субъекта данных</h3>
+<p>Право на доступ, исправление, удаление, ограничение обработки, возражение и перенос данных. Жалобы можно подать в Управление по защите персональных данных (uoou.gov.cz).</p>
+<h3>5.6 Cookies</h3>
+<p>Сайт использует необходимые cookies и опциональные аналитические/маркетинговые cookies (Google Ads, Analytics) после согласия.</p>`
+},
+it: {
+back: "Torna al negozio",
+pageTitle: "Informazioni legali",
+pageSub: "Termini e condizioni, procedura reclami, informativa sulla privacy e informazioni su consegna e pagamento del negozio online apuliaoliveoil.cz.",
+sbTitle: "Venditore", sbOsvc: "persona fisica esercente attività d'impresa (OSVČ)", sbIco: "P.IVA/IČO", sbVat: "non soggetto a IVA",
+sbAddr: "Sede legale", sbCountry: "Repubblica Ceca", sbReg: "Iscritto nel Registro delle Imprese del Comune di Brno",
+sbEmail: "Email", sbPhone: "Telefono / WhatsApp", sbShop: "Sede operativa",
+toc1: "Termini e condizioni", toc2: "Consegna e pagamento", toc3: "Diritto di recesso", toc4: "Procedura reclami", toc5: "Privacy",
+formTitle: "Modulo di recesso",
+formNote: "In conformità con la modifica in vigore dal 19.06.2026, è disponibile qui sotto un modulo di recesso online, inviabile direttamente dal sito senza stampa né invio postale.",
+fName: "Nome e cognome", fContact: "Email / telefono", fOrder: "Numero d'ordine e data di ricezione della merce",
+fGoods: "Merce oggetto del recesso", fAccount: "Numero di conto per il rimborso", fSubmit: "Invia il recesso",
+fConfirm: "Il recesso è stato preparato per l'invio al venditore via WhatsApp. Riceverai conferma di ricezione al contatto indicato.",
+legalNote: "Solo la versione in lingua ceca è legalmente vincolante. Le altre versioni linguistiche sono puramente informative; in caso di discrepanza prevale la versione ceca. Il documento entra in vigore dalla data di pubblicazione. Ultimo aggiornamento: 11.09.2026.",
+sec1: `<h3>1.1 Disposizioni introduttive</h3>
+<p>Le presenti condizioni del venditore Eduard Korolov, P.IVA 22154396, con sede in Terezy Novákové 178/29, Řečkovice, 621 00 Brno, disciplinano i diritti e gli obblighi derivanti dal contratto di vendita concluso tramite il negozio online <strong>apuliaoliveoil.cz</strong>.</p>
+<h3>1.2 Conclusione del contratto</h3>
+<p>Il negozio elenca i prodotti con i relativi prezzi. L'ordine viene inviato cliccando "Paga con carta" o completando l'ordine via WhatsApp. Il contratto si considera concluso alla ricezione della conferma via email.</p>
+<h3>1.3 Prezzo e modalità di pagamento</h3>
+<p>Il pagamento può avvenire: con carta tramite gateway di pagamento, in contanti al ritiro personale, o tramite bonifico bancario previo accordo. Il pagamento non in contanti è dovuto entro 7 giorni dalla conclusione del contratto.</p>
+<h3>1.4 Diritti da prestazione difettosa</h3>
+<p>Disciplinati dall'art. 2158 e seguenti della Legge n. 89/2012 Sb. e dalla Legge n. 634/1992 Sb. sulla tutela dei consumatori.</p>
+<p class="note">Per i prodotti alimentari (olio d'oliva) non si applica la garanzia generale di 24 mesi — è determinante la data di scadenza indicata sulla confezione.</p>
+<h3>1.5 Risoluzione extragiudiziale delle controversie</h3>
+<p>Competente è la <strong>Ispettorato ceco per il commercio</strong>, Štěpánská 567/15, 120 00 Praga 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, oppure la piattaforma <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Modalità di consegna</h3>
+<table><tr><th>Modalità</th><th>Prezzo</th><th>Tempo di consegna</th></tr>
+<tr><td>Balíkovna (locker)</td><td>secondo il listino nel carrello</td><td>2–4 giorni lavorativi</td></tr>
+<tr><td>Česká pošta (corriere)</td><td>secondo il listino nel carrello</td><td>1–3 giorni lavorativi</td></tr>
+<tr><td>Ritiro personale a Brno</td><td>gratuito</td><td>da concordare via WhatsApp</td></tr></table>
+<p class="note">I prezzi esatti di spedizione sono mostrati nel carrello prima del checkout.</p>
+<h3>2.2 Modalità di pagamento</h3>
+<ul><li>Pagamento online con carta</li><li>Contanti al ritiro personale</li><li>Bonifico bancario previo accordo</li></ul>
+<h3>2.3 Tempi di consegna</h3>
+<p>La merce viene spedita entro 2 giorni lavorativi dalla ricezione del pagamento. L'acquirente viene informato della spedizione via WhatsApp o email.</p>`,
+sec3: `<p>Ai sensi dell'art. 1829 del Codice Civile, il consumatore ha diritto di recedere dal contratto concluso a distanza <strong>senza fornire alcuna motivazione entro 14 giorni</strong> dalla ricezione della merce.</p>
+<p>Si prega di restituire la merce non danneggiata, possibilmente nella confezione originale. Il diritto di recesso non si applica alla merce la cui confezione sia stata danneggiata in modo da impedirne la rivendita.</p>`,
+sec4: `<h3>4.1 Presentazione del reclamo</h3>
+<p>I reclami possono essere presentati via WhatsApp (+420 604 264 270) o email (eddigood2020@gmail.com), con prova della data di acquisto e descrizione del difetto.</p>
+<h3>4.2 Termine di risoluzione</h3>
+<p>Il reclamo deve essere risolto entro <strong>30 giorni</strong> dalla presentazione.</p>
+<h3>4.3 Difetti</h3>
+<p>Si considera difetto: confezione danneggiata, chiusura non ermetica, deterioramento dell'olio prima della scadenza, o discrepanza con la descrizione del prodotto.</p>
+<h3>4.4 Costi</h3>
+<p>In caso di reclamo fondato, i costi di reso sono a carico del venditore; in caso contrario, dell'acquirente.</p>`,
+sec5: `<h3>5.1 Titolare del trattamento</h3>
+<p>Eduard Korolov, P.IVA 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brno, in conformità al GDPR.</p>
+<h3>5.2 Dati trattati</h3>
+<ul><li>Dati identificativi e di contatto (nome, indirizzo, email, telefono)</li><li>Dati sugli ordini</li><li>Cookie e analytics (previo consenso)</li></ul>
+<h3>5.3 Finalità e periodo di conservazione</h3>
+<table><tr><th>Finalità</th><th>Base giuridica</th><th>Conservazione</th></tr>
+<tr><td>Evasione dell'ordine</td><td>esecuzione del contratto</td><td>evasione + 3 anni</td></tr>
+<tr><td>Documenti contabili</td><td>obbligo di legge</td><td>10 anni</td></tr>
+<tr><td>Marketing (Google Ads)</td><td>consenso</td><td>fino a revoca, max. 24 mesi</td></tr></table>
+<h3>5.4 Destinatari dei dati</h3>
+<p>Fornitore del gateway di pagamento, Česká pošta, fornitori di servizi contabili e IT.</p>
+<h3>5.5 Diritti dell'interessato</h3>
+<p>Diritto di accesso, rettifica, cancellazione, limitazione del trattamento, opposizione e portabilità dei dati. I reclami possono essere presentati all'Ufficio per la protezione dei dati personali (uoou.gov.cz).</p>
+<h3>5.6 Cookie</h3>
+<p>Il sito utilizza cookie necessari e cookie analitici/marketing opzionali (Google Ads, Analytics) previo consenso.</p>`
+},
+de: {
+back: "Zurück zum Shop",
+pageTitle: "Rechtliche Informationen",
+pageSub: "Allgemeine Geschäftsbedingungen, Reklamationsordnung, Datenschutzerklärung sowie Liefer- und Zahlungsinformationen des Online-Shops apuliaoliveoil.cz.",
+sbTitle: "Verkäufer", sbOsvc: "selbstständige Einzelperson (OSVČ)", sbIco: "Handelsregisternummer (IČO)", sbVat: "nicht umsatzsteuerpflichtig",
+sbAddr: "Sitz", sbCountry: "Tschechische Republik", sbReg: "Eingetragen im Gewerberegister des Magistrats der Stadt Brünn",
+sbEmail: "E-Mail", sbPhone: "Telefon / WhatsApp", sbShop: "Betriebsstätte",
+toc1: "AGB", toc2: "Lieferung & Zahlung", toc3: "Widerrufsrecht", toc4: "Reklamationsordnung", toc5: "Datenschutz",
+formTitle: "Widerrufsformular",
+formNote: "Gemäß der ab 19.06.2026 geltenden Novelle steht unten ein Online-Widerrufsformular zur Verfügung, das direkt von der Website ohne Ausdruck oder postalische Einreichung gesendet werden kann.",
+fName: "Vor- und Nachname", fContact: "E-Mail / Telefon", fOrder: "Bestellnummer und Datum des Warenerhalts",
+fGoods: "Betroffene Ware", fAccount: "Kontonummer für die Rückerstattung", fSubmit: "Widerruf senden",
+fConfirm: "Der Widerruf wurde zum Versand per WhatsApp an den Verkäufer vorbereitet. Eine Empfangsbestätigung erhalten Sie am angegebenen Kontakt.",
+legalNote: "Rechtlich verbindlich ist nur die tschechische Sprachfassung. Andere Sprachfassungen dienen nur der Information; bei Abweichungen gilt die tschechische Fassung. Dieses Dokument tritt mit dem Tag der Veröffentlichung in Kraft. Letzte Aktualisierung: 11.09.2026.",
+sec1: `<h3>1.1 Einleitende Bestimmungen</h3>
+<p>Diese Bedingungen des Verkäufers Eduard Korolov, IČO 22154396, mit Sitz in Terezy Novákové 178/29, Řečkovice, 621 00 Brünn, regeln die Rechte und Pflichten aus dem über den Online-Shop <strong>apuliaoliveoil.cz</strong> geschlossenen Kaufvertrag.</p>
+<h3>1.2 Vertragsabschluss</h3>
+<p>Der Shop listet Waren mit Preisen. Die Bestellung wird durch Klick auf „Mit Karte bezahlen" oder Abschluss über WhatsApp gesendet. Der Vertrag kommt mit Zugang der Bestellbestätigung per E-Mail zustande.</p>
+<h3>1.3 Preis und Zahlungsbedingungen</h3>
+<p>Zahlung möglich: per Karte über das Zahlungsgateway, bar bei Selbstabholung oder per Überweisung nach Vereinbarung. Bargeldlose Zahlung ist innerhalb von 7 Tagen nach Vertragsschluss fällig.</p>
+<h3>1.4 Rechte aus mangelhafter Leistung</h3>
+<p>Geregelt durch § 2158 ff. des Gesetzes Nr. 89/2012 Sb. und das Verbraucherschutzgesetz Nr. 634/1992 Sb.</p>
+<p class="note">Für Lebensmittel (Olivenöl) gilt nicht die allgemeine 24-monatige Garantie — maßgeblich ist das Mindesthaltbarkeitsdatum auf der Verpackung.</p>
+<h3>1.5 Außergerichtliche Streitbeilegung</h3>
+<p>Zuständig ist die <strong>Tschechische Handelsinspektion</strong>, Štěpánská 567/15, 120 00 Prag 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, oder die Plattform <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Versandarten</h3>
+<table><tr><th>Art</th><th>Preis</th><th>Lieferzeit</th></tr>
+<tr><td>Balíkovna (Paketbox)</td><td>laut Preisliste im Warenkorb</td><td>2–4 Werktage</td></tr>
+<tr><td>Česká pošta (Kurier)</td><td>laut Preisliste im Warenkorb</td><td>1–3 Werktage</td></tr>
+<tr><td>Selbstabholung in Brünn</td><td>kostenlos</td><td>nach Vereinbarung per WhatsApp</td></tr></table>
+<p class="note">Die genauen Versandkosten werden im Warenkorb vor Abschluss der Bestellung angezeigt.</p>
+<h3>2.2 Zahlungsarten</h3>
+<ul><li>Online-Kartenzahlung</li><li>Bar bei Selbstabholung</li><li>Überweisung nach Vereinbarung</li></ul>
+<h3>2.3 Lieferzeit</h3>
+<p>Die Ware wird innerhalb von 2 Werktagen nach Zahlungseingang versandt. Der Käufer wird über den Versand per WhatsApp oder E-Mail informiert.</p>`,
+sec3: `<p>Gemäß § 1829 des Bürgerlichen Gesetzbuchs hat der Verbraucher das Recht, vom im Fernabsatz geschlossenen Vertrag <strong>ohne Angabe von Gründen innerhalb von 14 Tagen</strong> nach Erhalt der Ware zurückzutreten.</p>
+<p>Bitte senden Sie die Ware unbeschädigt, möglichst in der Originalverpackung, zurück. Das Widerrufsrecht gilt nicht für Waren, deren Verpackung so beschädigt wurde, dass ein Weiterverkauf nicht möglich ist.</p>`,
+sec4: `<h3>4.1 Reklamation einreichen</h3>
+<p>Reklamationen können per WhatsApp (+420 604 264 270) oder E-Mail (eddigood2020@gmail.com) eingereicht werden, mit Kaufnachweis und Mängelbeschreibung.</p>
+<h3>4.2 Bearbeitungsfrist</h3>
+<p>Die Reklamation muss innerhalb von <strong>30 Tagen</strong> ab Einreichung bearbeitet werden.</p>
+<h3>4.3 Mängel</h3>
+<p>Als Mangel gelten: beschädigte Verpackung, undichter Verschluss, Verderb des Öls vor Ablauf des Mindesthaltbarkeitsdatums oder Abweichung von der Produktbeschreibung.</p>
+<h3>4.4 Kosten</h3>
+<p>Bei berechtigter Reklamation trägt der Verkäufer die Rücksendekosten, bei unberechtigter der Käufer.</p>`,
+sec5: `<h3>5.1 Verantwortlicher</h3>
+<p>Eduard Korolov, IČO 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brünn, gemäß DSGVO.</p>
+<h3>5.2 Verarbeitete Daten</h3>
+<ul><li>Identifikations- und Kontaktdaten (Name, Adresse, E-Mail, Telefon)</li><li>Bestelldaten</li><li>Cookies und Analytik (nach Einwilligung)</li></ul>
+<h3>5.3 Zweck und Aufbewahrungsdauer</h3>
+<table><tr><th>Zweck</th><th>Rechtsgrundlage</th><th>Dauer</th></tr>
+<tr><td>Bestellabwicklung</td><td>Vertragserfüllung</td><td>Abwicklung + 3 Jahre</td></tr>
+<tr><td>Buchhaltungsunterlagen</td><td>gesetzliche Pflicht</td><td>10 Jahre</td></tr>
+<tr><td>Marketing (Google Ads)</td><td>Einwilligung</td><td>bis Widerruf, max. 24 Monate</td></tr></table>
+<h3>5.4 Datenempfänger</h3>
+<p>Zahlungsgateway-Anbieter, Česká pošta, Buchhaltungs- und IT-Dienstleister.</p>
+<h3>5.5 Rechte der betroffenen Person</h3>
+<p>Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Widerspruch und Datenübertragbarkeit. Beschwerden können beim Amt für Datenschutz (uoou.gov.cz) eingereicht werden.</p>
+<h3>5.6 Cookies</h3>
+<p>Die Website verwendet notwendige Cookies sowie optionale Analyse-/Marketing-Cookies (Google Ads, Analytics) nach Einwilligung.</p>`
+},
+pl: {
+back: "Powrót do sklepu",
+pageTitle: "Informacje prawne",
+pageSub: "Regulamin, procedura reklamacyjna, polityka prywatności oraz informacje o dostawie i płatności sklepu internetowego apuliaoliveoil.cz.",
+sbTitle: "Sprzedawca", sbOsvc: "osoba fizyczna prowadząca działalność gospodarczą (OSVČ)", sbIco: "NIP/IČO", sbVat: "nie jest płatnikiem VAT",
+sbAddr: "Siedziba", sbCountry: "Republika Czeska", sbReg: "Wpisany do rejestru działalności gospodarczej prowadzonego przez Magistrat Miasta Brna",
+sbEmail: "E-mail", sbPhone: "Telefon / WhatsApp", sbShop: "Miejsce prowadzenia działalności",
+toc1: "Regulamin", toc2: "Dostawa i płatność", toc3: "Odstąpienie od umowy", toc4: "Procedura reklamacyjna", toc5: "Ochrona danych osobowych",
+formTitle: "Formularz odstąpienia od umowy",
+formNote: "Zgodnie z nowelizacją obowiązującą od 19.06.2026, poniżej dostępny jest formularz odstąpienia online, który można wysłać bezpośrednio ze strony bez drukowania czy wysyłki pocztowej.",
+fName: "Imię i nazwisko", fContact: "E-mail / telefon", fOrder: "Numer zamówienia i data odbioru towaru",
+fGoods: "Towar, którego dotyczy odstąpienie", fAccount: "Numer konta do zwrotu środków", fSubmit: "Wyślij odstąpienie od umowy",
+fConfirm: "Odstąpienie zostało przygotowane do wysłania sprzedawcy przez WhatsApp. Potwierdzenie otrzymania otrzymasz na podany kontakt.",
+legalNote: "Prawnie wiążąca jest wyłącznie wersja w języku czeskim. Pozostałe wersje językowe mają charakter informacyjny; w razie rozbieżności decyduje wersja czeska. Dokument wchodzi w życie z dniem publikacji. Ostatnia aktualizacja: 11.09.2026.",
+sec1: `<h3>1.1 Postanowienia wstępne</h3>
+<p>Niniejszy regulamin sprzedawcy Eduarda Korolova, IČO 22154396, z siedzibą Terezy Novákové 178/29, Řečkovice, 621 00 Brno, reguluje prawa i obowiązki stron umowy sprzedaży zawieranej za pośrednictwem sklepu <strong>apuliaoliveoil.cz</strong>.</p>
+<h3>1.2 Zawarcie umowy</h3>
+<p>Sklep zawiera listę towarów z cenami. Zamówienie wysyła się klikając „Zapłać kartą" lub składając zamówienie przez WhatsApp. Umowa zostaje zawarta z chwilą doręczenia kupującemu potwierdzenia zamówienia e-mailem.</p>
+<h3>1.3 Cena i warunki płatności</h3>
+<p>Płatność możliwa: kartą przez bramkę płatniczą, gotówką przy odbiorze osobistym, lub przelewem bankowym po uzgodnieniu. Płatność bezgotówkowa jest wymagalna w ciągu 7 dni od zawarcia umowy.</p>
+<h3>1.4 Prawa z tytułu wadliwego wykonania</h3>
+<p>Reguluje § 2158 i nast. ustawy nr 89/2012 Sb. oraz ustawa nr 634/1992 Sb. o ochronie konsumentów.</p>
+<p class="note">Dla produktów spożywczych (oliwa) nie obowiązuje ogólna 24-miesięczna gwarancja — decyduje data minimalnej trwałości na opakowaniu.</p>
+<h3>1.5 Pozasądowe rozstrzyganie sporów</h3>
+<p>Właściwa jest <strong>Czeska Inspekcja Handlowa</strong>, Štěpánská 567/15, 120 00 Praga 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, lub platforma <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Sposoby dostawy</h3>
+<table><tr><th>Sposób</th><th>Cena</th><th>Czas dostawy</th></tr>
+<tr><td>Balíkovna (paczkomat)</td><td>wg cennika w koszyku</td><td>2–4 dni robocze</td></tr>
+<tr><td>Česká pošta (kurier)</td><td>wg cennika w koszyku</td><td>1–3 dni robocze</td></tr>
+<tr><td>Odbiór osobisty w Brnie</td><td>bezpłatnie</td><td>po uzgodnieniu przez WhatsApp</td></tr></table>
+<p class="note">Dokładne ceny dostawy są widoczne w koszyku przed złożeniem zamówienia.</p>
+<h3>2.2 Sposoby płatności</h3>
+<ul><li>Płatność kartą online</li><li>Gotówką przy odbiorze osobistym</li><li>Przelew bankowy po uzgodnieniu</li></ul>
+<h3>2.3 Czas dostawy</h3>
+<p>Towar jest wysyłany w ciągu 2 dni roboczych od otrzymania płatności. Kupujący jest informowany o wysyłce przez WhatsApp lub e-mail.</p>`,
+sec3: `<p>Zgodnie z § 1829 kodeksu cywilnego konsument ma prawo odstąpić od umowy zawartej na odległość <strong>bez podania przyczyny w ciągu 14 dni</strong> od otrzymania towaru.</p>
+<p>Towar należy zwrócić nieuszkodzony, najlepiej w oryginalnym opakowaniu. Prawo odstąpienia nie dotyczy towaru, którego opakowanie zostało uszkodzone w sposób uniemożliwiający dalszą sprzedaż.</p>`,
+sec4: `<h3>4.1 Zgłoszenie reklamacji</h3>
+<p>Reklamację można zgłosić przez WhatsApp (+420 604 264 270) lub e-mail (eddigood2020@gmail.com), z potwierdzeniem daty zakupu i opisem wady.</p>
+<h3>4.2 Termin rozpatrzenia</h3>
+<p>Reklamacja musi zostać rozpatrzona najpóźniej w ciągu <strong>30 dni</strong> od zgłoszenia.</p>
+<h3>4.3 Wady towaru</h3>
+<p>Za wadę uważa się: uszkodzone opakowanie, nieszczelne zamknięcie, zepsucie oliwy przed upływem terminu przydatności, lub niezgodność z opisem produktu.</p>
+<h3>4.4 Koszty</h3>
+<p>Przy zasadnej reklamacji koszty zwrotu ponosi sprzedawca, przy niezasadnej — kupujący.</p>`,
+sec5: `<h3>5.1 Administrator danych</h3>
+<p>Eduard Korolov, IČO 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brno, zgodnie z RODO.</p>
+<h3>5.2 Przetwarzane dane</h3>
+<ul><li>Dane identyfikacyjne i kontaktowe (imię, adres, e-mail, telefon)</li><li>Dane o zamówieniach</li><li>Cookies i analityka (za zgodą)</li></ul>
+<h3>5.3 Cel i okres przechowywania</h3>
+<table><tr><th>Cel</th><th>Podstawa prawna</th><th>Okres</th></tr>
+<tr><td>Realizacja zamówienia</td><td>wykonanie umowy</td><td>realizacja + 3 lata</td></tr>
+<tr><td>Dokumenty księgowe</td><td>obowiązek prawny</td><td>10 lat</td></tr>
+<tr><td>Marketing (Google Ads)</td><td>zgoda</td><td>do odwołania, maks. 24 mies.</td></tr></table>
+<h3>5.4 Odbiorcy danych</h3>
+<p>Dostawca bramki płatniczej, Česká pošta, dostawcy usług księgowych i IT.</p>
+<h3>5.5 Prawa osoby, której dane dotyczą</h3>
+<p>Prawo dostępu, sprostowania, usunięcia, ograniczenia przetwarzania, sprzeciwu i przenoszenia danych. Skargi można składać do Urzędu Ochrony Danych Osobowych (uoou.gov.cz).</p>
+<h3>5.6 Cookies</h3>
+<p>Strona korzysta z niezbędnych plików cookies oraz opcjonalnych plików analitycznych/marketingowych (Google Ads, Analytics) po wyrażeniu zgody.</p>`
+},
+sk: {
+back: "Späť do obchodu",
+pageTitle: "Právne informácie",
+pageSub: "Obchodné podmienky, reklamačný poriadok, ochrana osobných údajov a informácie o doručení a platbe internetového obchodu apuliaoliveoil.cz.",
+sbTitle: "Predávajúci", sbOsvc: "podnikajúca fyzická osoba (OSVČ)", sbIco: "IČO", sbVat: "nie je platcom DPH",
+sbAddr: "Sídlo", sbCountry: "Česká republika", sbReg: "Zapísaný v živnostenskom registri vedenom Magistrátom mesta Brna",
+sbEmail: "E-mail", sbPhone: "Telefón / WhatsApp", sbShop: "Prevádzka",
+toc1: "Obchodné podmienky", toc2: "Doručenie a platba", toc3: "Odstúpenie od zmluvy", toc4: "Reklamačný poriadok", toc5: "Ochrana osobných údajov",
+formTitle: "Formulár na odstúpenie od zmluvy",
+formNote: "V súlade s novelou účinnou od 19. 6. 2026 je nižšie k dispozícii online formulár na odstúpenie, ktorý možno odoslať priamo z webu bez tlače či poštového podania.",
+fName: "Meno a priezvisko", fContact: "E-mail / telefón", fOrder: "Číslo objednávky a dátum prevzatia tovaru",
+fGoods: "Tovar, ktorého sa odstúpenie týka", fAccount: "Číslo účtu na vrátenie peňazí", fSubmit: "Odoslať odstúpenie od zmluvy",
+fConfirm: "Odstúpenie bolo pripravené na odoslanie predávajúcemu cez WhatsApp. Potvrdenie o prijatí dostanete na uvedený kontakt.",
+legalNote: "Právne záväzné je iba znenie v českom jazyku. Ostatné jazykové verzie sú len informatívne; v prípade rozporu má prednosť česká verzia. Dokument nadobúda účinnosť dňom zverejnenia. Posledná aktualizácia: 11. 9. 2026.",
+sec1: `<h3>1.1 Úvodné ustanovenia</h3>
+<p>Tieto podmienky predávajúceho Eduarda Korolova, IČO 22154396, so sídlom Terezy Novákové 178/29, Řečkovice, 621 00 Brno, upravujú práva a povinnosti zmluvných strán kúpnej zmluvy uzatváranej prostredníctvom e-shopu <strong>apuliaoliveoil.cz</strong>.</p>
+<h3>1.2 Uzatvorenie kúpnej zmluvy</h3>
+<p>E-shop obsahuje zoznam tovaru s cenami. Objednávka sa odošle kliknutím na tlačidlo „Zaplatiť kartou" alebo dokončením objednávky cez WhatsApp. Zmluva vzniká doručením potvrdenia objednávky kupujúcemu e-mailom.</p>
+<h3>1.3 Cena a platobné podmienky</h3>
+<p>Platbu možno uhradiť: kartou cez platobnú bránu, v hotovosti pri osobnom odbere, alebo bankovým prevodom po dohode. Bezhotovostná platba je splatná do 7 dní od uzatvorenia zmluvy.</p>
+<h3>1.4 Práva z vadného plnenia</h3>
+<p>Riadi sa § 2158 a nasl. zákona č. 89/2012 Zb. a zákonom č. 634/1992 Zb. o ochrane spotrebiteľa.</p>
+<p class="note">Pri potravinárskom tovare (olivový olej) neplatí všeobecná 24-mesačná záruka — rozhodujúci je dátum minimálnej trvanlivosti na obale.</p>
+<h3>1.5 Mimosúdne riešenie sporov</h3>
+<p>Príslušná je <strong>Česká obchodná inšpekcia</strong>, Štěpánská 567/15, 120 00 Praha 2, <a href="https://www.coi.cz" target="_blank">coi.cz</a>, alebo platforma <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a>.</p>`,
+sec2: `<h3>2.1 Spôsoby doručenia</h3>
+<table><tr><th>Spôsob</th><th>Cena</th><th>Doba dodania</th></tr>
+<tr><td>Balíkovna</td><td>podľa cenníka v košíku</td><td>2–4 pracovné dni</td></tr>
+<tr><td>Česká pošta (kuriér)</td><td>podľa cenníka v košíku</td><td>1–3 pracovné dni</td></tr>
+<tr><td>Osobný odber v Brne</td><td>zadarmo</td><td>podľa dohody na WhatsApp</td></tr></table>
+<p class="note">Presné ceny dopravy sa zobrazujú v košíku pred dokončením objednávky.</p>
+<h3>2.2 Spôsoby platby</h3>
+<ul><li>Platba kartou online</li><li>V hotovosti pri osobnom odbere</li><li>Bankový prevod po dohode</li></ul>
+<h3>2.3 Dodacia lehota</h3>
+<p>Tovar je expedovaný do 2 pracovných dní od prijatia platby. O odoslaní je kupujúci informovaný cez WhatsApp alebo e-mail.</p>`,
+sec3: `<p>V súlade s § 1829 Občianskeho zákonníka má kupujúci – spotrebiteľ právo odstúpiť od zmluvy uzatvorenej na diaľku <strong>bez uvedenia dôvodu v lehote 14 dní</strong> odo dňa prevzatia tovaru.</p>
+<p>Tovar vráťte nepoškodený, pokiaľ možno v pôvodnom obale. Právo na odstúpenie sa nevzťahuje na tovar, ktorého obal bol porušený spôsobom znemožňujúcim jeho ďalší predaj.</p>`,
+sec4: `<h3>4.1 Uplatnenie reklamácie</h3>
+<p>Reklamáciu možno uplatniť cez WhatsApp (+420 604 264 270) alebo e-mail (eddigood2020@gmail.com), s doložením dátumu nákupu a popisom vady.</p>
+<h3>4.2 Lehota na vybavenie</h3>
+<p>Reklamácia musí byť vybavená najneskôr do <strong>30 dní</strong> odo dňa uplatnenia.</p>
+<h3>4.3 Vady tovaru</h3>
+<p>Za vadu sa považuje: poškodený obal, netesniaci uzáver, skazenie oleja pred uplynutím trvanlivosti, alebo rozpor s popisom produktu.</p>
+<h3>4.4 Náklady</h3>
+<p>Pri oprávnenej reklamácii hradí náklady na vrátenie predávajúci, pri neoprávnenej kupujúci.</p>`,
+sec5: `<h3>5.1 Prevádzkovateľ údajov</h3>
+<p>Eduard Korolov, IČO 22154396, Terezy Novákové 178/29, Řečkovice, 621 00 Brno, v súlade s GDPR.</p>
+<h3>5.2 Spracúvané údaje</h3>
+<ul><li>Identifikačné a kontaktné údaje (meno, adresa, e-mail, telefón)</li><li>Údaje o objednávkach</li><li>Cookies a analytika (so súhlasom)</li></ul>
+<h3>5.3 Účel a doba uchovávania</h3>
+<table><tr><th>Účel</th><th>Právny základ</th><th>Doba</th></tr>
+<tr><td>Vybavenie objednávky</td><td>plnenie zmluvy</td><td>vybavenie + 3 roky</td></tr>
+<tr><td>Účtovné doklady</td><td>zákonná povinnosť</td><td>10 rokov</td></tr>
+<tr><td>Marketing (Google Ads)</td><td>súhlas</td><td>do odvolania, max. 24 mesiacov</td></tr></table>
+<h3>5.4 Príjemcovia údajov</h3>
+<p>Poskytovateľ platobnej brány, Česká pošta, poskytovatelia účtovných a IT služieb.</p>
+<h3>5.5 Práva dotknutej osoby</h3>
+<p>Právo na prístup, opravu, výmaz, obmedzenie spracúvania, námietku a prenosnosť údajov. Sťažnosť možno podať Úradu na ochranu osobných údajov (uoou.gov.cz).</p>
+<h3>5.6 Cookies</h3>
+<p>Web používa nevyhnutné cookies a voliteľné analytické/marketingové cookies (Google Ads, Analytics) po udelení súhlasu.</p>`
+}
+};
+
+function applyLang(lang) {
+    const dict = T[lang] || T.cs;
+    document.querySelectorAll('[data-i18n-text]').forEach(el => {
+        const key = el.getAttribute('data-i18n-text');
+        if (dict[key] !== undefined) el.textContent = dict[key];
     });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+    document.documentElement.lang = lang;
+    document.getElementById('langBtnLabel').textContent = lang.toUpperCase();
+    document.querySelectorAll('.lang-option').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    try { localStorage.setItem('apulia_lang', lang); } catch(e) {}
+}
+
+document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+        applyLang(btn.dataset.lang);
+        document.getElementById('langDropdown').classList.remove('open');
+    });
+});
+const langBtn = document.getElementById('langBtn');
+const langDropdown = document.getElementById('langDropdown');
+langBtn.addEventListener('click', (e) => { e.stopPropagation(); langDropdown.classList.toggle('open'); });
+document.addEventListener('click', () => langDropdown.classList.remove('open'));
+
+(function initLang() {
+    let saved = null;
+    try { saved = localStorage.getItem('apulia_lang'); } catch(e) {}
+    applyLang(saved && T[saved] ? saved : 'cs');
+})();
+
+document.getElementById('withdrawForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const text = "Odstoupeni od smlouvy:\n" +
+        "Jmeno: " + fd.get('name') + "\n" +
+        "Kontakt: " + fd.get('contact') + "\n" +
+        "Objednavka: " + fd.get('order') + "\n" +
+        "Zbozi: " + fd.get('goods') + "\n" +
+        "Ucet pro vraceni: " + fd.get('account');
+    window.open('https://wa.me/420604264270?text=' + encodeURIComponent(text), '_blank');
+    document.getElementById('withdrawConfirm').style.display = 'block';
+});
 </script>
 </body>
 </html>
