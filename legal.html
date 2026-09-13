@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obchodní podmínky | Apulia Olive Oil CZ</title>
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+        --olive-500: #588157; --olive-400: #a3b18a; --gold-500: #c9a96e;
+        --gold-400: #d4b87a; --gold-300: #e0ca96; --gold-600: #b08d4f;
+        --dark: #0c160c; --darker: #070e07; --white: #ffffff;
+    }
+    body {
+        font-family: 'Inter', sans-serif; background: var(--darker); color: var(--white);
+        line-height: 1.7; -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--gold-400); }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 60px 24px 120px; }
+    .back-link {
+        display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+        color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500; margin-bottom: 40px;
+    }
+    .page-title {
+        font-family: 'Playfair Display', serif; font-size: clamp(30px, 5vw, 44px);
+        font-weight: 700; margin-bottom: 8px;
+    }
+    .page-sub { color: rgba(255,255,255,0.4); font-size: 14px; margin-bottom: 48px; }
+    .toc {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 56px;
+        padding: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+    }
+    .toc a {
+        font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 100px;
+        background: rgba(255,255,255,0.04); text-decoration: none; color: rgba(255,255,255,0.65);
+        border: 1px solid rgba(255,255,255,0.06);
+    }
+    section { margin-bottom: 64px; scroll-margin-top: 30px; }
+    h2 {
+        font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700;
+        margin-bottom: 20px; color: var(--gold-400); border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding-bottom: 14px;
+    }
+    h3 { font-size: 15px; font-weight: 700; margin: 26px 0 10px; color: var(--olive-400); }
+    p, li { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.75); margin-bottom: 12px; }
+    ul, ol { padding-left: 22px; margin-bottom: 16px; }
+    strong { color: var(--white); font-weight: 600; }
+    .seller-box {
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px; padding: 22px 26px; margin-bottom: 20px;
+    }
+    .seller-box div { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+    .seller-box strong { display: block; font-size: 16px; margin-bottom: 8px; color: var(--gold-400); }
+    .note {
+        font-size: 12px; color: rgba(255,255,255,0.35); font-style: italic;
+        border-left: 2px solid rgba(201,169,110,0.3); padding-left: 12px; margin: 16px 0;
+    }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    td, th { padding: 10px 12px; border: 1px solid rgba(255,255,255,0.08); text-align: left; color: rgba(255,255,255,0.7); }
+    th { color: var(--white); background: rgba(255,255,255,0.03); }
+    .withdraw-box {
+        background: linear-gradient(135deg, rgba(88,129,87,0.08), rgba(201,169,110,0.05));
+        border: 1px solid rgba(201,169,110,0.15); border-radius: 20px; padding: 28px;
+    }
+    .withdraw-box .field { margin-bottom: 14px; }
+    .withdraw-box label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+    .withdraw-box input, .withdraw-box textarea {
+        width: 100%; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: inherit; font-size: 14px;
+    }
+    .withdraw-btn {
+        padding: 14px 30px; border-radius: 100px; border: none; cursor: pointer;
+        background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); color: var(--darker);
+        font-weight: 700; font-size: 13px;
+    }
+    .withdraw-confirm { display: none; margin-top: 16px; padding: 14px; border-radius: 10px; background: rgba(88,129,87,0.15); color: var(--olive-400); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+    <a href="/" class="back-link"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i> Zpět na obchod</a>
+
+    <h1 class="page-title">Právní informace</h1>
+    <p class="page-sub">Obchodní podmínky, reklamační řád, ochrana osobních údajů a informace o dodání a platbě internetového obchodu apuliaoliveoil.cz.</p>
+
+    <div class="seller-box">
+        <strong>Prodávající</strong>
+        <div><strong style="display:inline;color:var(--white);font-size:13px;">Eduard Korolov</strong>, podnikající fyzická osoba (OSVČ)</div>
+        <!-- TODO: ověř s účetním, zda je Eduard plátcem DPH; pokud ano, doplň DIČ na tomto řádku -->
+        <div>IČO: 22154396 &nbsp;·&nbsp; není plátcem DPH</div>
+        <div>Sídlo: Terezy Novákové 178/29, Řečkovice, 621 00 Brno, Česká republika</div>
+        <div>Zapsán v živnostenském rejstříku vedeném Magistrátem města Brna</div>
+        <!-- TODO: potvrď, jaký kontaktní e-mail a telefon má zákazník vidět (zákaznický vs. Eduardův osobní) -->
+        <div>E-mail: eddigood2020@gmail.com &nbsp;·&nbsp; Telefon / WhatsApp: +420 604 264 270</div>
+        <div>Provozovna: Terezy Novákové 178/29, Řečkovice, 621 00 Brno (SZPI reg. č. SZPI-OPPP/2026/44)</div>
+    </div>
+
+    <div class="toc">
+        <a href="#obchodni-podminky">Obchodní podmínky</a>
+        <a href="#dodani-platba">Dodání a platba</a>
+        <a href="#odstoupeni">Odstoupení od smlouvy</a>
+        <a href="#reklamace">Reklamační řád</a>
+        <a href="#gdpr">Ochrana osobních údajů</a>
+    </div>
+
+    <section id="obchodni-podminky">
+        <h2>1. Všeobecné obchodní podmínky</h2>
+
+        <h3>1.1 Úvodní ustanovení</h3>
+        <p>Tyto obchodní podmínky (dále jen „<strong>obchodní podmínky</strong>“) prodávajícího Eduarda Korolova, IČO 22154396, se sídlem Terezy Novákové 178/29, Řečkovice, 621 00 Brno (dále jen „<strong>prodávající</strong>“), upravují vzájemná práva a povinnosti smluvních stran vzniklé v souvislosti nebo na základě kupní smlouvy uzavírané mezi prodávajícím a jinou fyzickou osobou (dále jen „<strong>kupující</strong>“) prostřednictvím internetového obchodu prodávajícího provozovaného na webové stránce umístěné na internetové adrese <strong>apuliaoliveoil.cz</strong> (dále jen „<strong>e-shop</strong>“).</p>
+        <p>Ustanovení obchodních podmínek jsou nedílnou součástí kupní smlouvy. Kupní smlouva a obchodní podmínky jsou vyhotoveny v českém jazyce.</p>
+
+        <h3>1.2 Uzavření kupní smlouvy</h3>
+        <p>E-shop obsahuje seznam zboží nabízeného prodávajícím k prodeji, a to včetně uvedení cen jednotlivého nabízeného zboží. Ceny nabízeného zboží jsou uvedeny včetně všech souvisejících poplatků. Nabídka prodeje zboží a ceny tohoto zboží zůstávají v platnosti po dobu, kdy jsou zobrazovány v e-shopu.</p>
+        <p>Pro objednání zboží vyplní kupující objednávkový formulář v e-shopu (košík) obsahující zejména informace o objednávaném zboží, způsobu úhrady kupní ceny, požadovaném způsobu doručení a nákladech spojených s dodáním zboží (dále společně jen jako „<strong>objednávka</strong>“).</p>
+        <p>Před zasláním objednávky prodávajícímu je kupujícímu umožněno zkontrolovat a měnit údaje, které do objednávky kupující vložil. Objednávku odešle kupující prodávajícímu kliknutím na tlačítko „Zaplatit kartou“ / dokončením objednávky přes WhatsApp. Údaje uvedené v objednávce jsou prodávajícím považovány za správné.</p>
+        <p>Smluvní vztah mezi prodávajícím a kupujícím vzniká doručením přijetí objednávky (akceptací), jež je prodávajícím zasláno kupujícímu elektronickou poštou, a to na adresu elektronické pošty kupujícího.</p>
+
+        <h3>1.3 Cena zboží a platební podmínky</h3>
+        <p>Cenu zboží dle kupní smlouvy může kupující uhradit prodávajícímu následujícími způsoby:</p>
+        <ul>
+            <li>bezhotovostně platební kartou prostřednictvím platební brány třetí strany;</li>
+            <li>v hotovosti při osobním odběru v Brně;</li>
+            <li>bezhotovostním převodem na účet prodávajícího, na základě dohody s prodávajícím.</li>
+        </ul>
+        <p>V případě bezhotovostní platby je kupní cena splatná do 7 dnů od uzavření kupní smlouvy. V případě bezhotovostní platby je kupující povinen uhrazovat kupní cenu zboží společně s uvedením variabilního symbolu platby. V případě bezhotovostní platby je závazek kupujícího uhradit kupní cenu splněn okamžikem připsání příslušné částky na účet prodávajícího nebo potvrzením platební brány o úspěšné transakci.</p>
+
+        <h3>1.4 Práva z vadného plnění a záruka</h3>
+        <p>Práva a povinnosti smluvních stran ohledně práv z vadného plnění se řídí příslušnými obecně závaznými právními předpisy, zejména ustanoveními § 2158 a násl. zákona č. 89/2012 Sb., občanského zákoníku, a zákonem č. 634/1992 Sb., o ochraně spotřebitele.</p>
+        <p class="note">U potravinářského zboží (olivový olej) neplatí obecná 24měsíční záruční doba jako u trvanlivého spotřebního zboží — rozhodné je datum minimální trvanlivosti uvedené na obalu. Kupující má právo reklamovat vadu, kterou zboží mělo v okamžiku převzetí, po celou dobu použitelnosti zboží.</p>
+
+        <h3>1.5 Mimosoudní řešení spotřebitelských sporů</h3>
+        <p>K mimosoudnímu řešení spotřebitelských sporů z kupní smlouvy je příslušná <strong>Česká obchodní inspekce</strong>, se sídlem Štěpánská 567/15, 120 00 Praha 2, IČO: 000 20 869, internetová adresa: <a href="https://www.coi.cz" target="_blank">https://www.coi.cz</a>. Platformu pro řešení sporů on-line nacházející se na internetové adrese <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a> je možné využít při řešení sporů mezi prodávajícím a kupujícím z kupní smlouvy.</p>
+    </section>
+
+    <section id="dodani-platba">
+        <h2>2. Dodání a platba</h2>
+
+        <h3>2.1 Způsoby doručení</h3>
+        <table>
+            <tr><th>Způsob doručení</th><th>Cena</th><th>Doba dodání</th></tr>
+            <tr><td>Balíkovna (výdejní box Česká pošta)</td><td>dle aktuálního ceníku v košíku</td><td>2–4 pracovní dny</td></tr>
+            <tr><td>Balík Do ruky (Česká pošta)</td><td>dle aktuálního ceníku v košíku</td><td>1–3 pracovní dny</td></tr>
+            <tr><td>Osobní odběr v Brně</td><td>zdarma</td><td>dle domluvy na WhatsApp</td></tr>
+        </table>
+        <p class="note">Přesné aktuální ceny dopravy jsou vždy zobrazeny v košíku před dokončením objednávky. Vzhledem k hmotnosti balení (5–10 l) se ceny mohou lišit od standardního lehkého tarifu České pošty.</p>
+
+        <h3>2.2 Způsoby platby</h3>
+        <ul>
+            <li>Platební kartou online (Visa, Mastercard) prostřednictvím zabezpečené platební brány;</li>
+            <li>V hotovosti při osobním odběru;</li>
+            <li>Bankovním převodem po individuální domluvě.</li>
+        </ul>
+
+        <h3>2.3 Dodací lhůta</h3>
+        <p>Zboží je zpravidla expedováno do 2 pracovních dnů od přijetí platby (nebo od potvrzení objednávky v případě platby při odběru). O odeslání zboží je kupující informován prostřednictvím WhatsApp nebo e-mailu.</p>
+    </section>
+
+    <section id="odstoupeni">
+        <h2>3. Odstoupení od smlouvy</h2>
+        <p>V souladu s § 1829 občanského zákoníku má kupující – spotřebitel právo odstoupit od smlouvy uzavřené distančním způsobem <strong>bez udání důvodu ve lhůtě 14 dnů</strong> ode dne převzetí zboží, a to i bez uvedení důvodu.</p>
+        <p>Pro dodržení lhůty postačí odeslat odstoupení před jejím uplynutím. Zboží, prosím, vracejte nepoškozené, pokud možno v původním obalu; pokud kupující zboží použil nad rámec nutný k seznámení se s jeho povahou a vlastnostmi, odpovídá prodávajícímu za snížení hodnoty zboží.</p>
+        <p>Právo na odstoupení se <strong>nevztahuje</strong> na zboží, které bylo po dodání nenávratně smíseno s jiným zbožím, nebo jehož obal byl z hygienických důvodů porušen způsobem znemožňujícím jeho další prodej (netýká se běžného otevření neporušeného balení oleje pro kontrolu).</p>
+
+        <h3>Formulář pro odstoupení od smlouvy</h3>
+        <p class="note">V souladu s novelou účinnou od 19. 6. 2026 je níže k dispozici online formulář pro odstoupení, který lze odeslat přímo z webu bez nutnosti tisku či poštovního podání.</p>
+
+        <div class="withdraw-box">
+            <form id="withdrawForm">
+                <div class="field">
+                    <label>Jméno a příjmení</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="field">
+                    <label>E-mail / telefon</label>
+                    <input type="text" name="contact" required>
+                </div>
+                <div class="field">
+                    <label>Číslo objednávky a datum převzetí zboží</label>
+                    <input type="text" name="order" required>
+                </div>
+                <div class="field">
+                    <label>Zboží, kterého se odstoupení týká</label>
+                    <input type="text" name="goods" required>
+                </div>
+                <div class="field">
+                    <label>Číslo účtu pro vrácení peněz</label>
+                    <input type="text" name="account" required>
+                </div>
+                <button type="submit" class="withdraw-btn">Odeslat odstoupení od smlouvy</button>
+                <div class="withdraw-confirm" id="withdrawConfirm">
+                    Odstoupení bylo připraveno k odeslání na WhatsApp prodávajícímu. Potvrzení o přijetí obdržíte na uvedený kontakt.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section id="reklamace">
+        <h2>4. Reklamační řád</h2>
+
+        <h3>4.1 Uplatnění reklamace</h3>
+        <p>Kupující je oprávněn uplatnit reklamaci u prodávajícího, a to prostřednictvím WhatsApp (+420 604 264 270) nebo e-mailu (eddigood2020@gmail.com), a to nejlépe s doložením data nákupu (potvrzení objednávky), popisem vady a fotodokumentací.</p>
+
+        <h3>4.2 Lhůta pro vyřízení reklamace</h3>
+        <p>Prodávající rozhodne o reklamaci ihned, ve složitých případech do tří pracovních dnů. Reklamace včetně odstranění vady musí být vyřízena bez zbytečného odkladu, nejpozději do <strong>30 dnů</strong> ode dne uplatnění reklamace, pokud se prodávající s kupujícím nedohodnou na delší lhůtě.</p>
+
+        <h3>4.3 Vady zboží</h3>
+        <p>Vzhledem k povaze potravinářského zboží se za vadu považuje zejména: poškozený obal se znehodnocením obsahu, netěsnící uzávěr, znatelné zkažení/žluknutí oleje před uplynutím doby minimální trvanlivosti, nebo rozpor s popisem produktu na e-shopu. Reklamaci lze uplatnit nejpozději do konce doby použitelnosti vyznačené na obalu.</p>
+
+        <h3>4.4 Náklady na reklamaci</h3>
+        <p>V případě oprávněné reklamace hradí náklady spojené s vrácením zboží prodávající. V případě neoprávněné reklamace nese náklady kupující.</p>
+    </section>
+
+    <section id="gdpr">
+        <h2>5. Zásady ochrany osobních údajů</h2>
+
+        <h3>5.1 Správce osobních údajů</h3>
+        <p>Správcem osobních údajů je Eduard Korolov, IČO 22154396, se sídlem Terezy Novákové 178/29, Řečkovice, 621 00 Brno (dále jen „<strong>správce</strong>“), v souladu s Nařízením Evropského parlamentu a Rady (EU) 2016/679 (GDPR).</p>
+
+        <h3>5.2 Jaké údaje zpracováváme</h3>
+        <ul>
+            <li>Identifikační a kontaktní údaje: jméno, příjmení, adresa, e-mail, telefon;</li>
+            <li>Údaje o objednávkách: objednané zboží, cena, způsob platby a doručení;</li>
+            <li>Údaje z cookies a analytických nástrojů (Google Ads, Google Analytics) – pouze po udělení souhlasu prostřednictvím cookie lišty.</li>
+        </ul>
+
+        <h3>5.3 Účel a právní základ zpracování</h3>
+        <table>
+            <tr><th>Účel</th><th>Právní základ</th><th>Doba uchování</th></tr>
+            <tr><td>Vyřízení objednávky, doručení zboží</td><td>plnění smlouvy</td><td>po dobu vyřízení + 3 roky (promlčecí lhůta)</td></tr>
+            <tr><td>Vystavení účetních dokladů</td><td>plnění zákonné povinnosti</td><td>10 let dle zákona o účetnictví</td></tr>
+            <tr><td>Marketing a remarketing (Google Ads)</td><td>souhlas subjektu údajů</td><td>do odvolání souhlasu, max. 24 měsíců</td></tr>
+        </table>
+
+        <h3>5.4 Příjemci osobních údajů</h3>
+        <p>Osobní údaje mohou být předány: poskytovateli platební brány (za účelem zpracování platby), dopravci (Česká pošta – za účelem doručení zásilky), poskytovatelům účetních a IT služeb, a to výhradně v rozsahu nezbytném pro plnění smlouvy.</p>
+
+        <h3>5.5 Práva subjektu údajů</h3>
+        <p>Kupující má právo požadovat od správce přístup ke svým osobním údajům, jejich opravu nebo výmaz, popřípadě omezení zpracování, právo vznést námitku proti zpracování a právo na přenositelnost údajů. Kupující má dále právo podat stížnost u Úřadu pro ochranu osobních údajů (uoou.gov.cz).</p>
+
+        <h3>5.6 Cookies</h3>
+        <p>Web apuliaoliveoil.cz používá nezbytné cookies pro fungování e-shopu a volitelné analytické a marketingové cookies (Google Ads, Google Analytics), které jsou aktivovány pouze po udělení souhlasu prostřednictvím cookie lišty v souladu se zásadou Consent Mode v2.</p>
+        <p>Svůj souhlas s cookies může kupující kdykoli odvolat smazáním souborů cookies ve svém prohlížeči.</p>
+    </section>
+
+    <p class="note" style="margin-top:60px;">Tento dokument nabývá účinnosti dnem zveřejnění a nahrazuje veškerá předchozí znění obchodních podmínek. Poslední aktualizace: 11. 9. 2026.</p>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    document.getElementById('withdrawForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const text = "Odstoupeni od smlouvy:\n" +
+            "Jmeno: " + fd.get('name') + "\n" +
+            "Kontakt: " + fd.get('contact') + "\n" +
+            "Objednavka: " + fd.get('order') + "\n" +
+            "Zbozi: " + fd.get('goods') + "\n" +
+            "Ucet pro vraceni: " + fd.get('account');
+        window.open('https://wa.me/420604264270?text=' + encodeURIComponent(text), '_blank');
+        document.getElementById('withdrawConfirm').style.display = 'block';
+    });
+</script>
+</body>
+</html>
