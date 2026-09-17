@@ -1310,8 +1310,8 @@ function gtag_report_conversion(url) {
 
         .footer-top {
             display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr;
-            gap: 56px;
+            grid-template-columns: 1.3fr 0.85fr 0.85fr 1fr;
+            gap: 40px;
             margin-bottom: 56px;
         }
 
@@ -1566,6 +1566,92 @@ function gtag_report_conversion(url) {
             .trust-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
             .trust-icon { width: 44px; height: 44px; }
         }
+
+        /* ===== CART FLOAT, DRAWER & CHECKOUT ===== */
+        .cart-float {
+            position: fixed;
+            bottom: 28px; right: 100px;
+            z-index: 900;
+            width: 62px; height: 62px;
+            background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--darker);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 28px rgba(201,169,110,0.4);
+            transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+        }
+        .cart-float:hover { transform: scale(1.1) translateY(-3px); box-shadow: 0 12px 40px rgba(201,169,110,0.55); }
+        .cart-float i { width: 26px; height: 26px; }
+        .cart-badge {
+            position: absolute; top: -4px; right: -4px;
+            min-width: 22px; height: 22px; padding: 0 5px;
+            background: var(--olive-500); color: var(--white);
+            border-radius: 100px; font-size: 11px; font-weight: 800;
+            display: none; align-items: center; justify-content: center;
+            border: 2px solid var(--darker);
+        }
+        .cart-badge.show { display: flex; }
+        .cart-overlay {
+            position: fixed; inset: 0; z-index: 2100;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+        }
+        .cart-overlay.open { display: block; }
+        .cart-drawer {
+            position: fixed; top: 0; right: 0; bottom: 0;
+            width: min(420px, 100vw);
+            background: rgba(12,22,12,0.98);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            z-index: 2101;
+            display: flex; flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .cart-drawer.open { transform: translateX(0); }
+        .cart-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .cart-head h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+        .cart-close { background: none; border: none; color: var(--white); cursor: pointer; padding: 8px; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; }
+        .cart-empty { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.35); font-size: 14px; }
+        .cart-item { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .cart-item-info { flex: 1; min-width: 0; }
+        .cart-item-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+        .cart-item-weight { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+        .cart-item-qty { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: var(--white); cursor: pointer; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; }
+        .cart-item-price { text-align: right; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--gold-400); font-size: 15px; white-space: nowrap; }
+        .cart-item-remove { background: none; border: none; color: rgba(255,255,255,0.3); cursor: pointer; font-size: 11px; text-decoration: underline; margin-top: 6px; }
+        .cart-foot { padding: 20px 24px 26px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .cart-total-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+        .cart-total-lbl { font-size: 13px; color: rgba(255,255,255,0.5); }
+        .cart-total-val { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--gold-400); }
+        .cart-checkout-btn { width: 100%; padding: 16px; border-radius: 100px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); color: var(--darker); font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+        .cart-wa-btn { width: 100%; padding: 13px; border-radius: 100px; cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--white); font-weight: 500; font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .checkout-modal { position: fixed; inset: 0; z-index: 2200; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .checkout-modal.open { display: flex; }
+        .checkout-box { position: relative; z-index: 2201; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; background: rgba(12,22,12,0.98); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 30px; }
+        .checkout-box h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 6px; }
+        .checkout-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 22px; }
+        .checkout-field { margin-bottom: 14px; }
+        .checkout-field label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+        .checkout-field input, .checkout-field select, .checkout-field textarea { width: 100%; padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--white); font-family: inherit; font-size: 14px; }
+        .checkout-field textarea { resize: vertical; min-height: 60px; }
+        .delivery-options, .payment-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+        .delivery-option { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; cursor: pointer; font-size: 13px; }
+        .delivery-option input { width: auto; }
+        .delivery-option-price { margin-left: auto; color: var(--gold-400); font-weight: 700; font-size: 12px; }
+        .payment-options { margin-bottom: 20px; }
+        .checkout-submit { width: 100%; padding: 16px; border-radius: 100px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); color: var(--darker); font-weight: 700; font-size: 14px; }
+        .checkout-close { position: absolute; top: 18px; right: 18px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; }
+        @media (max-width: 480px) {
+            .cart-float { right: 20px; bottom: 96px; width: 54px; height: 54px; }
+            .checkout-box { padding: 22px; }
+        }
     </style>
 
     <!-- Google Ads tag (gtag.js) — loaded with Consent Mode: ad/analytics
@@ -1762,10 +1848,10 @@ function gtag_report_conversion(url) {
                             <div class="pcard-per-liter">258 Kč / <span data-i18n="per_liter">litr</span> · ~10,6 €</div>
                         </div>
                     </div>
-                    <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20chci%20objednat%3A%20Extra%20Panensk%C3%BD%20Olivov%C3%BD%20Olej%205L%20-%201%20290%20CZK" target="_blank" class="btn-buy" onclick="if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-18385297819/moROCNWrmeAcEJvD5b5E','value':1290.0,'currency':'CZK'});}">
-                        <span data-i18n="buy_btn">Koupit</span>
-                        <i data-lucide="arrow-right"></i>
-                    </a>
+                    <button type="button" class="btn-buy" data-id="extra-virgin-5l" data-name="Extra Panenský Olivový Olej 5L" data-price="1290" data-weight="5 L" onclick="addToCart(this)">
+                        <span data-i18n="buy_btn">Do košíku</span>
+                        <i data-lucide="shopping-cart"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1821,10 +1907,10 @@ function gtag_report_conversion(url) {
                             <div class="pcard-per-liter">169 Kč / <span data-i18n="per_liter">litr</span> · ~7,0 €</div>
                         </div>
                     </div>
-                    <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20chci%20objednat%3A%20Olivov%C3%BD%20Olej%20Vergine%2010L%20-%201%20690%20CZK" target="_blank" class="btn-buy" onclick="if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-18385297819/moROCNWrmeAcEJvD5b5E','value':1690.0,'currency':'CZK'});}">
-                        <span data-i18n="buy_btn">Koupit</span>
-                        <i data-lucide="arrow-right"></i>
-                    </a>
+                    <button type="button" class="btn-buy" data-id="vergine-10l" data-name="Olivový Olej Vergine 10L" data-price="1690" data-weight="10 L" onclick="addToCart(this)">
+                        <span data-i18n="buy_btn">Do košíku</span>
+                        <i data-lucide="shopping-cart"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1880,10 +1966,10 @@ function gtag_report_conversion(url) {
                             <div class="pcard-per-liter">149 Kč / <span data-i18n="per_liter">litr</span> · ~6,1 €</div>
                         </div>
                     </div>
-                    <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20chci%20objednat%3A%20Olivov%C3%BD%20Olej%20na%20Sma%C5%BEen%C3%AD%2010L%20-%201%20490%20CZK" target="_blank" class="btn-buy" onclick="if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-18385297819/moROCNWrmeAcEJvD5b5E','value':1490.0,'currency':'CZK'});}">
-                        <span data-i18n="buy_btn">Koupit</span>
-                        <i data-lucide="arrow-right"></i>
-                    </a>
+                    <button type="button" class="btn-buy" data-id="smazeni-10l" data-name="Olivový Olej na Smažení 10L" data-price="1490" data-weight="10 L" onclick="addToCart(this)">
+                        <span data-i18n="buy_btn">Do košíku</span>
+                        <i data-lucide="shopping-cart"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -2008,9 +2094,18 @@ function gtag_report_conversion(url) {
                 <a href="tel:+420604264270"><i data-lucide="phone"></i> +420 604 264 270</a>
                 <a href="https://tetianakotolup.com/" target="_blank" rel="noopener"><i data-lucide="code"></i>Web: Tetiana Kotolup</a>
             </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_legal_h">Právní informace</h4>
+                <a href="legal.html#obchodni-podminky"><i data-lucide="file-text"></i> Obchodní podmínky</a>
+                <a href="legal.html#dodani-platba"><i data-lucide="truck"></i> Dodání a platba</a>
+                <a href="legal.html#odstoupeni"><i data-lucide="undo-2"></i> Odstoupení od smlouvy</a>
+                <a href="legal.html#reklamace"><i data-lucide="shield-check"></i> Reklamační řád</a>
+                <a href="legal.html#gdpr"><i data-lucide="lock"></i> Ochrana osobních údajů</a>
+            </div>
         </div>
         <div class="footer-bottom">
             <div class="footer-copy" data-i18n="footer_copy">© 2026 Apulia Olive Oil CZ — Exkluzivní distribuce pro ČR</div>
+            <div style="margin-top:10px;"><a href="legal.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:underline;">Obchodní podmínky · Reklamační řád · GDPR</a></div>
         </div>
     </div>
 </footer>
@@ -2019,6 +2114,68 @@ function gtag_report_conversion(url) {
 <a href="https://wa.me/420604264270?text=Dobr%C3%BD%20den%2C%20m%C3%A1m%20z%C3%A1jem%20o%20olivov%C3%BD%20olej." target="_blank" class="wa-float" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
+
+<!-- Cart -->
+<button class="cart-float" id="cartFloat" aria-label="Košík">
+    <i data-lucide="shopping-cart"></i>
+    <span class="cart-badge" id="cartBadge">0</span>
+</button>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-head">
+        <h3>Váš košík</h3>
+        <button class="cart-close" id="cartClose"><i data-lucide="x"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot">
+        <div class="cart-total-row">
+            <span class="cart-total-lbl">Celkem</span>
+            <span class="cart-total-val" id="cartTotalVal">0 Kč</span>
+        </div>
+        <button class="cart-checkout-btn" id="cartCheckoutBtn">Pokračovat k objednávce</button>
+        <a href="https://wa.me/420604264270" target="_blank" class="cart-wa-btn">
+            <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
+            Mám dotaz na WhatsApp
+        </a>
+    </div>
+</aside>
+
+<div class="checkout-modal" id="checkoutModal">
+    <div class="cart-overlay" id="checkoutOverlay"></div>
+    <div class="checkout-box">
+        <button class="checkout-close" id="checkoutCloseBtn"><i data-lucide="x"></i></button>
+        <h3>Dokončit objednávku</h3>
+        <p class="checkout-sub">Vyplňte údaje pro doručení. Odesláním formuláře objednávku potvrdíte prodávajícímu.</p>
+        <form id="checkoutForm">
+            <div class="checkout-field">
+                <label>Jméno a příjmení</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="checkout-field">
+                <label>Telefon</label>
+                <input type="tel" name="phone" required>
+            </div>
+            <div class="checkout-field">
+                <label>Adresa doručení</label>
+                <textarea name="address" placeholder="Ulice, číslo, město, PSČ"></textarea>
+            </div>
+            <div class="checkout-field">
+                <label>Způsob doručení</label>
+                <div class="delivery-options" id="deliveryOptions"></div>
+            </div>
+            <div class="checkout-field">
+                <label>Způsob platby</label>
+                <div class="payment-options">
+                    <label class="delivery-option"><input type="radio" name="payment" value="Platební karta (platební brána)" checked> Platební karta</label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> Hotově při převzetí</label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> Bankovní převod</label>
+                </div>
+            </div>
+            <button type="submit" class="checkout-submit">Odeslat objednávku</button>
+        </form>
+    </div>
+</div>
 
 <!-- Cookie Consent Banner -->
 <div class="cookie-banner" id="cookieBanner">
@@ -2032,7 +2189,11 @@ function gtag_report_conversion(url) {
 </div>
 
 <script>
-    lucide.createIcons();
+    // Guarded: if the lucide icon library fails to load (blocked script,
+    // offline preview, slow network), this must not throw — an uncaught
+    // error here would stop every script below it from running at all,
+    // including the language switcher and the shopping cart.
+    try { lucide.createIcons(); } catch (e) { console.warn('lucide failed to load, icons will be missing:', e); }
 
     /* ===================== i18n ===================== */
     const translations = {
@@ -2062,7 +2223,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Rafinovaný blend", p3_tag_frying: "Na smažení",
             spec_acidity: "Kyselost", spec_polyphenols: "Polyfenoly mg/kg", spec_peroxides: "Peroxidy",
             spec_shelf: "Trvanlivost", spec_months_short: "měs.",
-            price_label: "Cena", per_liter: "litr", buy_btn: "Koupit",
+            price_label: "Cena", per_liter: "litr", buy_btn: "Do košíku", footer_legal_h: "Právní informace",
             trust1_lbl: "Apulie, Itálie", trust2_lbl: "Studený lis", trust4_lbl: "Alergeny", trust5_lbl: "Distribuce v ČR",
             del1_h: "Pojízdná prodejna", del1_p: "Přijedeme přímo k vám",
             del2_h: "Poštovní zásilka", del2_p: "Doručení po celé ČR",
@@ -2104,7 +2265,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Refined blend", p3_tag_frying: "For frying",
             spec_acidity: "Acidity", spec_polyphenols: "Polyphenols mg/kg", spec_peroxides: "Peroxides",
             spec_shelf: "Shelf life", spec_months_short: "mo.",
-            price_label: "Price", per_liter: "liter", buy_btn: "Buy now",
+            price_label: "Price", per_liter: "liter", buy_btn: "Add to cart", footer_legal_h: "Legal",
             trust1_lbl: "Apulia, Italy", trust2_lbl: "Cold pressed", trust4_lbl: "Allergens", trust5_lbl: "Distribution in CZ",
             del1_h: "Mobile shop", del1_p: "We deliver right to you",
             del2_h: "Postal shipping", del2_p: "Delivery all over Czechia",
@@ -2146,7 +2307,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Рафінований бленд", p3_tag_frying: "Для смаження",
             spec_acidity: "Кислотність", spec_polyphenols: "Поліфеноли мг/кг", spec_peroxides: "Пероксиди",
             spec_shelf: "Термін зберігання", spec_months_short: "міс.",
-            price_label: "Ціна", per_liter: "літр", buy_btn: "Купити",
+            price_label: "Ціна", per_liter: "літр", buy_btn: "До кошика", footer_legal_h: "Правова інформація",
             trust1_lbl: "Апулія, Італія", trust2_lbl: "Холодний віджим", trust4_lbl: "Алергени", trust5_lbl: "Дистрибуція в ЧР",
             del1_h: "Пересувна крамниця", del1_p: "Привеземо особисто до вас",
             del2_h: "Поштова доставка", del2_p: "Доставка по всій Чехії",
@@ -2188,7 +2349,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Рафинированный бленд", p3_tag_frying: "Для жарки",
             spec_acidity: "Кислотность", spec_polyphenols: "Полифенолы мг/кг", spec_peroxides: "Пероксиды",
             spec_shelf: "Срок годности", spec_months_short: "мес.",
-            price_label: "Цена", per_liter: "литр", buy_btn: "Купить",
+            price_label: "Цена", per_liter: "литр", buy_btn: "В корзину", footer_legal_h: "Правовая информация",
             trust1_lbl: "Апулия, Италия", trust2_lbl: "Холодный отжим", trust4_lbl: "Аллергены", trust5_lbl: "Дистрибуция в ЧР",
             del1_h: "Передвижной магазин", del1_p: "Привезём лично к вам",
             del2_h: "Почтовая доставка", del2_p: "Доставка по всей Чехии",
@@ -2230,7 +2391,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Miscela raffinata", p3_tag_frying: "Per friggere",
             spec_acidity: "Acidità", spec_polyphenols: "Polifenoli mg/kg", spec_peroxides: "Perossidi",
             spec_shelf: "Conservazione", spec_months_short: "mesi",
-            price_label: "Prezzo", per_liter: "litro", buy_btn: "Acquista",
+            price_label: "Prezzo", per_liter: "litro", buy_btn: "Aggiungi al carrello", footer_legal_h: "Informazioni legali",
             trust1_lbl: "Puglia, Italia", trust2_lbl: "Spremitura a freddo", trust4_lbl: "Allergeni", trust5_lbl: "Distribuzione in CZ",
             del1_h: "Negozio itinerante", del1_p: "Veniamo direttamente da voi",
             del2_h: "Spedizione postale", del2_p: "Consegna in tutta la Rep. Ceca",
@@ -2272,7 +2433,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Raffinierte Mischung", p3_tag_frying: "Zum Braten",
             spec_acidity: "Säuregehalt", spec_polyphenols: "Polyphenole mg/kg", spec_peroxides: "Peroxide",
             spec_shelf: "Haltbarkeit", spec_months_short: "Mon.",
-            price_label: "Preis", per_liter: "Liter", buy_btn: "Kaufen",
+            price_label: "Preis", per_liter: "Liter", buy_btn: "In den Warenkorb", footer_legal_h: "Rechtliches",
             trust1_lbl: "Apulien, Italien", trust2_lbl: "Kaltpressung", trust4_lbl: "Allergene", trust5_lbl: "Vertrieb in CZ",
             del1_h: "Verkaufswagen", del1_p: "Wir kommen direkt zu Ihnen",
             del2_h: "Postversand", del2_p: "Lieferung in ganz Tschechien",
@@ -2314,7 +2475,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Mieszanka rafinowana", p3_tag_frying: "Do smażenia",
             spec_acidity: "Kwasowość", spec_polyphenols: "Polifenole mg/kg", spec_peroxides: "Nadtlenki",
             spec_shelf: "Trwałość", spec_months_short: "mies.",
-            price_label: "Cena", per_liter: "litr", buy_btn: "Kup teraz",
+            price_label: "Cena", per_liter: "litr", buy_btn: "Do koszyka", footer_legal_h: "Informacje prawne",
             trust1_lbl: "Apulia, Włochy", trust2_lbl: "Tłoczenie na zimno", trust4_lbl: "Alergeny", trust5_lbl: "Dystrybucja w CZ",
             del1_h: "Sklep mobilny", del1_p: "Przyjedziemy prosto do Ciebie",
             del2_h: "Wysyłka pocztowa", del2_p: "Dostawa na terenie całych Czech",
@@ -2356,7 +2517,7 @@ function gtag_report_conversion(url) {
             p3_tag_blend: "Rafinovaný blend", p3_tag_frying: "Na vyprážanie",
             spec_acidity: "Kyslosť", spec_polyphenols: "Polyfenoly mg/kg", spec_peroxides: "Peroxidy",
             spec_shelf: "Trvanlivosť", spec_months_short: "mes.",
-            price_label: "Cena", per_liter: "liter", buy_btn: "Kúpiť",
+            price_label: "Cena", per_liter: "liter", buy_btn: "Do košíka", footer_legal_h: "Právne informácie",
             trust1_lbl: "Apúlia, Taliansko", trust2_lbl: "Studený lis", trust4_lbl: "Alergény", trust5_lbl: "Distribúcia v ČR",
             del1_h: "Pojazdná predajňa", del1_p: "Prídeme priamo k vám",
             del2_h: "Poštová zásielka", del2_p: "Doručenie po celej ČR",
@@ -2454,6 +2615,166 @@ function gtag_report_conversion(url) {
         });
     })();
     /* ===================== /Cookie Consent ===================== */
+
+    /* ===================== CART & CHECKOUT ===================== */
+    (function () {
+        const CART_KEY = 'apulia_cart';
+        const SELLER_WA = '420604264270';
+        const DELIVERY = [
+            { id: 'balikovna', label: 'Balíkovna', price: 89 },
+            { id: 'balik_doruky', label: 'Balík Do ruky (Česká pošta)', price: 129 },
+            { id: 'osobne', label: 'Osobní odběr v Brně', price: 0 }
+        ];
+
+        function getCart() {
+            try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { return []; }
+        }
+        function saveCart(cart) {
+            try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
+        }
+        function cartTotal(cart) { return cart.reduce((s, i) => s + i.price * i.qty, 0); }
+        function cartCount(cart) { return cart.reduce((s, i) => s + i.qty, 0); }
+
+        function renderCart() {
+            const cart = getCart();
+            const itemsEl = document.getElementById('cartItems');
+            const badge = document.getElementById('cartBadge');
+            const totalEl = document.getElementById('cartTotalVal');
+            const count = cartCount(cart);
+            badge.textContent = count;
+            badge.classList.toggle('show', count > 0);
+            if (!cart.length) {
+                itemsEl.innerHTML = '<div class="cart-empty">Košík je prázdný</div>';
+            } else {
+                itemsEl.innerHTML = cart.map(i => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${i.name}</div>
+                            <div class="cart-item-weight">${i.weight}</div>
+                            <div class="cart-item-qty">
+                                <button type="button" class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button>
+                                <span>${i.qty}</span>
+                                <button type="button" class="qty-btn" onclick="changeQty('${i.id}',1)">+</button>
+                            </div>
+                            <button type="button" class="cart-item-remove" onclick="removeItem('${i.id}')">Odebrat</button>
+                        </div>
+                        <div class="cart-item-price">${(i.price * i.qty).toLocaleString('cs-CZ')} Kč</div>
+                    </div>
+                `).join('');
+            }
+            totalEl.textContent = cartTotal(cart).toLocaleString('cs-CZ') + ' Kč';
+        }
+
+        window.addToCart = function (btn) {
+            const id = btn.dataset.id, name = btn.dataset.name, price = parseFloat(btn.dataset.price), weight = btn.dataset.weight;
+            const cart = getCart();
+            const existing = cart.find(i => i.id === id);
+            if (existing) existing.qty += 1;
+            else cart.push({ id, name, price, weight, qty: 1 });
+            saveCart(cart);
+            renderCart();
+            openDrawer();
+        };
+        window.changeQty = function (id, delta) {
+            const cart = getCart();
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += delta;
+            saveCart(item.qty <= 0 ? cart.filter(i => i.id !== id) : cart);
+            renderCart();
+        };
+        window.removeItem = function (id) {
+            saveCart(getCart().filter(i => i.id !== id));
+            renderCart();
+        };
+
+        function openDrawer() {
+            document.getElementById('cartOverlay').classList.add('open');
+            document.getElementById('cartDrawer').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeDrawer() {
+            document.getElementById('cartOverlay').classList.remove('open');
+            document.getElementById('cartDrawer').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('cartFloat').addEventListener('click', openDrawer);
+        document.getElementById('cartClose').addEventListener('click', closeDrawer);
+        document.getElementById('cartOverlay').addEventListener('click', closeDrawer);
+
+        const deliveryWrap = document.getElementById('deliveryOptions');
+        deliveryWrap.innerHTML = DELIVERY.map((d, idx) => `
+            <label class="delivery-option">
+                <input type="radio" name="delivery" value="${d.id}" ${idx === 0 ? 'checked' : ''}>
+                ${d.label}
+                <span class="delivery-option-price">${d.price ? d.price + ' Kč' : 'zdarma'}</span>
+            </label>
+        `).join('');
+
+        function openCheckout() {
+            if (!getCart().length) return;
+            closeDrawer();
+            document.getElementById('checkoutModal').classList.add('open');
+            document.getElementById('checkoutOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('open');
+            document.getElementById('checkoutOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('cartCheckoutBtn').addEventListener('click', openCheckout);
+        document.getElementById('checkoutCloseBtn').addEventListener('click', closeCheckout);
+        document.getElementById('checkoutOverlay').addEventListener('click', closeCheckout);
+
+        document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const cart = getCart();
+            if (!cart.length) return;
+            const fd = new FormData(e.target);
+            const name = fd.get('name') || '';
+            const phone = fd.get('phone') || '';
+            const address = fd.get('address') || '';
+            const deliveryId = fd.get('delivery');
+            const payment = fd.get('payment') || '';
+            const delivery = DELIVERY.find(d => d.id === deliveryId) || DELIVERY[0];
+            const subtotal = cartTotal(cart);
+            const total = subtotal + delivery.price;
+
+            // Google Ads conversion fires once the order is actually placed,
+            // not on every "add to cart" click.
+            if (typeof gtag === 'function') {
+                gtag('event', 'conversion', {
+                    'send_to': 'AW-18385297819/moROCNWrmeAcEJvD5b5E',
+                    'value': total,
+                    'currency': 'CZK'
+                });
+            }
+
+            const lines = cart.map(i => `${i.name} (${i.weight}) x${i.qty} — ${(i.price * i.qty).toLocaleString('cs-CZ')} Kč`).join('\n');
+            const msg =
+                'Objednávka z apuliaoliveoil.cz\n\n' +
+                lines + '\n\n' +
+                `Doprava: ${delivery.label} (${delivery.price} Kč)\n` +
+                `Celkem k úhradě: ${total.toLocaleString('cs-CZ')} Kč\n\n` +
+                `Jméno: ${name}\n` +
+                `Telefon: ${phone}\n` +
+                `Adresa doručení: ${address || '—'}\n` +
+                `Způsob platby: ${payment}`;
+
+            window.open('https://wa.me/' + SELLER_WA + '?text=' + encodeURIComponent(msg), '_blank');
+
+            saveCart([]);
+            renderCart();
+            closeCheckout();
+            e.target.reset();
+            alert('Objednávka je připravena. Dokončete ji prosím odesláním zprávy na WhatsApp, kterou jsme za vás předvyplnili.');
+        });
+
+        renderCart();
+    })();
+    /* ===================== /CART & CHECKOUT ===================== */
 
     const cg=document.getElementById('cursorGlow');
     let mx=0,my=0,gx=0,gy=0;
