@@ -1412,7 +1412,7 @@ function gtag_report_conversion(url) {
         /* ===== WHATSAPP FLOAT ===== */
         .wa-float {
             position: fixed;
-            bottom: 28px; right: 28px;
+            bottom: 28px; right: 100px;
             z-index: 900;
             width: 62px; height: 62px;
             background: #25D366;
@@ -1532,6 +1532,15 @@ function gtag_report_conversion(url) {
                 width: 56px; height: 56px;
             }
             .wa-float svg { width: 26px; height: 26px; }
+            /* Stack the cart button above the WhatsApp button on mobile
+               instead of side-by-side, so they never overlap on narrow
+               screens (WhatsApp stays the lower/first contact point,
+               cart sits just above it). */
+            .cart-float {
+                bottom: calc(max(20px, env(safe-area-inset-bottom)) + 68px);
+                right: max(20px, env(safe-area-inset-right));
+                width: 56px; height: 56px;
+            }
         }
 
         /* ===== TABLET (between mobile and desktop nav) ===== */
@@ -1570,7 +1579,7 @@ function gtag_report_conversion(url) {
         /* ===== CART FLOAT, DRAWER & CHECKOUT ===== */
         .cart-float {
             position: fixed;
-            bottom: 28px; right: 100px;
+            bottom: 28px; right: 28px;
             z-index: 900;
             width: 62px; height: 62px;
             background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
@@ -1649,7 +1658,7 @@ function gtag_report_conversion(url) {
         .checkout-submit { width: 100%; padding: 16px; border-radius: 100px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); color: var(--darker); font-weight: 700; font-size: 14px; }
         .checkout-close { position: absolute; top: 18px; right: 18px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; }
         @media (max-width: 480px) {
-            .cart-float { right: 20px; bottom: 96px; width: 54px; height: 54px; }
+            .cart-float { width: 54px; height: 54px; }
             .checkout-box { padding: 22px; }
         }
     </style>
@@ -2124,19 +2133,19 @@ function gtag_report_conversion(url) {
 <div class="cart-overlay" id="cartOverlay"></div>
 <aside class="cart-drawer" id="cartDrawer">
     <div class="cart-head">
-        <h3>Váš košík</h3>
+        <h3 data-i18n="cart_title">Váš košík</h3>
         <button class="cart-close" id="cartClose"><i data-lucide="x"></i></button>
     </div>
     <div class="cart-items" id="cartItems"></div>
     <div class="cart-foot">
         <div class="cart-total-row">
-            <span class="cart-total-lbl">Celkem</span>
+            <span class="cart-total-lbl" data-i18n="cart_total">Celkem</span>
             <span class="cart-total-val" id="cartTotalVal">0 Kč</span>
         </div>
-        <button class="cart-checkout-btn" id="cartCheckoutBtn">Pokračovat k objednávce</button>
+        <button class="cart-checkout-btn" id="cartCheckoutBtn" data-i18n="cart_checkout">Pokračovat k objednávce</button>
         <a href="https://wa.me/420604264270" target="_blank" class="cart-wa-btn">
             <i data-lucide="message-circle" style="width:15px;height:15px;"></i>
-            Mám dotaz na WhatsApp
+            <span data-i18n="cart_ask">Mám dotaz na WhatsApp</span>
         </a>
     </div>
 </aside>
@@ -2145,34 +2154,34 @@ function gtag_report_conversion(url) {
     <div class="cart-overlay" id="checkoutOverlay"></div>
     <div class="checkout-box">
         <button class="checkout-close" id="checkoutCloseBtn"><i data-lucide="x"></i></button>
-        <h3>Dokončit objednávku</h3>
-        <p class="checkout-sub">Vyplňte údaje pro doručení. Odesláním formuláře objednávku potvrdíte prodávajícímu.</p>
+        <h3 data-i18n="co_title">Dokončit objednávku</h3>
+        <p class="checkout-sub" data-i18n="co_sub">Vyplňte údaje pro doručení. Odesláním formuláře objednávku potvrdíte prodávajícímu.</p>
         <form id="checkoutForm">
             <div class="checkout-field">
-                <label>Jméno a příjmení</label>
+                <label data-i18n="co_name">Jméno a příjmení</label>
                 <input type="text" name="name" required>
             </div>
             <div class="checkout-field">
-                <label>Telefon</label>
+                <label data-i18n="co_phone">Telefon</label>
                 <input type="tel" name="phone" required>
             </div>
             <div class="checkout-field">
-                <label>Adresa doručení</label>
-                <textarea name="address" placeholder="Ulice, číslo, město, PSČ"></textarea>
+                <label data-i18n="co_address">Adresa doručení</label>
+                <textarea name="address" data-i18n-placeholder="co_address_ph" placeholder="Ulice, číslo, město, PSČ"></textarea>
             </div>
             <div class="checkout-field">
-                <label>Způsob doručení</label>
+                <label data-i18n="co_delivery">Způsob doručení</label>
                 <div class="delivery-options" id="deliveryOptions"></div>
             </div>
             <div class="checkout-field">
-                <label>Způsob platby</label>
+                <label data-i18n="co_payment">Způsob platby</label>
                 <div class="payment-options">
-                    <label class="delivery-option"><input type="radio" name="payment" value="Platební karta (platební brána)" checked> Platební karta</label>
-                    <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> Hotově při převzetí</label>
-                    <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> Bankovní převod</label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Platební karta (platební brána)" checked> <span data-i18n="pay_card">Platební karta</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> <span data-i18n="pay_cash">Hotově při převzetí</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> <span data-i18n="pay_transfer">Bankovní převod</span></label>
                 </div>
             </div>
-            <button type="submit" class="checkout-submit">Odeslat objednávku</button>
+            <button type="submit" class="checkout-submit" data-i18n="co_submit">Odeslat objednávku</button>
         </form>
     </div>
 </div>
@@ -2224,6 +2233,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Kyselost", spec_polyphenols: "Polyfenoly mg/kg", spec_peroxides: "Peroxidy",
             spec_shelf: "Trvanlivost", spec_months_short: "měs.",
             price_label: "Cena", per_liter: "litr", buy_btn: "Do košíku", footer_legal_h: "Právní informace",
+            cart_title: "Váš košík", cart_total: "Celkem", cart_checkout: "Pokračovat k objednávce", cart_ask: "Mám dotaz na WhatsApp",
+            cart_empty: "Košík je prázdný", cart_remove: "Odebrat",
+            del_balikovna: "Balíkovna", del_balik_doruky: "Balík Do ruky (Česká pošta)", del_osobne: "Osobní odběr v Brně", free: "zdarma",
+            co_title: "Dokončit objednávku", co_sub: "Vyplňte údaje pro doručení. Odesláním formuláře objednávku potvrdíte prodávajícímu.",
+            co_name: "Jméno a příjmení", co_phone: "Telefon", co_address: "Adresa doručení", co_address_ph: "Ulice, číslo, město, PSČ",
+            co_delivery: "Způsob doručení", co_payment: "Způsob platby",
+            pay_card: "Platební karta", pay_cash: "Hotově při převzetí", pay_transfer: "Bankovní převod",
+            co_submit: "Odeslat objednávku",
+            order_confirm: "Objednávka je připravena. Dokončete ji prosím odesláním zprávy na WhatsApp, kterou jsme za vás předvyplnili.",
             trust1_lbl: "Apulie, Itálie", trust2_lbl: "Studený lis", trust4_lbl: "Alergeny", trust5_lbl: "Distribuce v ČR",
             del1_h: "Pojízdná prodejna", del1_p: "Přijedeme přímo k vám",
             del2_h: "Poštovní zásilka", del2_p: "Doručení po celé ČR",
@@ -2266,6 +2284,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Acidity", spec_polyphenols: "Polyphenols mg/kg", spec_peroxides: "Peroxides",
             spec_shelf: "Shelf life", spec_months_short: "mo.",
             price_label: "Price", per_liter: "liter", buy_btn: "Add to cart", footer_legal_h: "Legal",
+            cart_title: "Your cart", cart_total: "Total", cart_checkout: "Continue to order", cart_ask: "Ask a question on WhatsApp",
+            cart_empty: "Your cart is empty", cart_remove: "Remove",
+            del_balikovna: "Balíkovna (parcel box)", del_balik_doruky: "Courier (Czech Post)", del_osobne: "Personal pick-up in Brno", free: "free",
+            co_title: "Complete your order", co_sub: "Fill in your delivery details. Submitting the form confirms the order with the seller.",
+            co_name: "Full name", co_phone: "Phone", co_address: "Delivery address", co_address_ph: "Street, number, city, ZIP",
+            co_delivery: "Delivery method", co_payment: "Payment method",
+            pay_card: "Card payment", pay_cash: "Cash on pick-up", pay_transfer: "Bank transfer",
+            co_submit: "Send order",
+            order_confirm: "Your order is ready. Please complete it by sending the WhatsApp message we've prepared for you.",
             trust1_lbl: "Apulia, Italy", trust2_lbl: "Cold pressed", trust4_lbl: "Allergens", trust5_lbl: "Distribution in CZ",
             del1_h: "Mobile shop", del1_p: "We deliver right to you",
             del2_h: "Postal shipping", del2_p: "Delivery all over Czechia",
@@ -2308,6 +2335,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Кислотність", spec_polyphenols: "Поліфеноли мг/кг", spec_peroxides: "Пероксиди",
             spec_shelf: "Термін зберігання", spec_months_short: "міс.",
             price_label: "Ціна", per_liter: "літр", buy_btn: "До кошика", footer_legal_h: "Правова інформація",
+            cart_title: "Ваш кошик", cart_total: "Разом", cart_checkout: "Перейти до замовлення", cart_ask: "Задати питання у WhatsApp",
+            cart_empty: "Кошик порожній", cart_remove: "Прибрати",
+            del_balikovna: "Balíkovna (поштомат)", del_balik_doruky: "Кур'єр (Česká pošta)", del_osobne: "Особисте отримання в Брно", free: "безкоштовно",
+            co_title: "Оформити замовлення", co_sub: "Заповніть дані для доставки. Надсиланням форми ви підтверджуєте замовлення продавцю.",
+            co_name: "Ім'я та прізвище", co_phone: "Телефон", co_address: "Адреса доставки", co_address_ph: "Вулиця, номер, місто, індекс",
+            co_delivery: "Спосіб доставки", co_payment: "Спосіб оплати",
+            pay_card: "Оплата карткою", pay_cash: "Готівкою при отриманні", pay_transfer: "Банківський переказ",
+            co_submit: "Надіслати замовлення",
+            order_confirm: "Замовлення готове. Будь ласка, завершіть його, надіславши підготовлене повідомлення у WhatsApp.",
             trust1_lbl: "Апулія, Італія", trust2_lbl: "Холодний віджим", trust4_lbl: "Алергени", trust5_lbl: "Дистрибуція в ЧР",
             del1_h: "Пересувна крамниця", del1_p: "Привеземо особисто до вас",
             del2_h: "Поштова доставка", del2_p: "Доставка по всій Чехії",
@@ -2350,6 +2386,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Кислотность", spec_polyphenols: "Полифенолы мг/кг", spec_peroxides: "Пероксиды",
             spec_shelf: "Срок годности", spec_months_short: "мес.",
             price_label: "Цена", per_liter: "литр", buy_btn: "В корзину", footer_legal_h: "Правовая информация",
+            cart_title: "Ваша корзина", cart_total: "Итого", cart_checkout: "Перейти к заказу", cart_ask: "Задать вопрос в WhatsApp",
+            cart_empty: "Корзина пуста", cart_remove: "Убрать",
+            del_balikovna: "Balíkovna (постамат)", del_balik_doruky: "Курьер (Česká pošta)", del_osobne: "Личное получение в Брно", free: "бесплатно",
+            co_title: "Оформить заказ", co_sub: "Заполните данные для доставки. Отправкой формы вы подтверждаете заказ продавцу.",
+            co_name: "Имя и фамилия", co_phone: "Телефон", co_address: "Адрес доставки", co_address_ph: "Улица, номер, город, индекс",
+            co_delivery: "Способ доставки", co_payment: "Способ оплаты",
+            pay_card: "Оплата картой", pay_cash: "Наличными при получении", pay_transfer: "Банковский перевод",
+            co_submit: "Отправить заказ",
+            order_confirm: "Заказ готов. Пожалуйста, завершите его, отправив подготовленное сообщение в WhatsApp.",
             trust1_lbl: "Апулия, Италия", trust2_lbl: "Холодный отжим", trust4_lbl: "Аллергены", trust5_lbl: "Дистрибуция в ЧР",
             del1_h: "Передвижной магазин", del1_p: "Привезём лично к вам",
             del2_h: "Почтовая доставка", del2_p: "Доставка по всей Чехии",
@@ -2392,6 +2437,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Acidità", spec_polyphenols: "Polifenoli mg/kg", spec_peroxides: "Perossidi",
             spec_shelf: "Conservazione", spec_months_short: "mesi",
             price_label: "Prezzo", per_liter: "litro", buy_btn: "Aggiungi al carrello", footer_legal_h: "Informazioni legali",
+            cart_title: "Il tuo carrello", cart_total: "Totale", cart_checkout: "Procedi con l'ordine", cart_ask: "Fai una domanda su WhatsApp",
+            cart_empty: "Il carrello è vuoto", cart_remove: "Rimuovi",
+            del_balikovna: "Balíkovna (locker)", del_balik_doruky: "Corriere (Česká pošta)", del_osobne: "Ritiro personale a Brno", free: "gratuito",
+            co_title: "Completa l'ordine", co_sub: "Inserisci i dati per la consegna. Inviando il modulo confermi l'ordine al venditore.",
+            co_name: "Nome e cognome", co_phone: "Telefono", co_address: "Indirizzo di consegna", co_address_ph: "Via, numero, città, CAP",
+            co_delivery: "Modalità di consegna", co_payment: "Modalità di pagamento",
+            pay_card: "Carta di pagamento", pay_cash: "Contanti al ritiro", pay_transfer: "Bonifico bancario",
+            co_submit: "Invia ordine",
+            order_confirm: "Il tuo ordine è pronto. Completalo inviando il messaggio WhatsApp che abbiamo preparato per te.",
             trust1_lbl: "Puglia, Italia", trust2_lbl: "Spremitura a freddo", trust4_lbl: "Allergeni", trust5_lbl: "Distribuzione in CZ",
             del1_h: "Negozio itinerante", del1_p: "Veniamo direttamente da voi",
             del2_h: "Spedizione postale", del2_p: "Consegna in tutta la Rep. Ceca",
@@ -2434,6 +2488,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Säuregehalt", spec_polyphenols: "Polyphenole mg/kg", spec_peroxides: "Peroxide",
             spec_shelf: "Haltbarkeit", spec_months_short: "Mon.",
             price_label: "Preis", per_liter: "Liter", buy_btn: "In den Warenkorb", footer_legal_h: "Rechtliches",
+            cart_title: "Ihr Warenkorb", cart_total: "Gesamt", cart_checkout: "Weiter zur Bestellung", cart_ask: "Frage per WhatsApp stellen",
+            cart_empty: "Ihr Warenkorb ist leer", cart_remove: "Entfernen",
+            del_balikovna: "Balíkovna (Paketbox)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Persönliche Abholung in Brünn", free: "kostenlos",
+            co_title: "Bestellung abschließen", co_sub: "Geben Sie Ihre Lieferdaten ein. Mit dem Absenden bestätigen Sie die Bestellung beim Verkäufer.",
+            co_name: "Vor- und Nachname", co_phone: "Telefon", co_address: "Lieferadresse", co_address_ph: "Straße, Hausnummer, Stadt, PLZ",
+            co_delivery: "Versandart", co_payment: "Zahlungsart",
+            pay_card: "Kartenzahlung", pay_cash: "Bar bei Abholung", pay_transfer: "Banküberweisung",
+            co_submit: "Bestellung senden",
+            order_confirm: "Ihre Bestellung ist fertig. Bitte schließen Sie sie ab, indem Sie die vorbereitete WhatsApp-Nachricht senden.",
             trust1_lbl: "Apulien, Italien", trust2_lbl: "Kaltpressung", trust4_lbl: "Allergene", trust5_lbl: "Vertrieb in CZ",
             del1_h: "Verkaufswagen", del1_p: "Wir kommen direkt zu Ihnen",
             del2_h: "Postversand", del2_p: "Lieferung in ganz Tschechien",
@@ -2476,6 +2539,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Kwasowość", spec_polyphenols: "Polifenole mg/kg", spec_peroxides: "Nadtlenki",
             spec_shelf: "Trwałość", spec_months_short: "mies.",
             price_label: "Cena", per_liter: "litr", buy_btn: "Do koszyka", footer_legal_h: "Informacje prawne",
+            cart_title: "Twój koszyk", cart_total: "Razem", cart_checkout: "Przejdź do zamówienia", cart_ask: "Zadaj pytanie na WhatsApp",
+            cart_empty: "Koszyk jest pusty", cart_remove: "Usuń",
+            del_balikovna: "Balíkovna (paczkomat)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Odbiór osobisty w Brnie", free: "bezpłatnie",
+            co_title: "Dokończ zamówienie", co_sub: "Podaj dane do dostawy. Wysłanie formularza potwierdza zamówienie u sprzedawcy.",
+            co_name: "Imię i nazwisko", co_phone: "Telefon", co_address: "Adres dostawy", co_address_ph: "Ulica, numer, miasto, kod pocztowy",
+            co_delivery: "Sposób dostawy", co_payment: "Sposób płatności",
+            pay_card: "Płatność kartą", pay_cash: "Gotówka przy odbiorze", pay_transfer: "Przelew bankowy",
+            co_submit: "Wyślij zamówienie",
+            order_confirm: "Twoje zamówienie jest gotowe. Dokończ je, wysyłając przygotowaną wiadomość na WhatsApp.",
             trust1_lbl: "Apulia, Włochy", trust2_lbl: "Tłoczenie na zimno", trust4_lbl: "Alergeny", trust5_lbl: "Dystrybucja w CZ",
             del1_h: "Sklep mobilny", del1_p: "Przyjedziemy prosto do Ciebie",
             del2_h: "Wysyłka pocztowa", del2_p: "Dostawa na terenie całych Czech",
@@ -2518,6 +2590,15 @@ function gtag_report_conversion(url) {
             spec_acidity: "Kyslosť", spec_polyphenols: "Polyfenoly mg/kg", spec_peroxides: "Peroxidy",
             spec_shelf: "Trvanlivosť", spec_months_short: "mes.",
             price_label: "Cena", per_liter: "liter", buy_btn: "Do košíka", footer_legal_h: "Právne informácie",
+            cart_title: "Váš košík", cart_total: "Spolu", cart_checkout: "Pokračovať k objednávke", cart_ask: "Mám otázku na WhatsApp",
+            cart_empty: "Košík je prázdny", cart_remove: "Odobrať",
+            del_balikovna: "Balíkovna", del_balik_doruky: "Kuriér (Česká pošta)", del_osobne: "Osobný odber v Brne", free: "zdarma",
+            co_title: "Dokončiť objednávku", co_sub: "Vyplňte údaje pre doručenie. Odoslaním formulára potvrdíte objednávku predávajúcemu.",
+            co_name: "Meno a priezvisko", co_phone: "Telefón", co_address: "Adresa doručenia", co_address_ph: "Ulica, číslo, mesto, PSČ",
+            co_delivery: "Spôsob doručenia", co_payment: "Spôsob platby",
+            pay_card: "Platobná karta", pay_cash: "Hotovosť pri prevzatí", pay_transfer: "Bankový prevod",
+            co_submit: "Odoslať objednávku",
+            order_confirm: "Objednávka je pripravená. Dokončite ju prosím odoslaním správy na WhatsApp, ktorú sme za vás pripravili.",
             trust1_lbl: "Apúlia, Taliansko", trust2_lbl: "Studený lis", trust4_lbl: "Alergény", trust5_lbl: "Distribúcia v ČR",
             del1_h: "Pojazdná predajňa", del1_p: "Prídeme priamo k vám",
             del2_h: "Poštová zásielka", del2_p: "Doručenie po celej ČR",
@@ -2543,11 +2624,21 @@ function gtag_report_conversion(url) {
                 el.innerHTML = dict[key];
             }
         });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (dict[key] !== undefined) {
+                el.setAttribute('placeholder', dict[key]);
+            }
+        });
         document.documentElement.lang = lang;
         document.getElementById('langBtnLabel').textContent = lang.toUpperCase();
         document.querySelectorAll('.lang-option').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
         document.querySelectorAll('.mobile-lang button').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
         try { localStorage.setItem('apulia_lang', lang); } catch(e) {}
+        // Cart/checkout dynamic content (item list, delivery options) is
+        // generated by JS and isn't covered by the [data-i18n] pass above —
+        // refresh it too so a language switch also translates the cart.
+        if (typeof window.refreshCartI18n === 'function') window.refreshCartI18n();
     }
 
     document.querySelectorAll('.lang-option, .mobile-lang button').forEach(btn => {
@@ -2620,11 +2711,24 @@ function gtag_report_conversion(url) {
     (function () {
         const CART_KEY = 'apulia_cart';
         const SELLER_WA = '420604264270';
+        // Delivery methods carry a translation key (resolved via ct()) instead
+        // of a hardcoded label, so the checkout form follows the site's
+        // language switcher rather than always showing Czech.
         const DELIVERY = [
-            { id: 'balikovna', label: 'Balíkovna', price: 89 },
-            { id: 'balik_doruky', label: 'Balík Do ruky (Česká pošta)', price: 129 },
-            { id: 'osobne', label: 'Osobní odběr v Brně', price: 0 }
+            { id: 'balikovna', key: 'del_balikovna', price: 89 },
+            { id: 'balik_doruky', key: 'del_balik_doruky', price: 129 },
+            { id: 'osobne', key: 'del_osobne', price: 0 }
         ];
+
+        function currentLang() {
+            try { return localStorage.getItem('apulia_lang') || 'cs'; } catch (e) { return 'cs'; }
+        }
+        // ct() = "cart translate": looks a key up in the same `translations`
+        // object the main i18n switcher uses, falling back to Czech.
+        function ct(key) {
+            const dict = translations[currentLang()] || translations.cs;
+            return (dict && dict[key] !== undefined) ? dict[key] : (translations.cs[key] || key);
+        }
 
         function getCart() {
             try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { return []; }
@@ -2644,7 +2748,7 @@ function gtag_report_conversion(url) {
             badge.textContent = count;
             badge.classList.toggle('show', count > 0);
             if (!cart.length) {
-                itemsEl.innerHTML = '<div class="cart-empty">Košík je prázdný</div>';
+                itemsEl.innerHTML = '<div class="cart-empty">' + ct('cart_empty') + '</div>';
             } else {
                 itemsEl.innerHTML = cart.map(i => `
                     <div class="cart-item">
@@ -2656,7 +2760,7 @@ function gtag_report_conversion(url) {
                                 <span>${i.qty}</span>
                                 <button type="button" class="qty-btn" onclick="changeQty('${i.id}',1)">+</button>
                             </div>
-                            <button type="button" class="cart-item-remove" onclick="removeItem('${i.id}')">Odebrat</button>
+                            <button type="button" class="cart-item-remove" onclick="removeItem('${i.id}')">${ct('cart_remove')}</button>
                         </div>
                         <div class="cart-item-price">${(i.price * i.qty).toLocaleString('cs-CZ')} Kč</div>
                     </div>
@@ -2664,6 +2768,26 @@ function gtag_report_conversion(url) {
             }
             totalEl.textContent = cartTotal(cart).toLocaleString('cs-CZ') + ' Kč';
         }
+
+        function renderDeliveryOptions() {
+            const deliveryWrap = document.getElementById('deliveryOptions');
+            const checkedId = (deliveryWrap.querySelector('input[name="delivery"]:checked') || {}).value;
+            deliveryWrap.innerHTML = DELIVERY.map((d, idx) => `
+                <label class="delivery-option">
+                    <input type="radio" name="delivery" value="${d.id}" ${(checkedId ? checkedId === d.id : idx === 0) ? 'checked' : ''}>
+                    ${ct(d.key)}
+                    <span class="delivery-option-price">${d.price ? d.price + ' Kč' : ct('free')}</span>
+                </label>
+            `).join('');
+        }
+
+        // Called by applyLang() whenever the visitor switches language, so
+        // the cart drawer and delivery options re-render in the new language
+        // without losing what's already in the cart.
+        window.refreshCartI18n = function () {
+            renderCart();
+            renderDeliveryOptions();
+        };
 
         window.addToCart = function (btn) {
             const id = btn.dataset.id, name = btn.dataset.name, price = parseFloat(btn.dataset.price), weight = btn.dataset.weight;
@@ -2703,14 +2827,7 @@ function gtag_report_conversion(url) {
         document.getElementById('cartClose').addEventListener('click', closeDrawer);
         document.getElementById('cartOverlay').addEventListener('click', closeDrawer);
 
-        const deliveryWrap = document.getElementById('deliveryOptions');
-        deliveryWrap.innerHTML = DELIVERY.map((d, idx) => `
-            <label class="delivery-option">
-                <input type="radio" name="delivery" value="${d.id}" ${idx === 0 ? 'checked' : ''}>
-                ${d.label}
-                <span class="delivery-option-price">${d.price ? d.price + ' Kč' : 'zdarma'}</span>
-            </label>
-        `).join('');
+        renderDeliveryOptions();
 
         function openCheckout() {
             if (!getCart().length) return;
@@ -2752,11 +2869,15 @@ function gtag_report_conversion(url) {
                 });
             }
 
+            // The order handoff message to the seller is always sent in
+            // Czech regardless of the buyer's chosen UI language, since
+            // Eduard (the seller) reads Czech — only the on-site checkout
+            // form itself is translated for the buyer.
             const lines = cart.map(i => `${i.name} (${i.weight}) x${i.qty} — ${(i.price * i.qty).toLocaleString('cs-CZ')} Kč`).join('\n');
             const msg =
                 'Objednávka z apuliaoliveoil.cz\n\n' +
                 lines + '\n\n' +
-                `Doprava: ${delivery.label} (${delivery.price} Kč)\n` +
+                `Doprava: ${DELIVERY_LABEL_CS(delivery.key)} (${delivery.price} Kč)\n` +
                 `Celkem k úhradě: ${total.toLocaleString('cs-CZ')} Kč\n\n` +
                 `Jméno: ${name}\n` +
                 `Telefon: ${phone}\n` +
@@ -2769,8 +2890,13 @@ function gtag_report_conversion(url) {
             renderCart();
             closeCheckout();
             e.target.reset();
-            alert('Objednávka je připravena. Dokončete ji prosím odesláním zprávy na WhatsApp, kterou jsme za vás předvyplnili.');
+            alert(ct('order_confirm'));
         });
+
+        function DELIVERY_LABEL_CS(key) {
+            const cs = translations.cs;
+            return (cs && cs[key] !== undefined) ? cs[key] : key;
+        }
 
         renderCart();
     })();
