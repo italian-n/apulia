@@ -1412,7 +1412,7 @@ function gtag_report_conversion(url) {
         /* ===== WHATSAPP FLOAT ===== */
         .wa-float {
             position: fixed;
-            bottom: 28px; right: 100px;
+            bottom: 28px; left: 28px;
             z-index: 900;
             width: 62px; height: 62px;
             background: #25D366;
@@ -1528,16 +1528,15 @@ function gtag_report_conversion(url) {
             .mobile-close { min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
             .wa-float {
                 bottom: max(20px, env(safe-area-inset-bottom));
-                right: max(20px, env(safe-area-inset-right));
+                left: max(20px, env(safe-area-inset-left));
                 width: 56px; height: 56px;
             }
             .wa-float svg { width: 26px; height: 26px; }
-            /* Stack the cart button above the WhatsApp button on mobile
-               instead of side-by-side, so they never overlap on narrow
-               screens (WhatsApp stays the lower/first contact point,
-               cart sits just above it). */
+            /* WhatsApp sits in the bottom-left corner, the cart in the
+               bottom-right — they're on opposite sides so they never
+               overlap, on any screen width. */
             .cart-float {
-                bottom: calc(max(20px, env(safe-area-inset-bottom)) + 68px);
+                bottom: max(20px, env(safe-area-inset-bottom));
                 right: max(20px, env(safe-area-inset-right));
                 width: 56px; height: 56px;
             }
