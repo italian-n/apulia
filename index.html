@@ -1660,7 +1660,12 @@ function gtag_report_conversion(url) {
         .delivery-option-price { margin-left: auto; color: var(--gold-400); font-weight: 700; font-size: 12px; }
         .payment-options { margin-bottom: 20px; }
         .checkout-submit { width: 100%; padding: 16px; border-radius: 100px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); color: var(--darker); font-weight: 700; font-size: 14px; }
-        .checkout-field input.field-invalid, .checkout-field textarea.field-invalid { border-color: #e0645a; background: rgba(224,100,90,0.08); }
+        .checkout-field input.field-invalid, .checkout-field textarea.field-invalid, .checkout-field select.field-invalid { border-color: #e0645a; background: rgba(224,100,90,0.08); }
+        .phone-row { display: flex; gap: 8px; }
+        .phone-row select { flex: 0 0 108px; width: 108px; padding: 12px 6px; }
+        .phone-row input { flex: 1; min-width: 0; }
+        .checkout-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .checkout-field-row .checkout-field { margin-bottom: 14px; }
         .checkout-error {
             display: none;
             background: rgba(224,100,90,0.1); border: 1px solid rgba(224,100,90,0.35);
@@ -1682,6 +1687,9 @@ function gtag_report_conversion(url) {
         @media (max-width: 480px) {
             .cart-float { width: 54px; height: 54px; }
             .checkout-box { padding: 22px; }
+            .checkout-field-row { grid-template-columns: 1fr; gap: 0; }
+            .phone-row { flex-wrap: wrap; }
+            .phone-row select { flex: 1 1 100%; width: 100%; }
         }
     </style>
 
@@ -2185,15 +2193,434 @@ function gtag_report_conversion(url) {
             </div>
             <div class="checkout-field">
                 <label data-i18n="co_phone">Telefon</label>
-                <input type="tel" name="phone" placeholder="+420 604 264 270" required>
+                <div class="phone-row">
+                    <select name="phone_cc" id="phoneCC">
+                        <option value="+93">🇦🇫 +93 Afghanistan</option>
+                        <option value="+355">🇦🇱 +355 Albania</option>
+                        <option value="+213">🇩🇿 +213 Algeria</option>
+                        <option value="+376">🇦🇩 +376 Andorra</option>
+                        <option value="+244">🇦🇴 +244 Angola</option>
+                        <option value="+1268">🇦🇬 +1268 Antigua and Barbuda</option>
+                        <option value="+54">🇦🇷 +54 Argentina</option>
+                        <option value="+374">🇦🇲 +374 Armenia</option>
+                        <option value="+61">🇦🇺 +61 Australia</option>
+                        <option value="+43">🇦🇹 +43 Austria</option>
+                        <option value="+994">🇦🇿 +994 Azerbaijan</option>
+                        <option value="+1242">🇧🇸 +1242 Bahamas</option>
+                        <option value="+973">🇧🇭 +973 Bahrain</option>
+                        <option value="+880">🇧🇩 +880 Bangladesh</option>
+                        <option value="+1246">🇧🇧 +1246 Barbados</option>
+                        <option value="+375">🇧🇾 +375 Belarus</option>
+                        <option value="+32">🇧🇪 +32 Belgium</option>
+                        <option value="+501">🇧🇿 +501 Belize</option>
+                        <option value="+229">🇧🇯 +229 Benin</option>
+                        <option value="+975">🇧🇹 +975 Bhutan</option>
+                        <option value="+591">🇧🇴 +591 Bolivia</option>
+                        <option value="+387">🇧🇦 +387 Bosnia and Herzegovina</option>
+                        <option value="+267">🇧🇼 +267 Botswana</option>
+                        <option value="+55">🇧🇷 +55 Brazil</option>
+                        <option value="+673">🇧🇳 +673 Brunei</option>
+                        <option value="+359">🇧🇬 +359 Bulgaria</option>
+                        <option value="+226">🇧🇫 +226 Burkina Faso</option>
+                        <option value="+257">🇧🇮 +257 Burundi</option>
+                        <option value="+855">🇰🇭 +855 Cambodia</option>
+                        <option value="+237">🇨🇲 +237 Cameroon</option>
+                        <option value="+1">🇨🇦 +1 Canada</option>
+                        <option value="+238">🇨🇻 +238 Cape Verde</option>
+                        <option value="+236">🇨🇫 +236 Central African Republic</option>
+                        <option value="+235">🇹🇩 +235 Chad</option>
+                        <option value="+56">🇨🇱 +56 Chile</option>
+                        <option value="+86">🇨🇳 +86 China</option>
+                        <option value="+57">🇨🇴 +57 Colombia</option>
+                        <option value="+269">🇰🇲 +269 Comoros</option>
+                        <option value="+242">🇨🇬 +242 Congo</option>
+                        <option value="+243">🇨🇩 +243 Congo (DRC)</option>
+                        <option value="+506">🇨🇷 +506 Costa Rica</option>
+                        <option value="+385">🇭🇷 +385 Croatia</option>
+                        <option value="+53">🇨🇺 +53 Cuba</option>
+                        <option value="+357">🇨🇾 +357 Cyprus</option>
+                        <option value="+420" selected>🇨🇿 +420 Czech Republic</option>
+                        <option value="+45">🇩🇰 +45 Denmark</option>
+                        <option value="+253">🇩🇯 +253 Djibouti</option>
+                        <option value="+1767">🇩🇲 +1767 Dominica</option>
+                        <option value="+1809">🇩🇴 +1809 Dominican Republic</option>
+                        <option value="+593">🇪🇨 +593 Ecuador</option>
+                        <option value="+20">🇪🇬 +20 Egypt</option>
+                        <option value="+503">🇸🇻 +503 El Salvador</option>
+                        <option value="+240">🇬🇶 +240 Equatorial Guinea</option>
+                        <option value="+291">🇪🇷 +291 Eritrea</option>
+                        <option value="+372">🇪🇪 +372 Estonia</option>
+                        <option value="+268">🇸🇿 +268 Eswatini</option>
+                        <option value="+251">🇪🇹 +251 Ethiopia</option>
+                        <option value="+679">🇫🇯 +679 Fiji</option>
+                        <option value="+358">🇫🇮 +358 Finland</option>
+                        <option value="+33">🇫🇷 +33 France</option>
+                        <option value="+241">🇬🇦 +241 Gabon</option>
+                        <option value="+220">🇬🇲 +220 Gambia</option>
+                        <option value="+995">🇬🇪 +995 Georgia</option>
+                        <option value="+49">🇩🇪 +49 Germany</option>
+                        <option value="+233">🇬🇭 +233 Ghana</option>
+                        <option value="+30">🇬🇷 +30 Greece</option>
+                        <option value="+1473">🇬🇩 +1473 Grenada</option>
+                        <option value="+502">🇬🇹 +502 Guatemala</option>
+                        <option value="+224">🇬🇳 +224 Guinea</option>
+                        <option value="+245">🇬🇼 +245 Guinea-Bissau</option>
+                        <option value="+592">🇬🇾 +592 Guyana</option>
+                        <option value="+509">🇭🇹 +509 Haiti</option>
+                        <option value="+504">🇭🇳 +504 Honduras</option>
+                        <option value="+852">🇭🇰 +852 Hong Kong</option>
+                        <option value="+36">🇭🇺 +36 Hungary</option>
+                        <option value="+354">🇮🇸 +354 Iceland</option>
+                        <option value="+91">🇮🇳 +91 India</option>
+                        <option value="+62">🇮🇩 +62 Indonesia</option>
+                        <option value="+98">🇮🇷 +98 Iran</option>
+                        <option value="+964">🇮🇶 +964 Iraq</option>
+                        <option value="+353">🇮🇪 +353 Ireland</option>
+                        <option value="+972">🇮🇱 +972 Israel</option>
+                        <option value="+39">🇮🇹 +39 Italy</option>
+                        <option value="+1876">🇯🇲 +1876 Jamaica</option>
+                        <option value="+81">🇯🇵 +81 Japan</option>
+                        <option value="+962">🇯🇴 +962 Jordan</option>
+                        <option value="+7">🇰🇿 +7 Kazakhstan</option>
+                        <option value="+254">🇰🇪 +254 Kenya</option>
+                        <option value="+686">🇰🇮 +686 Kiribati</option>
+                        <option value="+965">🇰🇼 +965 Kuwait</option>
+                        <option value="+996">🇰🇬 +996 Kyrgyzstan</option>
+                        <option value="+856">🇱🇦 +856 Laos</option>
+                        <option value="+371">🇱🇻 +371 Latvia</option>
+                        <option value="+961">🇱🇧 +961 Lebanon</option>
+                        <option value="+266">🇱🇸 +266 Lesotho</option>
+                        <option value="+231">🇱🇷 +231 Liberia</option>
+                        <option value="+218">🇱🇾 +218 Libya</option>
+                        <option value="+423">🇱🇮 +423 Liechtenstein</option>
+                        <option value="+370">🇱🇹 +370 Lithuania</option>
+                        <option value="+352">🇱🇺 +352 Luxembourg</option>
+                        <option value="+853">🇲🇴 +853 Macau</option>
+                        <option value="+261">🇲🇬 +261 Madagascar</option>
+                        <option value="+265">🇲🇼 +265 Malawi</option>
+                        <option value="+60">🇲🇾 +60 Malaysia</option>
+                        <option value="+960">🇲🇻 +960 Maldives</option>
+                        <option value="+223">🇲🇱 +223 Mali</option>
+                        <option value="+356">🇲🇹 +356 Malta</option>
+                        <option value="+692">🇲🇭 +692 Marshall Islands</option>
+                        <option value="+222">🇲🇷 +222 Mauritania</option>
+                        <option value="+230">🇲🇺 +230 Mauritius</option>
+                        <option value="+52">🇲🇽 +52 Mexico</option>
+                        <option value="+691">🇫🇲 +691 Micronesia</option>
+                        <option value="+373">🇲🇩 +373 Moldova</option>
+                        <option value="+377">🇲🇨 +377 Monaco</option>
+                        <option value="+976">🇲🇳 +976 Mongolia</option>
+                        <option value="+382">🇲🇪 +382 Montenegro</option>
+                        <option value="+212">🇲🇦 +212 Morocco</option>
+                        <option value="+258">🇲🇿 +258 Mozambique</option>
+                        <option value="+95">🇲🇲 +95 Myanmar</option>
+                        <option value="+264">🇳🇦 +264 Namibia</option>
+                        <option value="+674">🇳🇷 +674 Nauru</option>
+                        <option value="+977">🇳🇵 +977 Nepal</option>
+                        <option value="+31">🇳🇱 +31 Netherlands</option>
+                        <option value="+64">🇳🇿 +64 New Zealand</option>
+                        <option value="+505">🇳🇮 +505 Nicaragua</option>
+                        <option value="+227">🇳🇪 +227 Niger</option>
+                        <option value="+234">🇳🇬 +234 Nigeria</option>
+                        <option value="+850">🇰🇵 +850 North Korea</option>
+                        <option value="+389">🇲🇰 +389 North Macedonia</option>
+                        <option value="+47">🇳🇴 +47 Norway</option>
+                        <option value="+968">🇴🇲 +968 Oman</option>
+                        <option value="+92">🇵🇰 +92 Pakistan</option>
+                        <option value="+680">🇵🇼 +680 Palau</option>
+                        <option value="+970">🇵🇸 +970 Palestine</option>
+                        <option value="+507">🇵🇦 +507 Panama</option>
+                        <option value="+675">🇵🇬 +675 Papua New Guinea</option>
+                        <option value="+595">🇵🇾 +595 Paraguay</option>
+                        <option value="+51">🇵🇪 +51 Peru</option>
+                        <option value="+63">🇵🇭 +63 Philippines</option>
+                        <option value="+48">🇵🇱 +48 Poland</option>
+                        <option value="+351">🇵🇹 +351 Portugal</option>
+                        <option value="+974">🇶🇦 +974 Qatar</option>
+                        <option value="+40">🇷🇴 +40 Romania</option>
+                        <option value="+7">🇷🇺 +7 Russia</option>
+                        <option value="+250">🇷🇼 +250 Rwanda</option>
+                        <option value="+1869">🇰🇳 +1869 Saint Kitts and Nevis</option>
+                        <option value="+1758">🇱🇨 +1758 Saint Lucia</option>
+                        <option value="+1784">🇻🇨 +1784 Saint Vincent and the Grenadines</option>
+                        <option value="+685">🇼🇸 +685 Samoa</option>
+                        <option value="+378">🇸🇲 +378 San Marino</option>
+                        <option value="+239">🇸🇹 +239 Sao Tome and Principe</option>
+                        <option value="+966">🇸🇦 +966 Saudi Arabia</option>
+                        <option value="+221">🇸🇳 +221 Senegal</option>
+                        <option value="+381">🇷🇸 +381 Serbia</option>
+                        <option value="+248">🇸🇨 +248 Seychelles</option>
+                        <option value="+232">🇸🇱 +232 Sierra Leone</option>
+                        <option value="+65">🇸🇬 +65 Singapore</option>
+                        <option value="+421">🇸🇰 +421 Slovakia</option>
+                        <option value="+386">🇸🇮 +386 Slovenia</option>
+                        <option value="+677">🇸🇧 +677 Solomon Islands</option>
+                        <option value="+252">🇸🇴 +252 Somalia</option>
+                        <option value="+27">🇿🇦 +27 South Africa</option>
+                        <option value="+82">🇰🇷 +82 South Korea</option>
+                        <option value="+211">🇸🇸 +211 South Sudan</option>
+                        <option value="+34">🇪🇸 +34 Spain</option>
+                        <option value="+94">🇱🇰 +94 Sri Lanka</option>
+                        <option value="+249">🇸🇩 +249 Sudan</option>
+                        <option value="+597">🇸🇷 +597 Suriname</option>
+                        <option value="+46">🇸🇪 +46 Sweden</option>
+                        <option value="+41">🇨🇭 +41 Switzerland</option>
+                        <option value="+963">🇸🇾 +963 Syria</option>
+                        <option value="+886">🇹🇼 +886 Taiwan</option>
+                        <option value="+992">🇹🇯 +992 Tajikistan</option>
+                        <option value="+255">🇹🇿 +255 Tanzania</option>
+                        <option value="+66">🇹🇭 +66 Thailand</option>
+                        <option value="+670">🇹🇱 +670 Timor-Leste</option>
+                        <option value="+228">🇹🇬 +228 Togo</option>
+                        <option value="+676">🇹🇴 +676 Tonga</option>
+                        <option value="+1868">🇹🇹 +1868 Trinidad and Tobago</option>
+                        <option value="+216">🇹🇳 +216 Tunisia</option>
+                        <option value="+90">🇹🇷 +90 Turkey</option>
+                        <option value="+993">🇹🇲 +993 Turkmenistan</option>
+                        <option value="+688">🇹🇻 +688 Tuvalu</option>
+                        <option value="+256">🇺🇬 +256 Uganda</option>
+                        <option value="+380">🇺🇦 +380 Ukraine</option>
+                        <option value="+971">🇦🇪 +971 United Arab Emirates</option>
+                        <option value="+44">🇬🇧 +44 United Kingdom</option>
+                        <option value="+1">🇺🇸 +1 United States</option>
+                        <option value="+598">🇺🇾 +598 Uruguay</option>
+                        <option value="+998">🇺🇿 +998 Uzbekistan</option>
+                        <option value="+678">🇻🇺 +678 Vanuatu</option>
+                        <option value="+379">🇻🇦 +379 Vatican City</option>
+                        <option value="+58">🇻🇪 +58 Venezuela</option>
+                        <option value="+84">🇻🇳 +84 Vietnam</option>
+                        <option value="+967">🇾🇪 +967 Yemen</option>
+                        <option value="+260">🇿🇲 +260 Zambia</option>
+                        <option value="+263">🇿🇼 +263 Zimbabwe</option>
+                    </select>
+                    <input type="tel" name="phone" placeholder="604 264 270" required>
+                </div>
             </div>
             <div class="checkout-field">
                 <label data-i18n="co_email">E-mail</label>
                 <input type="email" name="email" placeholder="vas@email.cz" required>
             </div>
             <div class="checkout-field">
-                <label data-i18n="co_address">Adresa doručení</label>
-                <textarea name="address" data-i18n-placeholder="co_address_ph" placeholder="Ulice, číslo, město, PSČ" required></textarea>
+                <label data-i18n="co_street">Ulice</label>
+                <input type="text" name="street" data-i18n-placeholder="co_street_ph" placeholder="Hlavní" required>
+            </div>
+            <div class="checkout-field-row">
+                <div class="checkout-field">
+                    <label data-i18n="co_house_number">Číslo popisné</label>
+                    <input type="text" name="house_number" data-i18n-placeholder="co_house_number_ph" placeholder="12" required>
+                </div>
+                <div class="checkout-field">
+                    <label data-i18n="co_postal_code">PSČ</label>
+                    <input type="text" name="postal_code" data-i18n-placeholder="co_postal_code_ph" placeholder="612 00" required>
+                </div>
+            </div>
+            <div class="checkout-field-row">
+                <div class="checkout-field">
+                    <label data-i18n="co_city">Město</label>
+                    <input type="text" name="city" data-i18n-placeholder="co_city_ph" placeholder="Brno" required>
+                </div>
+                <div class="checkout-field">
+                    <label data-i18n="co_country">Země</label>
+                    <select name="country" id="checkoutCountry">
+                        <option value="Afghanistan">🇦🇫 Afghanistan</option>
+                        <option value="Albania">🇦🇱 Albania</option>
+                        <option value="Algeria">🇩🇿 Algeria</option>
+                        <option value="Andorra">🇦🇩 Andorra</option>
+                        <option value="Angola">🇦🇴 Angola</option>
+                        <option value="Antigua and Barbuda">🇦🇬 Antigua and Barbuda</option>
+                        <option value="Argentina">🇦🇷 Argentina</option>
+                        <option value="Armenia">🇦🇲 Armenia</option>
+                        <option value="Australia">🇦🇺 Australia</option>
+                        <option value="Austria">🇦🇹 Austria</option>
+                        <option value="Azerbaijan">🇦🇿 Azerbaijan</option>
+                        <option value="Bahamas">🇧🇸 Bahamas</option>
+                        <option value="Bahrain">🇧🇭 Bahrain</option>
+                        <option value="Bangladesh">🇧🇩 Bangladesh</option>
+                        <option value="Barbados">🇧🇧 Barbados</option>
+                        <option value="Belarus">🇧🇾 Belarus</option>
+                        <option value="Belgium">🇧🇪 Belgium</option>
+                        <option value="Belize">🇧🇿 Belize</option>
+                        <option value="Benin">🇧🇯 Benin</option>
+                        <option value="Bhutan">🇧🇹 Bhutan</option>
+                        <option value="Bolivia">🇧🇴 Bolivia</option>
+                        <option value="Bosnia and Herzegovina">🇧🇦 Bosnia and Herzegovina</option>
+                        <option value="Botswana">🇧🇼 Botswana</option>
+                        <option value="Brazil">🇧🇷 Brazil</option>
+                        <option value="Brunei">🇧🇳 Brunei</option>
+                        <option value="Bulgaria">🇧🇬 Bulgaria</option>
+                        <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+                        <option value="Burundi">🇧🇮 Burundi</option>
+                        <option value="Cambodia">🇰🇭 Cambodia</option>
+                        <option value="Cameroon">🇨🇲 Cameroon</option>
+                        <option value="Canada">🇨🇦 Canada</option>
+                        <option value="Cape Verde">🇨🇻 Cape Verde</option>
+                        <option value="Central African Republic">🇨🇫 Central African Republic</option>
+                        <option value="Chad">🇹🇩 Chad</option>
+                        <option value="Chile">🇨🇱 Chile</option>
+                        <option value="China">🇨🇳 China</option>
+                        <option value="Colombia">🇨🇴 Colombia</option>
+                        <option value="Comoros">🇰🇲 Comoros</option>
+                        <option value="Congo">🇨🇬 Congo</option>
+                        <option value="Congo (DRC)">🇨🇩 Congo (DRC)</option>
+                        <option value="Costa Rica">🇨🇷 Costa Rica</option>
+                        <option value="Croatia">🇭🇷 Croatia</option>
+                        <option value="Cuba">🇨🇺 Cuba</option>
+                        <option value="Cyprus">🇨🇾 Cyprus</option>
+                        <option value="Czech Republic" selected>🇨🇿 Czech Republic</option>
+                        <option value="Denmark">🇩🇰 Denmark</option>
+                        <option value="Djibouti">🇩🇯 Djibouti</option>
+                        <option value="Dominica">🇩🇲 Dominica</option>
+                        <option value="Dominican Republic">🇩🇴 Dominican Republic</option>
+                        <option value="Ecuador">🇪🇨 Ecuador</option>
+                        <option value="Egypt">🇪🇬 Egypt</option>
+                        <option value="El Salvador">🇸🇻 El Salvador</option>
+                        <option value="Equatorial Guinea">🇬🇶 Equatorial Guinea</option>
+                        <option value="Eritrea">🇪🇷 Eritrea</option>
+                        <option value="Estonia">🇪🇪 Estonia</option>
+                        <option value="Eswatini">🇸🇿 Eswatini</option>
+                        <option value="Ethiopia">🇪🇹 Ethiopia</option>
+                        <option value="Fiji">🇫🇯 Fiji</option>
+                        <option value="Finland">🇫🇮 Finland</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="Gabon">🇬🇦 Gabon</option>
+                        <option value="Gambia">🇬🇲 Gambia</option>
+                        <option value="Georgia">🇬🇪 Georgia</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="Ghana">🇬🇭 Ghana</option>
+                        <option value="Greece">🇬🇷 Greece</option>
+                        <option value="Grenada">🇬🇩 Grenada</option>
+                        <option value="Guatemala">🇬🇹 Guatemala</option>
+                        <option value="Guinea">🇬🇳 Guinea</option>
+                        <option value="Guinea-Bissau">🇬🇼 Guinea-Bissau</option>
+                        <option value="Guyana">🇬🇾 Guyana</option>
+                        <option value="Haiti">🇭🇹 Haiti</option>
+                        <option value="Honduras">🇭🇳 Honduras</option>
+                        <option value="Hong Kong">🇭🇰 Hong Kong</option>
+                        <option value="Hungary">🇭🇺 Hungary</option>
+                        <option value="Iceland">🇮🇸 Iceland</option>
+                        <option value="India">🇮🇳 India</option>
+                        <option value="Indonesia">🇮🇩 Indonesia</option>
+                        <option value="Iran">🇮🇷 Iran</option>
+                        <option value="Iraq">🇮🇶 Iraq</option>
+                        <option value="Ireland">🇮🇪 Ireland</option>
+                        <option value="Israel">🇮🇱 Israel</option>
+                        <option value="Italy">🇮🇹 Italy</option>
+                        <option value="Jamaica">🇯🇲 Jamaica</option>
+                        <option value="Japan">🇯🇵 Japan</option>
+                        <option value="Jordan">🇯🇴 Jordan</option>
+                        <option value="Kazakhstan">🇰🇿 Kazakhstan</option>
+                        <option value="Kenya">🇰🇪 Kenya</option>
+                        <option value="Kiribati">🇰🇮 Kiribati</option>
+                        <option value="Kuwait">🇰🇼 Kuwait</option>
+                        <option value="Kyrgyzstan">🇰🇬 Kyrgyzstan</option>
+                        <option value="Laos">🇱🇦 Laos</option>
+                        <option value="Latvia">🇱🇻 Latvia</option>
+                        <option value="Lebanon">🇱🇧 Lebanon</option>
+                        <option value="Lesotho">🇱🇸 Lesotho</option>
+                        <option value="Liberia">🇱🇷 Liberia</option>
+                        <option value="Libya">🇱🇾 Libya</option>
+                        <option value="Liechtenstein">🇱🇮 Liechtenstein</option>
+                        <option value="Lithuania">🇱🇹 Lithuania</option>
+                        <option value="Luxembourg">🇱🇺 Luxembourg</option>
+                        <option value="Macau">🇲🇴 Macau</option>
+                        <option value="Madagascar">🇲🇬 Madagascar</option>
+                        <option value="Malawi">🇲🇼 Malawi</option>
+                        <option value="Malaysia">🇲🇾 Malaysia</option>
+                        <option value="Maldives">🇲🇻 Maldives</option>
+                        <option value="Mali">🇲🇱 Mali</option>
+                        <option value="Malta">🇲🇹 Malta</option>
+                        <option value="Marshall Islands">🇲🇭 Marshall Islands</option>
+                        <option value="Mauritania">🇲🇷 Mauritania</option>
+                        <option value="Mauritius">🇲🇺 Mauritius</option>
+                        <option value="Mexico">🇲🇽 Mexico</option>
+                        <option value="Micronesia">🇫🇲 Micronesia</option>
+                        <option value="Moldova">🇲🇩 Moldova</option>
+                        <option value="Monaco">🇲🇨 Monaco</option>
+                        <option value="Mongolia">🇲🇳 Mongolia</option>
+                        <option value="Montenegro">🇲🇪 Montenegro</option>
+                        <option value="Morocco">🇲🇦 Morocco</option>
+                        <option value="Mozambique">🇲🇿 Mozambique</option>
+                        <option value="Myanmar">🇲🇲 Myanmar</option>
+                        <option value="Namibia">🇳🇦 Namibia</option>
+                        <option value="Nauru">🇳🇷 Nauru</option>
+                        <option value="Nepal">🇳🇵 Nepal</option>
+                        <option value="Netherlands">🇳🇱 Netherlands</option>
+                        <option value="New Zealand">🇳🇿 New Zealand</option>
+                        <option value="Nicaragua">🇳🇮 Nicaragua</option>
+                        <option value="Niger">🇳🇪 Niger</option>
+                        <option value="Nigeria">🇳🇬 Nigeria</option>
+                        <option value="North Korea">🇰🇵 North Korea</option>
+                        <option value="North Macedonia">🇲🇰 North Macedonia</option>
+                        <option value="Norway">🇳🇴 Norway</option>
+                        <option value="Oman">🇴🇲 Oman</option>
+                        <option value="Pakistan">🇵🇰 Pakistan</option>
+                        <option value="Palau">🇵🇼 Palau</option>
+                        <option value="Palestine">🇵🇸 Palestine</option>
+                        <option value="Panama">🇵🇦 Panama</option>
+                        <option value="Papua New Guinea">🇵🇬 Papua New Guinea</option>
+                        <option value="Paraguay">🇵🇾 Paraguay</option>
+                        <option value="Peru">🇵🇪 Peru</option>
+                        <option value="Philippines">🇵🇭 Philippines</option>
+                        <option value="Poland">🇵🇱 Poland</option>
+                        <option value="Portugal">🇵🇹 Portugal</option>
+                        <option value="Qatar">🇶🇦 Qatar</option>
+                        <option value="Romania">🇷🇴 Romania</option>
+                        <option value="Russia">🇷🇺 Russia</option>
+                        <option value="Rwanda">🇷🇼 Rwanda</option>
+                        <option value="Saint Kitts and Nevis">🇰🇳 Saint Kitts and Nevis</option>
+                        <option value="Saint Lucia">🇱🇨 Saint Lucia</option>
+                        <option value="Saint Vincent and the Grenadines">🇻🇨 Saint Vincent and the Grenadines</option>
+                        <option value="Samoa">🇼🇸 Samoa</option>
+                        <option value="San Marino">🇸🇲 San Marino</option>
+                        <option value="Sao Tome and Principe">🇸🇹 Sao Tome and Principe</option>
+                        <option value="Saudi Arabia">🇸🇦 Saudi Arabia</option>
+                        <option value="Senegal">🇸🇳 Senegal</option>
+                        <option value="Serbia">🇷🇸 Serbia</option>
+                        <option value="Seychelles">🇸🇨 Seychelles</option>
+                        <option value="Sierra Leone">🇸🇱 Sierra Leone</option>
+                        <option value="Singapore">🇸🇬 Singapore</option>
+                        <option value="Slovakia">🇸🇰 Slovakia</option>
+                        <option value="Slovenia">🇸🇮 Slovenia</option>
+                        <option value="Solomon Islands">🇸🇧 Solomon Islands</option>
+                        <option value="Somalia">🇸🇴 Somalia</option>
+                        <option value="South Africa">🇿🇦 South Africa</option>
+                        <option value="South Korea">🇰🇷 South Korea</option>
+                        <option value="South Sudan">🇸🇸 South Sudan</option>
+                        <option value="Spain">🇪🇸 Spain</option>
+                        <option value="Sri Lanka">🇱🇰 Sri Lanka</option>
+                        <option value="Sudan">🇸🇩 Sudan</option>
+                        <option value="Suriname">🇸🇷 Suriname</option>
+                        <option value="Sweden">🇸🇪 Sweden</option>
+                        <option value="Switzerland">🇨🇭 Switzerland</option>
+                        <option value="Syria">🇸🇾 Syria</option>
+                        <option value="Taiwan">🇹🇼 Taiwan</option>
+                        <option value="Tajikistan">🇹🇯 Tajikistan</option>
+                        <option value="Tanzania">🇹🇿 Tanzania</option>
+                        <option value="Thailand">🇹🇭 Thailand</option>
+                        <option value="Timor-Leste">🇹🇱 Timor-Leste</option>
+                        <option value="Togo">🇹🇬 Togo</option>
+                        <option value="Tonga">🇹🇴 Tonga</option>
+                        <option value="Trinidad and Tobago">🇹🇹 Trinidad and Tobago</option>
+                        <option value="Tunisia">🇹🇳 Tunisia</option>
+                        <option value="Turkey">🇹🇷 Turkey</option>
+                        <option value="Turkmenistan">🇹🇲 Turkmenistan</option>
+                        <option value="Tuvalu">🇹🇻 Tuvalu</option>
+                        <option value="Uganda">🇺🇬 Uganda</option>
+                        <option value="Ukraine">🇺🇦 Ukraine</option>
+                        <option value="United Arab Emirates">🇦🇪 United Arab Emirates</option>
+                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                        <option value="United States">🇺🇸 United States</option>
+                        <option value="Uruguay">🇺🇾 Uruguay</option>
+                        <option value="Uzbekistan">🇺🇿 Uzbekistan</option>
+                        <option value="Vanuatu">🇻🇺 Vanuatu</option>
+                        <option value="Vatican City">🇻🇦 Vatican City</option>
+                        <option value="Venezuela">🇻🇪 Venezuela</option>
+                        <option value="Vietnam">🇻🇳 Vietnam</option>
+                        <option value="Yemen">🇾🇪 Yemen</option>
+                        <option value="Zambia">🇿🇲 Zambia</option>
+                        <option value="Zimbabwe">🇿🇼 Zimbabwe</option>
+                    </select>
+                </div>
             </div>
             <div class="checkout-field">
                 <label data-i18n="co_delivery">Způsob doručení</label>
@@ -2275,7 +2702,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Košík je prázdný", cart_remove: "Odebrat",
             del_balikovna: "Balíkovna", del_balik_doruky: "Balík Do ruky (Česká pošta)", del_osobne: "Osobní odběr v Brně", free: "zdarma",
             co_title: "Dokončit objednávku", co_sub: "Vyplňte údaje pro doručení. Odesláním formuláře objednávku potvrdíte prodávajícímu.",
-            co_name: "Jméno a příjmení", co_phone: "Telefon", co_email: "E-mail", co_address: "Adresa doručení", co_address_ph: "Ulice, číslo, město, PSČ",
+            co_name: "Jméno a příjmení", co_phone: "Telefon", co_email: "E-mail",
+            co_street: "Ulice", co_street_ph: "Hlavní", co_house_number: "Číslo popisné", co_house_number_ph: "12",
+            co_city: "Město", co_city_ph: "Brno", co_postal_code: "PSČ", co_postal_code_ph: "612 00", co_country: "Země",
+            country_cz: "Česká republika", country_sk: "Slovensko", country_pl: "Polsko", country_de: "Německo", country_at: "Rakousko", country_it: "Itálie",
             err_intro: "Zkontrolujte prosím zvýrazněná pole — telefon, e-mail a adresa musí být ve správném formátu (adresa musí obsahovat číslo popisné a PSČ).",
             err_contact_help: "Máte problém s odesláním objednávky? Napište nám na {wa} nebo na {email}.",
             co_delivery: "Způsob doručení", co_payment: "Způsob platby",
@@ -2329,7 +2759,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Your cart is empty", cart_remove: "Remove",
             del_balikovna: "Balíkovna (parcel box)", del_balik_doruky: "Courier (Czech Post)", del_osobne: "Personal pick-up in Brno", free: "free",
             co_title: "Complete your order", co_sub: "Fill in your delivery details. Submitting the form confirms the order with the seller.",
-            co_name: "Full name", co_phone: "Phone", co_email: "Email", co_address: "Delivery address", co_address_ph: "Street, number, city, ZIP",
+            co_name: "Full name", co_phone: "Phone", co_email: "Email",
+            co_street: "Street", co_street_ph: "Main St", co_house_number: "House number", co_house_number_ph: "12",
+            co_city: "City", co_city_ph: "Brno", co_postal_code: "Postal code", co_postal_code_ph: "612 00", co_country: "Country",
+            country_cz: "Czech Republic", country_sk: "Slovakia", country_pl: "Poland", country_de: "Germany", country_at: "Austria", country_it: "Italy",
             err_intro: "Please check the highlighted fields — phone, email and address must be in a valid format (the address must include a house number and postal code).",
             err_contact_help: "Having trouble placing the order? Message us on {wa} or email {email}.",
             co_delivery: "Delivery method", co_payment: "Payment method",
@@ -2383,7 +2816,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Кошик порожній", cart_remove: "Прибрати",
             del_balikovna: "Balíkovna (поштомат)", del_balik_doruky: "Кур'єр (Česká pošta)", del_osobne: "Особисте отримання в Брно", free: "безкоштовно",
             co_title: "Оформити замовлення", co_sub: "Заповніть дані для доставки. Надсиланням форми ви підтверджуєте замовлення продавцю.",
-            co_name: "Ім'я та прізвище", co_phone: "Телефон", co_email: "Email", co_address: "Адреса доставки", co_address_ph: "Вулиця, номер, місто, індекс",
+            co_name: "Ім'я та прізвище", co_phone: "Телефон", co_email: "Email",
+            co_street: "Вулиця", co_street_ph: "Головна", co_house_number: "Номер будинку", co_house_number_ph: "12",
+            co_city: "Місто", co_city_ph: "Брно", co_postal_code: "Поштовий індекс", co_postal_code_ph: "612 00", co_country: "Країна",
+            country_cz: "Чехія", country_sk: "Словаччина", country_pl: "Польща", country_de: "Німеччина", country_at: "Австрія", country_it: "Італія",
             err_intro: "Перевірте, будь ласка, виділені поля — телефон, email та адреса мають бути у правильному форматі (адреса має містити номер будинку та індекс).",
             err_contact_help: "Виникла проблема з оформленням замовлення? Напишіть нам у {wa} або на {email}.",
             co_delivery: "Спосіб доставки", co_payment: "Спосіб оплати",
@@ -2437,7 +2873,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Корзина пуста", cart_remove: "Убрать",
             del_balikovna: "Balíkovna (постамат)", del_balik_doruky: "Курьер (Česká pošta)", del_osobne: "Личное получение в Брно", free: "бесплатно",
             co_title: "Оформить заказ", co_sub: "Заполните данные для доставки. Отправкой формы вы подтверждаете заказ продавцу.",
-            co_name: "Имя и фамилия", co_phone: "Телефон", co_email: "Email", co_address: "Адрес доставки", co_address_ph: "Улица, номер, город, индекс",
+            co_name: "Имя и фамилия", co_phone: "Телефон", co_email: "Email",
+            co_street: "Улица", co_street_ph: "Главная", co_house_number: "Номер дома", co_house_number_ph: "12",
+            co_city: "Город", co_city_ph: "Брно", co_postal_code: "Почтовый индекс", co_postal_code_ph: "612 00", co_country: "Страна",
+            country_cz: "Чехия", country_sk: "Словакия", country_pl: "Польша", country_de: "Германия", country_at: "Австрия", country_it: "Италия",
             err_intro: "Пожалуйста, проверьте выделенные поля — телефон, email и адрес должны быть в правильном формате (адрес должен содержать номер дома и индекс).",
             err_contact_help: "Возникла проблема с оформлением заказа? Напишите нам в {wa} или на {email}.",
             co_delivery: "Способ доставки", co_payment: "Способ оплаты",
@@ -2491,7 +2930,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Il carrello è vuoto", cart_remove: "Rimuovi",
             del_balikovna: "Balíkovna (locker)", del_balik_doruky: "Corriere (Česká pošta)", del_osobne: "Ritiro personale a Brno", free: "gratuito",
             co_title: "Completa l'ordine", co_sub: "Inserisci i dati per la consegna. Inviando il modulo confermi l'ordine al venditore.",
-            co_name: "Nome e cognome", co_phone: "Telefono", co_email: "Email", co_address: "Indirizzo di consegna", co_address_ph: "Via, numero, città, CAP",
+            co_name: "Nome e cognome", co_phone: "Telefono", co_email: "Email",
+            co_street: "Via", co_street_ph: "Via Roma", co_house_number: "Numero civico", co_house_number_ph: "12",
+            co_city: "Città", co_city_ph: "Brno", co_postal_code: "CAP", co_postal_code_ph: "612 00", co_country: "Paese",
+            country_cz: "Repubblica Ceca", country_sk: "Slovacchia", country_pl: "Polonia", country_de: "Germania", country_at: "Austria", country_it: "Italia",
             err_intro: "Controlla i campi evidenziati — telefono, email e indirizzo devono avere un formato valido (l'indirizzo deve includere il numero civico e il CAP).",
             err_contact_help: "Problemi con l'ordine? Scrivici su {wa} o via email a {email}.",
             co_delivery: "Modalità di consegna", co_payment: "Modalità di pagamento",
@@ -2545,7 +2987,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Ihr Warenkorb ist leer", cart_remove: "Entfernen",
             del_balikovna: "Balíkovna (Paketbox)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Persönliche Abholung in Brünn", free: "kostenlos",
             co_title: "Bestellung abschließen", co_sub: "Geben Sie Ihre Lieferdaten ein. Mit dem Absenden bestätigen Sie die Bestellung beim Verkäufer.",
-            co_name: "Vor- und Nachname", co_phone: "Telefon", co_email: "E-Mail", co_address: "Lieferadresse", co_address_ph: "Straße, Hausnummer, Stadt, PLZ",
+            co_name: "Vor- und Nachname", co_phone: "Telefon", co_email: "E-Mail",
+            co_street: "Straße", co_street_ph: "Hauptstraße", co_house_number: "Hausnummer", co_house_number_ph: "12",
+            co_city: "Stadt", co_city_ph: "Brno", co_postal_code: "PLZ", co_postal_code_ph: "612 00", co_country: "Land",
+            country_cz: "Tschechien", country_sk: "Slowakei", country_pl: "Polen", country_de: "Deutschland", country_at: "Österreich", country_it: "Italien",
             err_intro: "Bitte überprüfen Sie die markierten Felder — Telefon, E-Mail und Adresse müssen im richtigen Format sein (die Adresse muss Hausnummer und PLZ enthalten).",
             err_contact_help: "Probleme bei der Bestellung? Schreiben Sie uns auf {wa} oder per E-Mail an {email}.",
             co_delivery: "Versandart", co_payment: "Zahlungsart",
@@ -2599,7 +3044,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Koszyk jest pusty", cart_remove: "Usuń",
             del_balikovna: "Balíkovna (paczkomat)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Odbiór osobisty w Brnie", free: "bezpłatnie",
             co_title: "Dokończ zamówienie", co_sub: "Podaj dane do dostawy. Wysłanie formularza potwierdza zamówienie u sprzedawcy.",
-            co_name: "Imię i nazwisko", co_phone: "Telefon", co_email: "Email", co_address: "Adres dostawy", co_address_ph: "Ulica, numer, miasto, kod pocztowy",
+            co_name: "Imię i nazwisko", co_phone: "Telefon", co_email: "Email",
+            co_street: "Ulica", co_street_ph: "Główna", co_house_number: "Numer domu", co_house_number_ph: "12",
+            co_city: "Miasto", co_city_ph: "Brno", co_postal_code: "Kod pocztowy", co_postal_code_ph: "612 00", co_country: "Kraj",
+            country_cz: "Czechy", country_sk: "Słowacja", country_pl: "Polska", country_de: "Niemcy", country_at: "Austria", country_it: "Włochy",
             err_intro: "Sprawdź podświetlone pola — telefon, email i adres muszą mieć prawidłowy format (adres musi zawierać numer domu i kod pocztowy).",
             err_contact_help: "Masz problem ze złożeniem zamówienia? Napisz do nas na {wa} lub na {email}.",
             co_delivery: "Sposób dostawy", co_payment: "Sposób płatności",
@@ -2653,7 +3101,10 @@ function gtag_report_conversion(url) {
             cart_empty: "Košík je prázdny", cart_remove: "Odobrať",
             del_balikovna: "Balíkovna", del_balik_doruky: "Kuriér (Česká pošta)", del_osobne: "Osobný odber v Brne", free: "zdarma",
             co_title: "Dokončiť objednávku", co_sub: "Vyplňte údaje pre doručenie. Odoslaním formulára potvrdíte objednávku predávajúcemu.",
-            co_name: "Meno a priezvisko", co_phone: "Telefón", co_email: "E-mail", co_address: "Adresa doručenia", co_address_ph: "Ulica, číslo, mesto, PSČ",
+            co_name: "Meno a priezvisko", co_phone: "Telefón", co_email: "E-mail",
+            co_street: "Ulica", co_street_ph: "Hlavná", co_house_number: "Číslo domu", co_house_number_ph: "12",
+            co_city: "Mesto", co_city_ph: "Brno", co_postal_code: "PSČ", co_postal_code_ph: "612 00", co_country: "Krajina",
+            country_cz: "Česká republika", country_sk: "Slovensko", country_pl: "Poľsko", country_de: "Nemecko", country_at: "Rakúsko", country_it: "Taliansko",
             err_intro: "Skontrolujte, prosím, zvýraznené polia — telefón, e-mail a adresa musia byť v správnom formáte (adresa musí obsahovať číslo domu a PSČ).",
             err_contact_help: "Máte problém s odoslaním objednávky? Napíšte nám na {wa} alebo na {email}.",
             co_delivery: "Spôsob doručenia", co_payment: "Spôsob platby",
@@ -2962,17 +3413,19 @@ function gtag_report_conversion(url) {
         // real, deliverable one (that needs a postal lookup service), but
         // it does require the shape of a real Czech address: a street name,
         // a house number, and a 5-digit PSČ.
-        const PHONE_RE = /^(\+?\d{1,3}[\s.-]?)?(\(?\d{2,4}\)?[\s.-]?){2,4}\d{2,4}$/;
+        const PHONE_LOCAL_RE = /^[\d\s.-]{6,14}$/;
         const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        function isValidPhone(v) { return v.replace(/[\s.-]/g, '').length >= 9 && PHONE_RE.test(v.trim()); }
+        // The country code is picked separately from a dropdown, so the
+        // phone input itself only needs to hold the local number.
+        function isValidPhone(v) { return v.replace(/[\s.-]/g, '').length >= 6 && PHONE_LOCAL_RE.test(v.trim()); }
         function isValidEmail(v) { return EMAIL_RE.test(v.trim()); }
-        function isValidAddress(v) {
-            const s = v.trim();
-            if (s.length < 10) return false;
-            if (!/\d/.test(s)) return false;              // needs a house number
-            if (!/\d{3}\s?\d{2}/.test(s)) return false;    // needs a PSČ, e.g. "612 00"
-            return true;
-        }
+        // Address is now split into separate fields (street, house number,
+        // city, postal code, country) instead of one free-text textarea —
+        // each piece gets its own light shape check.
+        function isValidStreet(v) { return v.trim().length >= 2; }
+        function isValidHouseNumber(v) { return /\d/.test(v.trim()) && v.trim().length <= 10; }
+        function isValidCity(v) { return v.trim().length >= 2; }
+        function isValidPostalCode(v) { return /\d{2,3}\s?\d{2,3}/.test(v.trim()); }
 
         function showCheckoutError(fields) {
             const box = document.getElementById('checkoutError');
@@ -2997,9 +3450,16 @@ function gtag_report_conversion(url) {
             if (!cart.length) return;
             const fd = new FormData(e.target);
             const name = (fd.get('name') || '').trim();
-            const phone = (fd.get('phone') || '').trim();
+            const phoneCC = (fd.get('phone_cc') || '+420').trim();
+            const phoneLocal = (fd.get('phone') || '').trim();
+            const phone = phoneLocal ? (phoneCC + ' ' + phoneLocal) : '';
             const email = (fd.get('email') || '').trim();
-            const address = (fd.get('address') || '').trim();
+            const street = (fd.get('street') || '').trim();
+            const houseNumber = (fd.get('house_number') || '').trim();
+            const city = (fd.get('city') || '').trim();
+            const postalCode = (fd.get('postal_code') || '').trim();
+            const country = (fd.get('country') || '').trim();
+            const address = [street + (houseNumber ? ' ' + houseNumber : ''), postalCode + ' ' + city, country].filter(Boolean).join(', ');
             const deliveryId = fd.get('delivery');
             const payment = fd.get('payment') || '';
             const delivery = DELIVERY.find(d => d.id === deliveryId) || DELIVERY[0];
@@ -3012,9 +3472,12 @@ function gtag_report_conversion(url) {
             // email) if they're stuck.
             const badFields = [];
             if (!name) badFields.push('name');
-            if (!isValidPhone(phone)) badFields.push('phone');
+            if (!isValidPhone(phoneLocal)) badFields.push('phone');
             if (!isValidEmail(email)) badFields.push('email');
-            if (!isValidAddress(address)) badFields.push('address');
+            if (!isValidStreet(street)) badFields.push('street');
+            if (!isValidHouseNumber(houseNumber)) badFields.push('house_number');
+            if (!city || !isValidCity(city)) badFields.push('city');
+            if (!isValidPostalCode(postalCode)) badFields.push('postal_code');
             if (badFields.length) {
                 showCheckoutError(badFields);
                 return;
