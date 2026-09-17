@@ -1660,6 +1660,15 @@ function gtag_report_conversion(url) {
         .delivery-option-price { margin-left: auto; color: var(--gold-400); font-weight: 700; font-size: 12px; }
         .payment-options { margin-bottom: 20px; }
         .checkout-submit { width: 100%; padding: 16px; border-radius: 100px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); color: var(--darker); font-weight: 700; font-size: 14px; }
+        .checkout-field input.field-invalid, .checkout-field textarea.field-invalid { border-color: #e0645a; background: rgba(224,100,90,0.08); }
+        .checkout-error {
+            display: none;
+            background: rgba(224,100,90,0.1); border: 1px solid rgba(224,100,90,0.35);
+            border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;
+            font-size: 12.5px; line-height: 1.6; color: #ffb3ac;
+        }
+        .checkout-error.show { display: block; }
+        .checkout-error a { color: var(--gold-400); font-weight: 600; text-decoration: underline; }
         .checkout-close { position: absolute; top: 18px; right: 18px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; }
         .order-success-box { text-align: center; max-width: 400px; }
         .order-success-icon {
@@ -2176,11 +2185,15 @@ function gtag_report_conversion(url) {
             </div>
             <div class="checkout-field">
                 <label data-i18n="co_phone">Telefon</label>
-                <input type="tel" name="phone" required>
+                <input type="tel" name="phone" placeholder="+420 604 264 270" required>
+            </div>
+            <div class="checkout-field">
+                <label data-i18n="co_email">E-mail</label>
+                <input type="email" name="email" placeholder="vas@email.cz" required>
             </div>
             <div class="checkout-field">
                 <label data-i18n="co_address">Adresa doručení</label>
-                <textarea name="address" data-i18n-placeholder="co_address_ph" placeholder="Ulice, číslo, město, PSČ"></textarea>
+                <textarea name="address" data-i18n-placeholder="co_address_ph" placeholder="Ulice, číslo, město, PSČ" required></textarea>
             </div>
             <div class="checkout-field">
                 <label data-i18n="co_delivery">Způsob doručení</label>
@@ -2194,6 +2207,7 @@ function gtag_report_conversion(url) {
                     <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> <span data-i18n="pay_transfer">Bankovní převod</span></label>
                 </div>
             </div>
+            <div class="checkout-error" id="checkoutError"></div>
             <button type="submit" class="checkout-submit" data-i18n="co_submit">Odeslat objednávku</button>
         </form>
     </div>
@@ -2261,7 +2275,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Košík je prázdný", cart_remove: "Odebrat",
             del_balikovna: "Balíkovna", del_balik_doruky: "Balík Do ruky (Česká pošta)", del_osobne: "Osobní odběr v Brně", free: "zdarma",
             co_title: "Dokončit objednávku", co_sub: "Vyplňte údaje pro doručení. Odesláním formuláře objednávku potvrdíte prodávajícímu.",
-            co_name: "Jméno a příjmení", co_phone: "Telefon", co_address: "Adresa doručení", co_address_ph: "Ulice, číslo, město, PSČ",
+            co_name: "Jméno a příjmení", co_phone: "Telefon", co_email: "E-mail", co_address: "Adresa doručení", co_address_ph: "Ulice, číslo, město, PSČ",
+            err_intro: "Zkontrolujte prosím zvýrazněná pole — telefon, e-mail a adresa musí být ve správném formátu (adresa musí obsahovat číslo popisné a PSČ).",
+            err_contact_help: "Máte problém s odesláním objednávky? Napište nám na {wa} nebo na {email}.",
             co_delivery: "Způsob doručení", co_payment: "Způsob platby",
             pay_card: "Platební karta", pay_cash: "Hotově při převzetí", pay_transfer: "Bankovní převod",
             co_submit: "Odeslat objednávku",
@@ -2313,7 +2329,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Your cart is empty", cart_remove: "Remove",
             del_balikovna: "Balíkovna (parcel box)", del_balik_doruky: "Courier (Czech Post)", del_osobne: "Personal pick-up in Brno", free: "free",
             co_title: "Complete your order", co_sub: "Fill in your delivery details. Submitting the form confirms the order with the seller.",
-            co_name: "Full name", co_phone: "Phone", co_address: "Delivery address", co_address_ph: "Street, number, city, ZIP",
+            co_name: "Full name", co_phone: "Phone", co_email: "Email", co_address: "Delivery address", co_address_ph: "Street, number, city, ZIP",
+            err_intro: "Please check the highlighted fields — phone, email and address must be in a valid format (the address must include a house number and postal code).",
+            err_contact_help: "Having trouble placing the order? Message us on {wa} or email {email}.",
             co_delivery: "Delivery method", co_payment: "Payment method",
             pay_card: "Card payment", pay_cash: "Cash on pick-up", pay_transfer: "Bank transfer",
             co_submit: "Send order",
@@ -2365,7 +2383,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Кошик порожній", cart_remove: "Прибрати",
             del_balikovna: "Balíkovna (поштомат)", del_balik_doruky: "Кур'єр (Česká pošta)", del_osobne: "Особисте отримання в Брно", free: "безкоштовно",
             co_title: "Оформити замовлення", co_sub: "Заповніть дані для доставки. Надсиланням форми ви підтверджуєте замовлення продавцю.",
-            co_name: "Ім'я та прізвище", co_phone: "Телефон", co_address: "Адреса доставки", co_address_ph: "Вулиця, номер, місто, індекс",
+            co_name: "Ім'я та прізвище", co_phone: "Телефон", co_email: "Email", co_address: "Адреса доставки", co_address_ph: "Вулиця, номер, місто, індекс",
+            err_intro: "Перевірте, будь ласка, виділені поля — телефон, email та адреса мають бути у правильному форматі (адреса має містити номер будинку та індекс).",
+            err_contact_help: "Виникла проблема з оформленням замовлення? Напишіть нам у {wa} або на {email}.",
             co_delivery: "Спосіб доставки", co_payment: "Спосіб оплати",
             pay_card: "Оплата карткою", pay_cash: "Готівкою при отриманні", pay_transfer: "Банківський переказ",
             co_submit: "Надіслати замовлення",
@@ -2417,7 +2437,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Корзина пуста", cart_remove: "Убрать",
             del_balikovna: "Balíkovna (постамат)", del_balik_doruky: "Курьер (Česká pošta)", del_osobne: "Личное получение в Брно", free: "бесплатно",
             co_title: "Оформить заказ", co_sub: "Заполните данные для доставки. Отправкой формы вы подтверждаете заказ продавцу.",
-            co_name: "Имя и фамилия", co_phone: "Телефон", co_address: "Адрес доставки", co_address_ph: "Улица, номер, город, индекс",
+            co_name: "Имя и фамилия", co_phone: "Телефон", co_email: "Email", co_address: "Адрес доставки", co_address_ph: "Улица, номер, город, индекс",
+            err_intro: "Пожалуйста, проверьте выделенные поля — телефон, email и адрес должны быть в правильном формате (адрес должен содержать номер дома и индекс).",
+            err_contact_help: "Возникла проблема с оформлением заказа? Напишите нам в {wa} или на {email}.",
             co_delivery: "Способ доставки", co_payment: "Способ оплаты",
             pay_card: "Оплата картой", pay_cash: "Наличными при получении", pay_transfer: "Банковский перевод",
             co_submit: "Отправить заказ",
@@ -2469,7 +2491,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Il carrello è vuoto", cart_remove: "Rimuovi",
             del_balikovna: "Balíkovna (locker)", del_balik_doruky: "Corriere (Česká pošta)", del_osobne: "Ritiro personale a Brno", free: "gratuito",
             co_title: "Completa l'ordine", co_sub: "Inserisci i dati per la consegna. Inviando il modulo confermi l'ordine al venditore.",
-            co_name: "Nome e cognome", co_phone: "Telefono", co_address: "Indirizzo di consegna", co_address_ph: "Via, numero, città, CAP",
+            co_name: "Nome e cognome", co_phone: "Telefono", co_email: "Email", co_address: "Indirizzo di consegna", co_address_ph: "Via, numero, città, CAP",
+            err_intro: "Controlla i campi evidenziati — telefono, email e indirizzo devono avere un formato valido (l'indirizzo deve includere il numero civico e il CAP).",
+            err_contact_help: "Problemi con l'ordine? Scrivici su {wa} o via email a {email}.",
             co_delivery: "Modalità di consegna", co_payment: "Modalità di pagamento",
             pay_card: "Carta di pagamento", pay_cash: "Contanti al ritiro", pay_transfer: "Bonifico bancario",
             co_submit: "Invia ordine",
@@ -2521,7 +2545,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Ihr Warenkorb ist leer", cart_remove: "Entfernen",
             del_balikovna: "Balíkovna (Paketbox)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Persönliche Abholung in Brünn", free: "kostenlos",
             co_title: "Bestellung abschließen", co_sub: "Geben Sie Ihre Lieferdaten ein. Mit dem Absenden bestätigen Sie die Bestellung beim Verkäufer.",
-            co_name: "Vor- und Nachname", co_phone: "Telefon", co_address: "Lieferadresse", co_address_ph: "Straße, Hausnummer, Stadt, PLZ",
+            co_name: "Vor- und Nachname", co_phone: "Telefon", co_email: "E-Mail", co_address: "Lieferadresse", co_address_ph: "Straße, Hausnummer, Stadt, PLZ",
+            err_intro: "Bitte überprüfen Sie die markierten Felder — Telefon, E-Mail und Adresse müssen im richtigen Format sein (die Adresse muss Hausnummer und PLZ enthalten).",
+            err_contact_help: "Probleme bei der Bestellung? Schreiben Sie uns auf {wa} oder per E-Mail an {email}.",
             co_delivery: "Versandart", co_payment: "Zahlungsart",
             pay_card: "Kartenzahlung", pay_cash: "Bar bei Abholung", pay_transfer: "Banküberweisung",
             co_submit: "Bestellung senden",
@@ -2573,7 +2599,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Koszyk jest pusty", cart_remove: "Usuń",
             del_balikovna: "Balíkovna (paczkomat)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Odbiór osobisty w Brnie", free: "bezpłatnie",
             co_title: "Dokończ zamówienie", co_sub: "Podaj dane do dostawy. Wysłanie formularza potwierdza zamówienie u sprzedawcy.",
-            co_name: "Imię i nazwisko", co_phone: "Telefon", co_address: "Adres dostawy", co_address_ph: "Ulica, numer, miasto, kod pocztowy",
+            co_name: "Imię i nazwisko", co_phone: "Telefon", co_email: "Email", co_address: "Adres dostawy", co_address_ph: "Ulica, numer, miasto, kod pocztowy",
+            err_intro: "Sprawdź podświetlone pola — telefon, email i adres muszą mieć prawidłowy format (adres musi zawierać numer domu i kod pocztowy).",
+            err_contact_help: "Masz problem ze złożeniem zamówienia? Napisz do nas na {wa} lub na {email}.",
             co_delivery: "Sposób dostawy", co_payment: "Sposób płatności",
             pay_card: "Płatność kartą", pay_cash: "Gotówka przy odbiorze", pay_transfer: "Przelew bankowy",
             co_submit: "Wyślij zamówienie",
@@ -2625,7 +2653,9 @@ function gtag_report_conversion(url) {
             cart_empty: "Košík je prázdny", cart_remove: "Odobrať",
             del_balikovna: "Balíkovna", del_balik_doruky: "Kuriér (Česká pošta)", del_osobne: "Osobný odber v Brne", free: "zdarma",
             co_title: "Dokončiť objednávku", co_sub: "Vyplňte údaje pre doručenie. Odoslaním formulára potvrdíte objednávku predávajúcemu.",
-            co_name: "Meno a priezvisko", co_phone: "Telefón", co_address: "Adresa doručenia", co_address_ph: "Ulica, číslo, mesto, PSČ",
+            co_name: "Meno a priezvisko", co_phone: "Telefón", co_email: "E-mail", co_address: "Adresa doručenia", co_address_ph: "Ulica, číslo, mesto, PSČ",
+            err_intro: "Skontrolujte, prosím, zvýraznené polia — telefón, e-mail a adresa musia byť v správnom formáte (adresa musí obsahovať číslo domu a PSČ).",
+            err_contact_help: "Máte problém s odoslaním objednávky? Napíšte nám na {wa} alebo na {email}.",
             co_delivery: "Spôsob doručenia", co_payment: "Spôsob platby",
             pay_card: "Platobná karta", pay_cash: "Hotovosť pri prevzatí", pay_transfer: "Bankový prevod",
             co_submit: "Odoslať objednávku",
@@ -2886,6 +2916,13 @@ function gtag_report_conversion(url) {
 
         renderDeliveryOptions();
 
+        // Clear the red "invalid" outline on a field as soon as the
+        // customer starts fixing it, instead of leaving it red until the
+        // next submit attempt.
+        document.querySelectorAll('#checkoutForm input, #checkoutForm textarea').forEach(el => {
+            el.addEventListener('input', () => el.classList.remove('field-invalid'));
+        });
+
         function openCheckout() {
             if (!getCart().length) return;
             closeDrawer();
@@ -2919,19 +2956,70 @@ function gtag_report_conversion(url) {
         document.getElementById('orderSuccessOk').addEventListener('click', closeOrderSuccess);
         document.getElementById('orderSuccessOverlay').addEventListener('click', closeOrderSuccess);
 
+        // Basic but real validation — catches obviously wrong phone/e-mail/
+        // address before an order is ever sent, rather than trusting
+        // whatever the customer typed. It can't verify the address is a
+        // real, deliverable one (that needs a postal lookup service), but
+        // it does require the shape of a real Czech address: a street name,
+        // a house number, and a 5-digit PSČ.
+        const PHONE_RE = /^(\+?\d{1,3}[\s.-]?)?(\(?\d{2,4}\)?[\s.-]?){2,4}\d{2,4}$/;
+        const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        function isValidPhone(v) { return v.replace(/[\s.-]/g, '').length >= 9 && PHONE_RE.test(v.trim()); }
+        function isValidEmail(v) { return EMAIL_RE.test(v.trim()); }
+        function isValidAddress(v) {
+            const s = v.trim();
+            if (s.length < 10) return false;
+            if (!/\d/.test(s)) return false;              // needs a house number
+            if (!/\d{3}\s?\d{2}/.test(s)) return false;    // needs a PSČ, e.g. "612 00"
+            return true;
+        }
+
+        function showCheckoutError(fields) {
+            const box = document.getElementById('checkoutError');
+            box.innerHTML = ct('err_intro') + '<br><br>' + ct('err_contact_help')
+                .replace('{wa}', '<a href="https://wa.me/420604264270" target="_blank">WhatsApp</a>')
+                .replace('{email}', '<a href="mailto:' + NOTIFY_EMAIL + '">' + NOTIFY_EMAIL + '</a>');
+            box.classList.add('show');
+            document.querySelectorAll('.checkout-field input, .checkout-field textarea').forEach(el => el.classList.remove('field-invalid'));
+            fields.forEach(name => {
+                const el = document.querySelector('.checkout-field [name="' + name + '"]');
+                if (el) el.classList.add('field-invalid');
+            });
+            box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        function hideCheckoutError() {
+            document.getElementById('checkoutError').classList.remove('show');
+        }
+
         document.getElementById('checkoutForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const cart = getCart();
             if (!cart.length) return;
             const fd = new FormData(e.target);
-            const name = fd.get('name') || '';
-            const phone = fd.get('phone') || '';
-            const address = fd.get('address') || '';
+            const name = (fd.get('name') || '').trim();
+            const phone = (fd.get('phone') || '').trim();
+            const email = (fd.get('email') || '').trim();
+            const address = (fd.get('address') || '').trim();
             const deliveryId = fd.get('delivery');
             const payment = fd.get('payment') || '';
             const delivery = DELIVERY.find(d => d.id === deliveryId) || DELIVERY[0];
             const subtotal = cartTotal(cart);
             const total = subtotal + delivery.price;
+
+            // Validate before anything else is sent anywhere. On failure,
+            // the order is NOT submitted — the customer sees exactly which
+            // fields are wrong plus a way to reach us directly (WhatsApp or
+            // email) if they're stuck.
+            const badFields = [];
+            if (!name) badFields.push('name');
+            if (!isValidPhone(phone)) badFields.push('phone');
+            if (!isValidEmail(email)) badFields.push('email');
+            if (!isValidAddress(address)) badFields.push('address');
+            if (badFields.length) {
+                showCheckoutError(badFields);
+                return;
+            }
+            hideCheckoutError();
 
             // Google Ads conversion fires once the order is actually placed,
             // not on every "add to cart" click.
@@ -2960,6 +3048,7 @@ function gtag_report_conversion(url) {
             if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && typeof emailjs !== 'undefined') {
                 emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_email: NOTIFY_EMAIL,
+                    customer_email: email,
                     order_text: lines,
                     customer_name: name,
                     customer_phone: phone,
