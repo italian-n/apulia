@@ -135,6 +135,11 @@ function gtag_report_conversion(url) {
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- EmailJS: sends an automatic order-notification email straight from
+         the browser, no backend needed. Fill in the three IDs below once
+         the EmailJS account is set up (see setup notes near the checkout
+         form's submit handler further down this file). -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -2710,6 +2715,33 @@ function gtag_report_conversion(url) {
     (function () {
         const CART_KEY = 'apulia_cart';
         const SELLER_WA = '420604264270';
+
+        // ===== EMAIL NOTIFICATIONS (EmailJS) =====
+        // How to activate (takes ~10 minutes, no coding needed on your side):
+        //   1. Create a free account at https://www.emailjs.com (free tier:
+        //      200 emails/month — plenty for this shop).
+        //   2. Email Services → Add New Service → Gmail → connect the mailbox
+        //      that should receive order notifications (e.g. Eduard's
+        //      eddigood2020@gmail.com). Copy the resulting Service ID.
+        //   3. Email Templates → Create New Template. Use variables named
+        //      exactly like the ones sent below: {{order_text}}, {{customer_name}},
+        //      {{customer_phone}}, {{customer_address}}, {{delivery}}, {{payment}},
+        //      {{total}}. Copy the Template ID.
+        //   4. Account → General → copy your Public Key.
+        //   5. Paste all three values into the three constants right below,
+        //      keeping the quotes, then re-upload this file. That's it —
+        //      every completed order will then also land as an email,
+        //      automatically, with no action needed from the customer.
+        // Until these three are filled in, email sending is skipped quietly
+        // (the WhatsApp handoff below keeps working exactly as before).
+        const EMAILJS_PUBLIC_KEY = 'XINpTJLqloU4ddBs_';
+        const EMAILJS_SERVICE_ID = 'service_l7uo35p';
+        const EMAILJS_TEMPLATE_ID = 'template_dtqe8tq';
+        const NOTIFY_EMAIL = 'eddigood2020@gmail.com';
+
+        if (EMAILJS_PUBLIC_KEY && typeof emailjs !== 'undefined') {
+            try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch (e) { console.warn('EmailJS init failed:', e); }
+        }
         // Delivery methods carry a translation key (resolved via ct()) instead
         // of a hardcoded label, so the checkout form follows the site's
         // language switcher rather than always showing Czech.
@@ -2884,6 +2916,23 @@ function gtag_report_conversion(url) {
                 `Způsob platby: ${payment}`;
 
             window.open('https://wa.me/' + SELLER_WA + '?text=' + encodeURIComponent(msg), '_blank');
+
+            // Automatic email notification (only runs once the three
+            // EMAILJS_* constants above are filled in — see setup notes
+            // there). Fire-and-forget: an email failure must never block
+            // the order itself, which is already secured via WhatsApp above.
+            if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && typeof emailjs !== 'undefined') {
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: NOTIFY_EMAIL,
+                    order_text: lines,
+                    customer_name: name,
+                    customer_phone: phone,
+                    customer_address: address || '—',
+                    delivery: `${DELIVERY_LABEL_CS(delivery.key)} (${delivery.price} Kč)`,
+                    payment: payment,
+                    total: total.toLocaleString('cs-CZ') + ' Kč'
+                }).catch(err => console.warn('EmailJS send failed:', err));
+            }
 
             saveCart([]);
             renderCart();
