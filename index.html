@@ -3751,7 +3751,8 @@ function gtag_report_conversion(url) {
         // first — not shown to visitors). `text` should be the customer's
         // own words, lightly cleaned up for typos only.
         const REVIEWS = [
-            // (empty for now — add real, verified reviews here as they come in)
+            { name: "Igor", rating: 5, date: "2026-09-18",
+              text: "Skvělý olivový olej z Itálie! Kvalitní olej s příjemnou chutí a vůní. Výborný do salátů, na vaření i pro každodenní použití. Oceňuji přímý dovoz z Apulie, kvalitní balení a profesionální přístup. Doporučuji všem, kteří mají rádi pravou italskou kvalitu!" },
         ];
 
         function starsHTML(rating, size) {
