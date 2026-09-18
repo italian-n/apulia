@@ -1256,6 +1256,48 @@ function gtag_report_conversion(url) {
             .certs-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
+        /* ===== REVIEWS ===== */
+        .reviews-section { position: relative; padding: 110px 24px 100px; background: var(--darker); border-top: 1px solid rgba(255,255,255,0.03); overflow: hidden; }
+        .reviews-summary { text-align: center; max-width: 640px; margin: 0 auto 48px; position: relative; z-index: 1; }
+        .reviews-stars-row { display: flex; justify-content: center; gap: 4px; margin-bottom: 10px; }
+        .reviews-stars-row i { width: 20px; height: 20px; color: var(--gold-400); fill: var(--gold-400); }
+        .reviews-avg-val { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+        .reviews-count { font-size: 13px; color: rgba(255,255,255,0.45); }
+        .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1200px; margin: 0 auto 40px; position: relative; z-index: 1; }
+        .review-card {
+            background: linear-gradient(170deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 26px;
+            display: flex; flex-direction: column;
+        }
+        .review-card-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+        .review-card-stars i { width: 15px; height: 15px; color: var(--gold-400); fill: var(--gold-400); }
+        .review-card-stars i.star-off { color: rgba(255,255,255,0.15); fill: rgba(255,255,255,0.15); }
+        .review-card-text { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.75); margin-bottom: 20px; flex: 1; }
+        .review-card-foot { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px; }
+        .review-card-name { font-weight: 600; font-size: 14px; }
+        .review-card-date { font-size: 12px; color: rgba(255,255,255,0.4); white-space: nowrap; }
+        .reviews-empty {
+            display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
+            color: rgba(255,255,255,0.55); max-width: 440px; margin: 0 auto 40px; padding: 34px 26px;
+            border: 1px dashed rgba(255,255,255,0.15); border-radius: 18px; position: relative; z-index: 1;
+        }
+        .reviews-empty i { color: var(--gold-400); }
+        .reviews-empty p { font-size: 14px; line-height: 1.6; }
+        .reviews-cta { text-align: center; position: relative; z-index: 1; }
+        @media (max-width: 900px) { .reviews-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) {
+            .reviews-section { padding: 70px 16px 70px; }
+            .reviews-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Star rating input inside the review form */
+        .star-input { display: flex; gap: 6px; }
+        .star-btn { background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.25); padding: 4px; line-height: 0; }
+        .star-btn i { width: 26px; height: 26px; pointer-events: none; }
+        .star-btn.active { color: var(--gold-400); }
+        .star-btn.active i { fill: var(--gold-400); }
+        .star-input.field-invalid .star-btn { color: #e0645a; }
+
         .delivery-inner {
             max-width: 900px;
             margin: 0 auto;
@@ -1732,6 +1774,7 @@ function gtag_report_conversion(url) {
     <div class="nav-links">
         <a href="#products" data-i18n="nav_products">Produkty</a>
         <a href="#delivery" data-i18n="nav_delivery">Doprava</a>
+        <a href="#reviews" data-i18n="nav_reviews">Recenze</a>
         <a href="https://wa.me/420604264270" target="_blank" class="nav-cta">
             <i data-lucide="message-circle" style="width:14px;height:14px;"></i>
             <span data-i18n="nav_order">Objednat</span>
@@ -1764,6 +1807,7 @@ function gtag_report_conversion(url) {
     <button class="mobile-close" id="mobileClose"><i data-lucide="x" style="width:28px;height:28px;"></i></button>
     <a href="#products" onclick="closeMobile()" data-i18n="nav_products">Produkty</a>
     <a href="#delivery" onclick="closeMobile()" data-i18n="nav_delivery">Doprava</a>
+    <a href="#reviews" onclick="closeMobile()" data-i18n="nav_reviews">Recenze</a>
     <a href="https://wa.me/420604264270" target="_blank" onclick="closeMobile()">WhatsApp</a>
     <a href="https://www.tiktok.com/@apulia.olive.oil.c" target="_blank" onclick="closeMobile()">TikTok</a>
     <div class="mobile-lang" id="mobileLang">
@@ -2103,6 +2147,81 @@ function gtag_report_conversion(url) {
         </div>
     </div>
 </section>
+
+<!-- Reviews -->
+<section class="reviews-section" id="reviews">
+    <div class="products-header">
+        <div class="section-label reveal" data-i18n="reviews_label">Recenze</div>
+        <h2 class="products-heading reveal rd1" data-i18n="reviews_heading">Co říkají <em>zákazníci</em></h2>
+        <p class="products-sub reveal rd2" data-i18n="reviews_sub">Skutečné zkušenosti lidí, kteří si u nás olej objednali.</p>
+    </div>
+
+    <div class="reviews-summary" id="reviewsSummary" style="display:none;">
+        <div class="reviews-stars-row" id="reviewsSummaryStars"></div>
+        <div class="reviews-avg-val" id="reviewsAvgVal"></div>
+        <div class="reviews-count" id="reviewsCountLbl"></div>
+    </div>
+
+    <div class="reviews-grid" id="reviewsGrid"></div>
+
+    <div class="reviews-empty" id="reviewsEmpty">
+        <i data-lucide="message-square" style="width:32px;height:32px;"></i>
+        <p data-i18n="reviews_empty">Zatím zde nejsou žádné veřejné recenze. Buďte první, kdo ohodnotí náš olej!</p>
+    </div>
+
+    <div class="reviews-cta">
+        <button type="button" class="btn-gold" id="openReviewFormBtn">
+            <span data-i18n="reviews_write_btn">Napsat recenzi</span>
+            <i data-lucide="pen-line"></i>
+        </button>
+    </div>
+</section>
+
+<div class="checkout-modal" id="reviewModal">
+    <div class="cart-overlay" id="reviewOverlay"></div>
+    <div class="checkout-box">
+        <button class="checkout-close" id="reviewCloseBtn"><i data-lucide="x"></i></button>
+        <h3 data-i18n="review_title">Napsat recenzi</h3>
+        <p class="checkout-sub" data-i18n="review_sub">Vaše hodnocení nám pomůže a usnadní rozhodování dalším zákazníkům. Po ověření pravosti ji rádi zveřejníme na webu.</p>
+        <form id="reviewForm">
+            <div class="checkout-field">
+                <label data-i18n="review_rating">Vaše hodnocení</label>
+                <div class="star-input" id="starInput">
+                    <button type="button" class="star-btn" data-val="1"><i data-lucide="star"></i></button>
+                    <button type="button" class="star-btn" data-val="2"><i data-lucide="star"></i></button>
+                    <button type="button" class="star-btn" data-val="3"><i data-lucide="star"></i></button>
+                    <button type="button" class="star-btn" data-val="4"><i data-lucide="star"></i></button>
+                    <button type="button" class="star-btn" data-val="5"><i data-lucide="star"></i></button>
+                </div>
+            </div>
+            <div class="checkout-field">
+                <label data-i18n="review_name">Jméno</label>
+                <input type="text" name="review_name" required>
+            </div>
+            <div class="checkout-field">
+                <label data-i18n="review_email">E-mail (nezveřejní se, jen pro ověření)</label>
+                <input type="email" name="review_email" placeholder="vas@email.cz" required>
+            </div>
+            <div class="checkout-field">
+                <label data-i18n="review_text">Vaše zkušenost</label>
+                <textarea name="review_text" rows="4" required></textarea>
+            </div>
+            <div class="checkout-error" id="reviewError"></div>
+            <button type="submit" class="checkout-submit" data-i18n="review_submit">Odeslat recenzi</button>
+        </form>
+    </div>
+</div>
+
+<div class="checkout-modal" id="reviewSuccessModal">
+    <div class="cart-overlay" id="reviewSuccessOverlay"></div>
+    <div class="checkout-box order-success-box">
+        <button class="checkout-close" id="reviewSuccessClose"><i data-lucide="x"></i></button>
+        <div class="order-success-icon"><i data-lucide="check"></i></div>
+        <h3 data-i18n="review_success_title">Děkujeme za recenzi</h3>
+        <p class="checkout-sub" id="reviewSuccessText"></p>
+        <button type="button" class="checkout-submit" id="reviewSuccessOk" data-i18n="order_success_ok">Zavřít</button>
+    </div>
+</div>
 
 <footer class="footer">
     <div class="footer-container">
@@ -2676,7 +2795,7 @@ function gtag_report_conversion(url) {
     /* ===================== i18n ===================== */
     const translations = {
         cs: {
-            nav_products: "Produkty", nav_delivery: "Doprava", nav_order: "Objednat",
+            nav_products: "Produkty", nav_delivery: "Doprava", nav_order: "Objednat", nav_reviews: "Recenze",
             hero_badge: "100% Italiano · Přímý dovoz do ČR",
             hero_title1: "Prémiový olivový olej", hero_title2: "z Apulie pro vás",
             hero_sub: "Extra Virgin olivový olej z odrůd Coratina, Ogliarola a Leccino. Lisování za studena pod 27 °C. Přímý dovoz z Itálie.",
@@ -2717,6 +2836,14 @@ function gtag_report_conversion(url) {
             co_submit: "Odeslat objednávku",
             order_confirm: "Děkujeme za objednávku! Byla odeslána prodávajícímu. Brzy vás budeme kontaktovat s potvrzením a platebními údaji.",
             order_success_title: "Objednávka odeslána", order_success_ok: "Zavřít",
+            reviews_label: "Recenze", reviews_heading: "Co říkají <em>zákazníci</em>", reviews_sub: "Skutečné zkušenosti lidí, kteří si u nás olej objednali.",
+            reviews_empty: "Zatím zde nejsou žádné veřejné recenze. Buďte první, kdo ohodnotí náš olej!", reviews_write_btn: "Napsat recenzi",
+            review_title: "Napsat recenzi", review_sub: "Vaše hodnocení nám pomůže a usnadní rozhodování dalším zákazníkům. Po ověření pravosti ji rádi zveřejníme na webu.",
+            review_rating: "Vaše hodnocení", review_name: "Jméno", review_email: "E-mail (nezveřejní se, jen pro ověření)", review_text: "Vaše zkušenost",
+            review_submit: "Odeslat recenzi", review_success_title: "Děkujeme za recenzi",
+            review_success_text: "Vaši recenzi jsme přijali. Po krátkém ověření pravosti ji rádi zveřejníme na webu.",
+            err_review_rating: "Zvolte prosím hodnocení (1–5 hvězd), vyplňte jméno, platný e-mail a text recenze.",
+            reviews_count_tpl: "{n} recenzí",
             trust1_lbl: "Apulie, Itálie", trust2_lbl: "Studený lis", trust4_lbl: "Alergeny", trust5_lbl: "Distribuce v ČR",
             del1_h: "Pojízdná prodejna", del1_p: "Přijedeme přímo k vám",
             del2_h: "Poštovní zásilka", del2_p: "Doručení po celé ČR",
@@ -2733,7 +2860,7 @@ function gtag_report_conversion(url) {
             meta_desc: "Prémiový extra panenský olivový olej přímo z Apulie, Itálie. Lisování za studena, bez zprostředkovatelů. Doprava po celé ČR, osobní odběr v Brně."
         },
         en: {
-            nav_products: "Products", nav_delivery: "Delivery", nav_order: "Order now",
+            nav_products: "Products", nav_delivery: "Delivery", nav_order: "Order now", nav_reviews: "Reviews",
             hero_badge: "100% Italian · Direct import to Czechia",
             hero_title1: "Premium olive oil", hero_title2: "from Apulia, for you",
             hero_sub: "Extra Virgin olive oil from Coratina, Ogliarola and Leccino cultivars. Cold-pressed below 27 °C. Direct import from Italy.",
@@ -2774,6 +2901,14 @@ function gtag_report_conversion(url) {
             co_submit: "Send order",
             order_confirm: "Thank you for your order! It has been sent to the seller. We'll contact you shortly to confirm it and share payment details.",
             order_success_title: "Order sent", order_success_ok: "Close",
+            reviews_label: "Reviews", reviews_heading: "What our <em>customers</em> say", reviews_sub: "Real experiences from people who've ordered our oil.",
+            reviews_empty: "There are no public reviews yet. Be the first to rate our oil!", reviews_write_btn: "Write a review",
+            review_title: "Write a review", review_sub: "Your rating helps us and makes the decision easier for future customers. Once verified, we'll gladly publish it on the site.",
+            review_rating: "Your rating", review_name: "Name", review_email: "Email (not published, verification only)", review_text: "Your experience",
+            review_submit: "Submit review", review_success_title: "Thanks for your review",
+            review_success_text: "We've received your review. Once we've briefly verified it, we'll be happy to publish it on the site.",
+            err_review_rating: "Please choose a rating (1–5 stars), and fill in your name, a valid email and the review text.",
+            reviews_count_tpl: "{n} reviews",
             trust1_lbl: "Apulia, Italy", trust2_lbl: "Cold pressed", trust4_lbl: "Allergens", trust5_lbl: "Distribution in CZ",
             del1_h: "Mobile shop", del1_p: "We deliver right to you",
             del2_h: "Postal shipping", del2_p: "Delivery all over Czechia",
@@ -2790,7 +2925,7 @@ function gtag_report_conversion(url) {
             meta_desc: "Premium extra virgin olive oil direct from Apulia, Italy. Cold-pressed, no middlemen. Delivery across Czechia, pickup in Brno."
         },
         uk: {
-            nav_products: "Продукти", nav_delivery: "Доставка", nav_order: "Замовити",
+            nav_products: "Продукти", nav_delivery: "Доставка", nav_order: "Замовити", nav_reviews: "Відгуки",
             hero_badge: "100% Italiano · Прямий імпорт до Чехії",
             hero_title1: "Преміальна оливкова олія", hero_title2: "з Апулії для вас",
             hero_sub: "Оливкова олія Extra Virgin із сортів Coratina, Ogliarola та Leccino. Холодне пресування нижче 27 °C. Прямий імпорт з Італії.",
@@ -2831,6 +2966,14 @@ function gtag_report_conversion(url) {
             co_submit: "Надіслати замовлення",
             order_confirm: "Дякуємо за замовлення! Його надіслано продавцю. Незабаром ми зв'яжемося з вами для підтвердження та надання платіжних реквізитів.",
             order_success_title: "Замовлення надіслано", order_success_ok: "Закрити",
+            reviews_label: "Відгуки", reviews_heading: "Що кажуть <em>клієнти</em>", reviews_sub: "Реальний досвід людей, які вже замовляли нашу олію.",
+            reviews_empty: "Поки що тут немає публічних відгуків. Будьте першим, хто оцінить нашу олію!", reviews_write_btn: "Залишити відгук",
+            review_title: "Залишити відгук", review_sub: "Ваша оцінка допоможе нам і полегшить рішення іншим клієнтам. Після перевірки достовірності ми з радістю опублікуємо його на сайті.",
+            review_rating: "Ваша оцінка", review_name: "Ім'я", review_email: "Email (не публікується, лише для перевірки)", review_text: "Ваш досвід",
+            review_submit: "Надіслати відгук", review_success_title: "Дякуємо за відгук",
+            review_success_text: "Ми отримали ваш відгук. Після короткої перевірки достовірності з радістю опублікуємо його на сайті.",
+            err_review_rating: "Будь ласка, оберіть оцінку (1–5 зірок), вкажіть ім'я, дійсний email та текст відгуку.",
+            reviews_count_tpl: "{n} відгуків",
             trust1_lbl: "Апулія, Італія", trust2_lbl: "Холодний віджим", trust4_lbl: "Алергени", trust5_lbl: "Дистрибуція в ЧР",
             del1_h: "Пересувна крамниця", del1_p: "Привеземо особисто до вас",
             del2_h: "Поштова доставка", del2_p: "Доставка по всій Чехії",
@@ -2847,7 +2990,7 @@ function gtag_report_conversion(url) {
             meta_desc: "Преміальна оливкова олія Extra Virgin напряму з Апулії, Італія. Холодний віджим, без посередників. Доставка по всій Чехії, самовивіз у Брно."
         },
         ru: {
-            nav_products: "Продукты", nav_delivery: "Доставка", nav_order: "Заказать",
+            nav_products: "Продукты", nav_delivery: "Доставка", nav_order: "Заказать", nav_reviews: "Отзывы",
             hero_badge: "100% Italiano · Прямой импорт в Чехию",
             hero_title1: "Премиальное оливковое масло", hero_title2: "из Апулии для вас",
             hero_sub: "Оливковое масло Extra Virgin из сортов Coratina, Ogliarola и Leccino. Холодный отжим ниже 27 °C. Прямой импорт из Италии.",
@@ -2888,6 +3031,14 @@ function gtag_report_conversion(url) {
             co_submit: "Отправить заказ",
             order_confirm: "Спасибо за заказ! Он отправлен продавцу. Мы скоро свяжемся с вами для подтверждения и платёжных реквизитов.",
             order_success_title: "Заказ отправлен", order_success_ok: "Закрыть",
+            reviews_label: "Отзывы", reviews_heading: "Что говорят <em>клиенты</em>", reviews_sub: "Реальный опыт людей, которые уже заказывали наше масло.",
+            reviews_empty: "Пока здесь нет публичных отзывов. Будьте первым, кто оценит наше масло!", reviews_write_btn: "Оставить отзыв",
+            review_title: "Оставить отзыв", review_sub: "Ваша оценка поможет нам и облегчит решение другим клиентам. После проверки подлинности мы с радостью опубликуем его на сайте.",
+            review_rating: "Ваша оценка", review_name: "Имя", review_email: "Email (не публикуется, только для проверки)", review_text: "Ваш опыт",
+            review_submit: "Отправить отзыв", review_success_title: "Спасибо за отзыв",
+            review_success_text: "Мы получили ваш отзыв. После короткой проверки подлинности с радостью опубликуем его на сайте.",
+            err_review_rating: "Пожалуйста, выберите оценку (1–5 звёзд), укажите имя, действительный email и текст отзыва.",
+            reviews_count_tpl: "{n} отзывов",
             trust1_lbl: "Апулия, Италия", trust2_lbl: "Холодный отжим", trust4_lbl: "Аллергены", trust5_lbl: "Дистрибуция в ЧР",
             del1_h: "Передвижной магазин", del1_p: "Привезём лично к вам",
             del2_h: "Почтовая доставка", del2_p: "Доставка по всей Чехии",
@@ -2904,7 +3055,7 @@ function gtag_report_conversion(url) {
             meta_desc: "Премиальное оливковое масло Extra Virgin напрямую из Апулии, Италия. Холодный отжим, без посредников. Доставка по всей Чехии, самовывоз в Брно."
         },
         it: {
-            nav_products: "Prodotti", nav_delivery: "Consegna", nav_order: "Ordina ora",
+            nav_products: "Prodotti", nav_delivery: "Consegna", nav_order: "Ordina ora", nav_reviews: "Recensioni",
             hero_badge: "100% Italiano · Importazione diretta in Rep. Ceca",
             hero_title1: "Olio d'oliva premium", hero_title2: "dalla Puglia per voi",
             hero_sub: "Olio Extra Vergine di oliva dalle cultivar Coratina, Ogliarola e Leccino. Spremitura a freddo sotto 27 °C. Importazione diretta dall'Italia.",
@@ -2945,6 +3096,14 @@ function gtag_report_conversion(url) {
             co_submit: "Invia ordine",
             order_confirm: "Grazie per il tuo ordine! È stato inviato al venditore. Ti contatteremo a breve per confermarlo e per i dettagli di pagamento.",
             order_success_title: "Ordine inviato", order_success_ok: "Chiudi",
+            reviews_label: "Recensioni", reviews_heading: "Cosa dicono i <em>clienti</em>", reviews_sub: "Esperienze reali di chi ha già ordinato il nostro olio.",
+            reviews_empty: "Non ci sono ancora recensioni pubbliche. Sii il primo a valutare il nostro olio!", reviews_write_btn: "Scrivi una recensione",
+            review_title: "Scrivi una recensione", review_sub: "La tua valutazione ci aiuta e facilita la decisione ad altri clienti. Dopo la verifica, la pubblicheremo volentieri sul sito.",
+            review_rating: "La tua valutazione", review_name: "Nome", review_email: "Email (non pubblicata, solo per verifica)", review_text: "La tua esperienza",
+            review_submit: "Invia recensione", review_success_title: "Grazie per la recensione",
+            review_success_text: "Abbiamo ricevuto la tua recensione. Dopo una breve verifica, la pubblicheremo volentieri sul sito.",
+            err_review_rating: "Seleziona una valutazione (1–5 stelle) e compila nome, email valida e testo della recensione.",
+            reviews_count_tpl: "{n} recensioni",
             trust1_lbl: "Puglia, Italia", trust2_lbl: "Spremitura a freddo", trust4_lbl: "Allergeni", trust5_lbl: "Distribuzione in CZ",
             del1_h: "Negozio itinerante", del1_p: "Veniamo direttamente da voi",
             del2_h: "Spedizione postale", del2_p: "Consegna in tutta la Rep. Ceca",
@@ -2961,7 +3120,7 @@ function gtag_report_conversion(url) {
             meta_desc: "Olio extravergine di oliva premium direttamente dalla Puglia, Italia. Spremitura a freddo, senza intermediari. Consegna in tutta la Rep. Ceca, ritiro a Brno."
         },
         de: {
-            nav_products: "Produkte", nav_delivery: "Lieferung", nav_order: "Jetzt bestellen",
+            nav_products: "Produkte", nav_delivery: "Lieferung", nav_order: "Jetzt bestellen", nav_reviews: "Bewertungen",
             hero_badge: "100% Italiano · Direktimport nach Tschechien",
             hero_title1: "Premium-Olivenöl", hero_title2: "aus Apulien für Sie",
             hero_sub: "Extra natives Olivenöl aus den Sorten Coratina, Ogliarola und Leccino. Kaltpressung unter 27 °C. Direktimport aus Italien.",
@@ -3002,6 +3161,14 @@ function gtag_report_conversion(url) {
             co_submit: "Bestellung senden",
             order_confirm: "Vielen Dank für Ihre Bestellung! Sie wurde an den Verkäufer gesendet. Wir melden uns in Kürze zur Bestätigung und mit den Zahlungsdetails.",
             order_success_title: "Bestellung gesendet", order_success_ok: "Schließen",
+            reviews_label: "Bewertungen", reviews_heading: "Was unsere <em>Kunden</em> sagen", reviews_sub: "Echte Erfahrungen von Menschen, die unser Öl bereits bestellt haben.",
+            reviews_empty: "Es gibt noch keine öffentlichen Bewertungen. Seien Sie der Erste, der unser Öl bewertet!", reviews_write_btn: "Bewertung schreiben",
+            review_title: "Bewertung schreiben", review_sub: "Ihre Bewertung hilft uns und erleichtert anderen Kunden die Entscheidung. Nach Prüfung veröffentlichen wir sie gerne auf der Website.",
+            review_rating: "Ihre Bewertung", review_name: "Name", review_email: "E-Mail (wird nicht veröffentlicht, nur zur Verifizierung)", review_text: "Ihre Erfahrung",
+            review_submit: "Bewertung senden", review_success_title: "Danke für Ihre Bewertung",
+            review_success_text: "Wir haben Ihre Bewertung erhalten. Nach kurzer Prüfung veröffentlichen wir sie gerne auf der Website.",
+            err_review_rating: "Bitte wählen Sie eine Bewertung (1–5 Sterne) und geben Sie Namen, eine gültige E-Mail und den Bewertungstext ein.",
+            reviews_count_tpl: "{n} Bewertungen",
             trust1_lbl: "Apulien, Italien", trust2_lbl: "Kaltpressung", trust4_lbl: "Allergene", trust5_lbl: "Vertrieb in CZ",
             del1_h: "Verkaufswagen", del1_p: "Wir kommen direkt zu Ihnen",
             del2_h: "Postversand", del2_p: "Lieferung in ganz Tschechien",
@@ -3018,7 +3185,7 @@ function gtag_report_conversion(url) {
             meta_desc: "Premium natives Olivenöl extra direkt aus Apulien, Italien. Kaltgepresst, ohne Zwischenhändler. Lieferung in ganz Tschechien, Abholung in Brünn."
         },
         pl: {
-            nav_products: "Produkty", nav_delivery: "Dostawa", nav_order: "Zamów teraz",
+            nav_products: "Produkty", nav_delivery: "Dostawa", nav_order: "Zamów teraz", nav_reviews: "Opinie",
             hero_badge: "100% Italiano · Import bezpośredni do Czech",
             hero_title1: "Oliwa z oliwek premium", hero_title2: "z Apulii dla Ciebie",
             hero_sub: "Oliwa Extra Virgin z odmian Coratina, Ogliarola i Leccino. Tłoczenie na zimno poniżej 27 °C. Import bezpośrednio z Włoch.",
@@ -3059,6 +3226,14 @@ function gtag_report_conversion(url) {
             co_submit: "Wyślij zamówienie",
             order_confirm: "Dziękujemy za zamówienie! Zostało wysłane do sprzedawcy. Wkrótce skontaktujemy się z Tobą w celu potwierdzenia i przekazania danych do płatności.",
             order_success_title: "Zamówienie wysłane", order_success_ok: "Zamknij",
+            reviews_label: "Opinie", reviews_heading: "Co mówią <em>klienci</em>", reviews_sub: "Prawdziwe doświadczenia osób, które już zamówiły nasz olej.",
+            reviews_empty: "Nie ma jeszcze żadnych publicznych opinii. Bądź pierwszy, który oceni nasz olej!", reviews_write_btn: "Napisz opinię",
+            review_title: "Napisz opinię", review_sub: "Twoja ocena pomoże nam i ułatwi decyzję innym klientom. Po weryfikacji chętnie opublikujemy ją na stronie.",
+            review_rating: "Twoja ocena", review_name: "Imię", review_email: "Email (nie jest publikowany, tylko do weryfikacji)", review_text: "Twoje doświadczenie",
+            review_submit: "Wyślij opinię", review_success_title: "Dziękujemy za opinię",
+            review_success_text: "Otrzymaliśmy Twoją opinię. Po krótkiej weryfikacji chętnie opublikujemy ją na stronie.",
+            err_review_rating: "Wybierz ocenę (1–5 gwiazdek) oraz podaj imię, prawidłowy email i treść opinii.",
+            reviews_count_tpl: "{n} opinii",
             trust1_lbl: "Apulia, Włochy", trust2_lbl: "Tłoczenie na zimno", trust4_lbl: "Alergeny", trust5_lbl: "Dystrybucja w CZ",
             del1_h: "Sklep mobilny", del1_p: "Przyjedziemy prosto do Ciebie",
             del2_h: "Wysyłka pocztowa", del2_p: "Dostawa na terenie całych Czech",
@@ -3075,7 +3250,7 @@ function gtag_report_conversion(url) {
             meta_desc: "Premium oliwa Extra Virgin bezpośrednio z Apulii, Włochy. Tłoczenie na zimno, bez pośredników. Dostawa na terenie całych Czech, odbiór w Brnie."
         },
         sk: {
-            nav_products: "Produkty", nav_delivery: "Doprava", nav_order: "Objednať",
+            nav_products: "Produkty", nav_delivery: "Doprava", nav_order: "Objednať", nav_reviews: "Recenzie",
             hero_badge: "100% Italiano · Priamy dovoz do ČR",
             hero_title1: "Prémiový olivový olej", hero_title2: "z Apúlie pre vás",
             hero_sub: "Extra Virgin olivový olej z odrôd Coratina, Ogliarola a Leccino. Lisovanie za studena pod 27 °C. Priamy dovoz z Talianska.",
@@ -3116,6 +3291,14 @@ function gtag_report_conversion(url) {
             co_submit: "Odoslať objednávku",
             order_confirm: "Ďakujeme za objednávku! Bola odoslaná predávajúcemu. Čoskoro sa vám ozveme s potvrdením a platobnými údajmi.",
             order_success_title: "Objednávka odoslaná", order_success_ok: "Zavrieť",
+            reviews_label: "Recenzie", reviews_heading: "Čo hovoria <em>zákazníci</em>", reviews_sub: "Skutočné skúsenosti ľudí, ktorí si u nás olej objednali.",
+            reviews_empty: "Zatiaľ tu nie sú žiadne verejné recenzie. Buďte prvý, kto ohodnotí náš olej!", reviews_write_btn: "Napísať recenziu",
+            review_title: "Napísať recenziu", review_sub: "Vaše hodnotenie nám pomôže a uľahčí rozhodovanie ďalším zákazníkom. Po overení pravosti ju radi zverejníme na webe.",
+            review_rating: "Vaše hodnotenie", review_name: "Meno", review_email: "E-mail (nezverejní sa, len na overenie)", review_text: "Vaša skúsenosť",
+            review_submit: "Odoslať recenziu", review_success_title: "Ďakujeme za recenziu",
+            review_success_text: "Vašu recenziu sme prijali. Po krátkom overení pravosti ju radi zverejníme na webe.",
+            err_review_rating: "Zvoľte prosím hodnotenie (1–5 hviezd), vyplňte meno, platný e-mail a text recenzie.",
+            reviews_count_tpl: "{n} recenzií",
             trust1_lbl: "Apúlia, Taliansko", trust2_lbl: "Studený lis", trust4_lbl: "Alergény", trust5_lbl: "Distribúcia v ČR",
             del1_h: "Pojazdná predajňa", del1_p: "Prídeme priamo k vám",
             del2_h: "Poštová zásielka", del2_p: "Doručenie po celej ČR",
@@ -3156,6 +3339,7 @@ function gtag_report_conversion(url) {
         // generated by JS and isn't covered by the [data-i18n] pass above —
         // refresh it too so a language switch also translates the cart.
         if (typeof window.refreshCartI18n === 'function') window.refreshCartI18n();
+        if (typeof window.refreshReviewsI18n === 'function') window.refreshReviewsI18n();
     }
 
     document.querySelectorAll('.lang-option, .mobile-lang button').forEach(btn => {
@@ -3249,6 +3433,11 @@ function gtag_report_conversion(url) {
         const EMAILJS_SERVICE_ID = 'service_l7uo35p';
         const EMAILJS_TEMPLATE_ID = 'template_dtqe8tq';
         const NOTIFY_EMAIL = 'eddigood2020@gmail.com';
+        // Second, separate EmailJS template just for customer reviews (see
+        // the REVIEWS section below for full setup steps). Leave this empty
+        // and the review form will fall back to a pre-filled mailto: link,
+        // so reviews still reach you even before you create the template.
+        const EMAILJS_REVIEW_TEMPLATE_ID = '';
 
         if (EMAILJS_PUBLIC_KEY && typeof emailjs !== 'undefined') {
             try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch (e) { console.warn('EmailJS init failed:', e); }
@@ -3539,6 +3728,205 @@ function gtag_report_conversion(url) {
         }
 
         renderCart();
+
+        /* ===================== REVIEWS ===================== */
+        // Real, verified customer reviews only. Add a new review here once
+        // you've confirmed it's genuine — e.g. after receiving it through
+        // the "Write a review" form below (it arrives at your email), or
+        // by copying a real Google/Facebook/WhatsApp review with the
+        // customer's permission.
+        //
+        // Never invent a review or attribute one to someone who didn't
+        // write it — besides being dishonest to visitors, fake reviews are
+        // illegal under Czech/EU unfair-commercial-practices rules, and a
+        // gateway reviewer (like GoPay's) may reject the merchant account
+        // over it. Real, sparse reviews build more trust than fabricated,
+        // polished ones.
+        //
+        // How to add one — copy this shape and fill in real values:
+        //   { name: "Jana K.", rating: 5, date: "2026-08-14",
+        //     text: "Skvělý olej, rychlé dodání, budeme objednávat znovu." },
+        //
+        // `rating` is 1–5. `date` is YYYY-MM-DD (used only to sort, newest
+        // first — not shown to visitors). `text` should be the customer's
+        // own words, lightly cleaned up for typos only.
+        const REVIEWS = [
+            // (empty for now — add real, verified reviews here as they come in)
+        ];
+
+        function starsHTML(rating, size) {
+            const cls = size === 'sm' ? '' : '';
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += `<i data-lucide="star" class="${i <= rating ? '' : 'star-off'}"></i>`;
+            }
+            return html;
+        }
+
+        function renderReviews() {
+            const grid = document.getElementById('reviewsGrid');
+            const empty = document.getElementById('reviewsEmpty');
+            const summary = document.getElementById('reviewsSummary');
+            if (!grid) return;
+
+            if (!REVIEWS.length) {
+                grid.innerHTML = '';
+                grid.style.display = 'none';
+                summary.style.display = 'none';
+                if (empty) empty.style.display = '';
+                return;
+            }
+
+            if (empty) empty.style.display = 'none';
+            grid.style.display = '';
+            summary.style.display = '';
+
+            const sorted = REVIEWS.slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+            const avg = REVIEWS.reduce((s, r) => s + r.rating, 0) / REVIEWS.length;
+
+            document.getElementById('reviewsSummaryStars').innerHTML = starsHTML(Math.round(avg));
+            document.getElementById('reviewsAvgVal').textContent = avg.toFixed(1).replace('.', ',');
+            document.getElementById('reviewsCountLbl').textContent = ct('reviews_count_tpl').replace('{n}', REVIEWS.length);
+
+            grid.innerHTML = sorted.map(r => `
+                <div class="review-card">
+                    <div class="review-card-stars">${starsHTML(r.rating)}</div>
+                    <p class="review-card-text">${(r.text || '').replace(/</g, '&lt;')}</p>
+                    <div class="review-card-foot">
+                        <span class="review-card-name">${(r.name || '').replace(/</g, '&lt;')}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            try { lucide.createIcons(); } catch (e) {}
+
+            // AggregateRating structured data — only injected once real
+            // reviews exist, so we never publish schema claiming ratings
+            // that don't exist yet.
+            if (!document.getElementById('reviewsSchema')) {
+                const schema = document.createElement('script');
+                schema.type = 'application/ld+json';
+                schema.id = 'reviewsSchema';
+                schema.textContent = JSON.stringify({
+                    '@context': 'https://schema.org',
+                    '@type': 'Product',
+                    name: 'Apulia Olive Oil',
+                    aggregateRating: {
+                        '@type': 'AggregateRating',
+                        ratingValue: avg.toFixed(1),
+                        reviewCount: REVIEWS.length
+                    }
+                });
+                document.head.appendChild(schema);
+            }
+        }
+        window.refreshReviewsI18n = renderReviews;
+        renderReviews();
+
+        // ----- Review form -----
+        let selectedRating = 0;
+        const starInput = document.getElementById('starInput');
+        if (starInput) {
+            const starBtns = Array.from(starInput.querySelectorAll('.star-btn'));
+            function paintStars(val) {
+                starBtns.forEach(b => b.classList.toggle('active', Number(b.dataset.val) <= val));
+            }
+            starBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => paintStars(Number(btn.dataset.val)));
+                btn.addEventListener('click', () => {
+                    selectedRating = Number(btn.dataset.val);
+                    paintStars(selectedRating);
+                    starInput.classList.remove('field-invalid');
+                });
+            });
+            starInput.addEventListener('mouseleave', () => paintStars(selectedRating));
+        }
+
+        function openReviewModal() {
+            document.getElementById('reviewModal').classList.add('open');
+            document.getElementById('reviewOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('open');
+            document.getElementById('reviewOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        const openReviewBtn = document.getElementById('openReviewFormBtn');
+        if (openReviewBtn) openReviewBtn.addEventListener('click', openReviewModal);
+        const reviewCloseBtn = document.getElementById('reviewCloseBtn');
+        if (reviewCloseBtn) reviewCloseBtn.addEventListener('click', closeReviewModal);
+        const reviewOverlay = document.getElementById('reviewOverlay');
+        if (reviewOverlay) reviewOverlay.addEventListener('click', closeReviewModal);
+
+        function openReviewSuccess() {
+            document.getElementById('reviewSuccessText').textContent = ct('review_success_text');
+            document.getElementById('reviewSuccessModal').classList.add('open');
+            document.getElementById('reviewSuccessOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeReviewSuccess() {
+            document.getElementById('reviewSuccessModal').classList.remove('open');
+            document.getElementById('reviewSuccessOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        const reviewSuccessClose = document.getElementById('reviewSuccessClose');
+        if (reviewSuccessClose) reviewSuccessClose.addEventListener('click', closeReviewSuccess);
+        const reviewSuccessOk = document.getElementById('reviewSuccessOk');
+        if (reviewSuccessOk) reviewSuccessOk.addEventListener('click', closeReviewSuccess);
+        const reviewSuccessOverlay = document.getElementById('reviewSuccessOverlay');
+        if (reviewSuccessOverlay) reviewSuccessOverlay.addEventListener('click', closeReviewSuccess);
+
+        const reviewForm = document.getElementById('reviewForm');
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const fd = new FormData(e.target);
+                const reviewName = (fd.get('review_name') || '').trim();
+                const reviewEmail = (fd.get('review_email') || '').trim();
+                const reviewText = (fd.get('review_text') || '').trim();
+
+                const errBox = document.getElementById('reviewError');
+                const bad = !reviewName || !isValidEmail(reviewEmail) || reviewText.length < 10 || selectedRating < 1;
+                if (bad) {
+                    errBox.textContent = ct('err_review_rating');
+                    errBox.classList.add('show');
+                    if (starInput && selectedRating < 1) starInput.classList.add('field-invalid');
+                    return;
+                }
+                errBox.classList.remove('show');
+                if (starInput) starInput.classList.remove('field-invalid');
+
+                if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_REVIEW_TEMPLATE_ID && typeof emailjs !== 'undefined') {
+                    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_REVIEW_TEMPLATE_ID, {
+                        to_email: NOTIFY_EMAIL,
+                        review_name: reviewName,
+                        review_email: reviewEmail,
+                        review_rating: selectedRating,
+                        review_text: reviewText
+                    }).catch(err => console.warn('EmailJS review send failed:', err));
+                } else {
+                    // No dedicated review template configured yet — fall
+                    // back to a pre-filled mailto so the review still
+                    // reaches the seller instead of silently disappearing.
+                    const subject = encodeURIComponent('Nová recenze od zákazníka — ' + reviewName);
+                    const body = encodeURIComponent(
+                        'Jméno: ' + reviewName + '\n' +
+                        'Email: ' + reviewEmail + '\n' +
+                        'Hodnocení: ' + selectedRating + '/5\n\n' +
+                        reviewText
+                    );
+                    window.open('mailto:' + NOTIFY_EMAIL + '?subject=' + subject + '&body=' + body, '_blank');
+                }
+
+                closeReviewModal();
+                e.target.reset();
+                selectedRating = 0;
+                if (starInput) starInput.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+                openReviewSuccess();
+            });
+        }
+        /* ===================== /REVIEWS ===================== */
     })();
     /* ===================== /CART & CHECKOUT ===================== */
 
