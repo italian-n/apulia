@@ -3880,6 +3880,9 @@ function gtag_report_conversion(url) {
 
         const reviewForm = document.getElementById('reviewForm');
         if (reviewForm) {
+            reviewForm.querySelectorAll('input, textarea').forEach(el => {
+                el.addEventListener('input', () => el.classList.remove('field-invalid'));
+            });
             reviewForm.addEventListener('submit', function (e) {
                 e.preventDefault();
                 const fd = new FormData(e.target);
@@ -3888,15 +3891,26 @@ function gtag_report_conversion(url) {
                 const reviewText = (fd.get('review_text') || '').trim();
 
                 const errBox = document.getElementById('reviewError');
-                const bad = !reviewName || !isValidEmail(reviewEmail) || reviewText.length < 10 || selectedRating < 1;
+                const nameEl = e.target.querySelector('[name="review_name"]');
+                const emailEl = e.target.querySelector('[name="review_email"]');
+                const textEl = e.target.querySelector('[name="review_text"]');
+                [nameEl, emailEl, textEl].forEach(el => el && el.classList.remove('field-invalid'));
+                if (starInput) starInput.classList.remove('field-invalid');
+
+                // Kept deliberately short (3 chars) — a real review can be
+                // as brief as "Super!" and shouldn't be rejected for that.
+                const bad = !reviewName || !isValidEmail(reviewEmail) || reviewText.length < 3 || selectedRating < 1;
                 if (bad) {
                     errBox.textContent = ct('err_review_rating');
                     errBox.classList.add('show');
-                    if (starInput && selectedRating < 1) starInput.classList.add('field-invalid');
+                    if (selectedRating < 1 && starInput) starInput.classList.add('field-invalid');
+                    if (!reviewName && nameEl) nameEl.classList.add('field-invalid');
+                    if (!isValidEmail(reviewEmail) && emailEl) emailEl.classList.add('field-invalid');
+                    if (reviewText.length < 3 && textEl) textEl.classList.add('field-invalid');
+                    errBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     return;
                 }
                 errBox.classList.remove('show');
-                if (starInput) starInput.classList.remove('field-invalid');
 
                 if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_REVIEW_TEMPLATE_ID && typeof emailjs !== 'undefined') {
                     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_REVIEW_TEMPLATE_ID, {
