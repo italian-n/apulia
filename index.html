@@ -3437,7 +3437,7 @@ function gtag_report_conversion(url) {
         // the REVIEWS section below for full setup steps). Leave this empty
         // and the review form will fall back to a pre-filled mailto: link,
         // so reviews still reach you even before you create the template.
-        const EMAILJS_REVIEW_TEMPLATE_ID = '';
+        const EMAILJS_REVIEW_TEMPLATE_ID = 'template_25wj3ah';
 
         if (EMAILJS_PUBLIC_KEY && typeof emailjs !== 'undefined') {
             try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch (e) { console.warn('EmailJS init failed:', e); }
