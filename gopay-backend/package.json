@@ -1,0 +1,9 @@
+{
+  "name": "apulia-gopay-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tiny serverless backend that creates GoPay payments for apuliaoliveoil.cz (a static site with no server of its own).",
+  "engines": {
+    "node": ">=18"
+  }
+}
