@@ -3439,6 +3439,18 @@ function gtag_report_conversion(url) {
         // so reviews still reach you even before you create the template.
         const EMAILJS_REVIEW_TEMPLATE_ID = 'template_25wj3ah';
 
+        // ===== GOPAY (card payment gateway) =====
+        // URL of the tiny backend that talks to GoPay on the site's behalf
+        // (GoPay's Client Secret can never be exposed in browser code, so
+        // this small serverless API is deployed separately — see
+        // gopay-backend/README.md for deployment steps). Leave empty and
+        // card payments quietly fall back to the old "we'll contact you"
+        // flow until it's filled in.
+        const GOPAY_BACKEND_URL = '';
+        // The exact text used for the "pay by card" radio option below —
+        // must match the <input value="..."> for the branch to trigger.
+        const GOPAY_PAYMENT_VALUE = 'Platební karta (platební brána)';
+
         if (EMAILJS_PUBLIC_KEY && typeof emailjs !== 'undefined') {
             try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch (e) { console.warn('EmailJS init failed:', e); }
         }
@@ -3697,30 +3709,125 @@ function gtag_report_conversion(url) {
             // (the floating button and "Ask a question" link in the cart),
             // so placing an order no longer opens or touches WhatsApp at all.
             const lines = cart.map(i => `${i.name} (${i.weight}) x${i.qty} — ${(i.price * i.qty).toLocaleString('cs-CZ')} Kč`).join('\n');
+            const orderData = {
+                lines, name, phone, email, address,
+                deliveryLabel: `${DELIVERY_LABEL_CS(delivery.key)} (${delivery.price} Kč)`,
+                payment, total
+            };
 
-            // Automatic email notification (only runs once the three
-            // EMAILJS_* constants above are filled in — see setup notes
-            // there).
-            if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && typeof emailjs !== 'undefined') {
-                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                    to_email: NOTIFY_EMAIL,
-                    customer_email: email,
-                    order_text: lines,
-                    customer_name: name,
-                    customer_phone: phone,
-                    customer_address: address || '—',
-                    delivery: `${DELIVERY_LABEL_CS(delivery.key)} (${delivery.price} Kč)`,
-                    payment: payment,
-                    total: total.toLocaleString('cs-CZ') + ' Kč'
-                }).catch(err => console.warn('EmailJS send failed:', err));
+            // Card payments go through GoPay: the browser is sent to
+            // GoPay's hosted payment page, and the order is only finalized
+            // (email sent, cart cleared) once the customer is back and the
+            // backend has confirmed the payment actually went through —
+            // see handleGopayReturn() below. Every other payment method
+            // (cash on delivery, bank transfer) finalizes immediately, same
+            // as before.
+            if (payment === GOPAY_PAYMENT_VALUE && GOPAY_BACKEND_URL) {
+                startGopayPayment(orderData).catch(err => {
+                    console.warn('GoPay payment start failed:', err);
+                    showCheckoutError([]);
+                    const errBox = document.getElementById('checkoutError');
+                    if (errBox) {
+                        errBox.textContent = 'Platbu se nepodařilo spustit. Zkuste to prosím znovu nebo zvolte jiný způsob platby.';
+                        errBox.classList.add('show');
+                    }
+                });
+                return;
             }
 
+            finalizeOrder(orderData);
             saveCart([]);
             renderCart();
             closeCheckout();
             e.target.reset();
             showOrderSuccess();
         });
+
+        // Sends the seller notification email for a completed order. Shared
+        // by the normal (cash/bank transfer) flow above and by the GoPay
+        // return handler below, once a card payment is confirmed paid.
+        function finalizeOrder(orderData) {
+            if (EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && typeof emailjs !== 'undefined') {
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: NOTIFY_EMAIL,
+                    customer_email: orderData.email,
+                    order_text: orderData.lines,
+                    customer_name: orderData.name,
+                    customer_phone: orderData.phone,
+                    customer_address: orderData.address || '—',
+                    delivery: orderData.deliveryLabel,
+                    payment: orderData.payment,
+                    total: orderData.total.toLocaleString('cs-CZ') + ' Kč'
+                }).catch(err => console.warn('EmailJS send failed:', err));
+            }
+        }
+
+        // Calls the GoPay backend to create a payment, stashes the order
+        // details locally (keyed by order number) so they survive the
+        // round trip to GoPay's payment page and back, then redirects the
+        // browser to GoPay.
+        async function startGopayPayment(orderData) {
+            const orderNumber = 'APO-' + Date.now();
+            const res = await fetch(GOPAY_BACKEND_URL.replace(/\/$/, '') + '/api/create-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderNumber,
+                    amountCzk: orderData.total,
+                    description: 'Apulia Olive Oil — objednávka ' + orderNumber,
+                    customer: { name: orderData.name, email: orderData.email, phone: orderData.phone }
+                })
+            });
+            const data = await res.json();
+            if (!res.ok || !data.gw_url) throw new Error(data.error || 'no gw_url returned');
+
+            try {
+                localStorage.setItem('gopay_pending_' + orderNumber, JSON.stringify({ id: data.id, order: orderData }));
+            } catch (e) {}
+
+            window.location.href = data.gw_url;
+        }
+
+        // Runs on every page load. If the URL shows we're coming back from
+        // GoPay (?gopay_order=...), verifies the payment status with the
+        // backend (never trusting the URL alone), then either finalizes
+        // the order (clears cart, sends the notification email, shows the
+        // success modal) or lets the customer know the payment didn't go
+        // through, without touching their cart.
+        async function handleGopayReturn() {
+            const params = new URLSearchParams(window.location.search);
+            const orderNumber = params.get('gopay_order');
+            if (!orderNumber || !GOPAY_BACKEND_URL) return;
+
+            // Clean the query string immediately so a page refresh doesn't
+            // re-run this.
+            const cleanUrl = window.location.pathname + window.location.hash;
+            window.history.replaceState({}, '', cleanUrl);
+
+            let pending;
+            try {
+                pending = JSON.parse(localStorage.getItem('gopay_pending_' + orderNumber) || 'null');
+            } catch (e) { pending = null; }
+            if (!pending) return;
+
+            try {
+                const res = await fetch(GOPAY_BACKEND_URL.replace(/\/$/, '') + '/api/payment-status?id=' + encodeURIComponent(pending.id));
+                const data = await res.json();
+                if (data.state === 'PAID') {
+                    finalizeOrder(pending.order);
+                    saveCart([]);
+                    renderCart();
+                    showOrderSuccess();
+                } else {
+                    alert('Platba nebyla dokončena (stav: ' + (data.state || 'neznámý') + '). Košík zůstává zachovaný, zkuste to prosím znovu.');
+                }
+            } catch (err) {
+                console.warn('GoPay return handling failed:', err);
+            } finally {
+                localStorage.removeItem('gopay_pending_' + orderNumber);
+            }
+        }
+        handleGopayReturn();
 
         function DELIVERY_LABEL_CS(key) {
             const cs = translations.cs;
