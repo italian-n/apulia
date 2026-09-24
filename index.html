@@ -3446,7 +3446,7 @@ function gtag_report_conversion(url) {
         // gopay-backend/README.md for deployment steps). Leave empty and
         // card payments quietly fall back to the old "we'll contact you"
         // flow until it's filled in.
-        const GOPAY_BACKEND_URL = '';
+        const GOPAY_BACKEND_URL = 'https://apulia-gopay-backend.vercel.app';
         // The exact text used for the "pay by card" radio option below —
         // must match the <input value="..."> for the branch to trigger.
         const GOPAY_PAYMENT_VALUE = 'Platební karta (platební brána)';
