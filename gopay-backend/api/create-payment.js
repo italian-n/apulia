@@ -1,5 +1,6 @@
 const { createPayment } = require('../lib/gopay');
 const { withCors } = require('../lib/cors');
+const { getConfig } = require('../lib/config');
 
 // POST /api/create-payment
 //
@@ -29,16 +30,22 @@ module.exports = async (req, res) => {
             return;
         }
 
-        const siteUrl = (process.env.ALLOWED_ORIGIN || 'https://apuliaoliveoil.cz').replace(/\/$/, '');
-        const backendUrl = (process.env.BACKEND_URL || '').replace(/\/$/, '');
+        const config = getConfig(); // throws loudly if BACKEND_URL is missing/placeholder — see lib/config.js
+        const siteUrl = config.allowedOrigin;
+        const backendUrl = config.backendUrl;
         const path = returnPath && returnPath.startsWith('/') ? returnPath : '/';
 
         // GoPay wants the amount in the currency's smallest unit's *100
         // form it calls "amount" — i.e. hundredths of a crown (halíře).
         const amountInHaliru = Math.round(Number(amountCzk) * 100);
 
+        // Logged on every payment so a wrong notification_url shows up in
+        // Vercel logs immediately, instead of only surfacing days later as
+        // a support email from GoPay about repeated 404s.
+        console.log(`[create-payment] order=${orderNumber} notification_url=${backendUrl}/api/gopay-notify`);
+
         const payload = {
-            target: { type: 'ACCOUNT', goid: process.env.GOPAY_GOID },
+            target: { type: 'ACCOUNT', goid: config.goid },
             amount: amountInHaliru,
             currency: 'CZK',
             order_number: String(orderNumber),
@@ -48,7 +55,7 @@ module.exports = async (req, res) => {
             ],
             callback: {
                 return_url: `${siteUrl}${path}?gopay_order=${encodeURIComponent(orderNumber)}`,
-                notification_url: backendUrl ? `${backendUrl}/api/gopay-notify` : undefined
+                notification_url: `${backendUrl}/api/gopay-notify`
             },
             payer: {
                 default_payment_instrument: 'PAYMENT_CARD',
