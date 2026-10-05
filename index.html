@@ -1717,7 +1717,7 @@ function gtag_report_conversion(url) {
         .opt-logo.has-img svg { display: none; }
         .opt-logo img.logo-full { height: 36px; width: auto; max-height: 36px; max-width: 84px; }
         .opt-logo img.logo-wide { height: auto; width: auto; max-height: 26px; max-width: 76px; }
-        .opt-logo img.logo-sq { height: 30px; width: auto; max-height: 30px; max-width: 40px; }
+        .opt-logo img.logo-sq { height: 32px; width: auto; max-height: 32px; max-width: 44px; }
         .opt-logo.pair img { max-width: 25px; max-height: 18px; }
         .opt-logo.gold { background: rgba(212,175,55,0.15); color: var(--gold-400); }
         .opt-text { flex: 1; line-height: 1.3; }
@@ -3564,7 +3564,7 @@ function gtag_report_conversion(url) {
             const DELIVERY_VISUAL = {
                 zasilkovna: { imgClass: 'logo-wide', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>', img: 'img/carriers/zasilkovna.png', alt: 'Zásilkovna', cls: '' },
                 balik_doruky: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13v10H1z"/><path d="M14 9h4l4 4v3h-8"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>', img: 'img/carriers/ceska-posta.png', alt: 'Česká pošta', cls: '' },
-                osobne: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>', img: null, alt: '', cls: ' gold' }
+                osobne: { imgClass: 'logo-sq', img: 'img/carriers/osobni-odber.png', alt: 'Osobní odběr v Brně', cls: '', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>' }
             };
             deliveryWrap.innerHTML = DELIVERY.map((d, idx) => {
                 const v = DELIVERY_VISUAL[d.id] || DELIVERY_VISUAL.osobne;
