@@ -1808,11 +1808,11 @@ function gtag_report_conversion(url) {
         .olive-cursor-on input, .olive-cursor-on textarea, .olive-cursor-on select, .olive-cursor-on [contenteditable] { cursor: text !important; }
         #oliveCursor, #oliveRing { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999; opacity: 0; transition: opacity .25s; will-change: transform; }
         #oliveCursor.show, #oliveRing.show { opacity: 1; }
-        #oliveCursor svg { display: block; width: 30px; height: 30px; margin: -15px 0 0 -15px; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.55)) drop-shadow(0 0 8px rgba(163,177,138,0.45)); transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
+        #oliveCursor svg { display: block; width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.55)) drop-shadow(0 0 5px rgba(163,177,138,0.45)); transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
         #oliveCursor.hover svg { transform: scale(1.3) rotate(-14deg); }
         #oliveCursor.down svg { transform: scale(0.82) rotate(8deg); }
-        #oliveRing { width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; border: 1px solid rgba(201,169,110,0.55); box-shadow: 0 0 22px rgba(201,169,110,0.18), inset 0 0 14px rgba(201,169,110,0.10); transition: opacity .25s, width .3s, height .3s, margin .3s, border-color .3s; }
-        #oliveRing.hover { width: 64px; height: 64px; margin: -32px 0 0 -32px; border-color: rgba(212,184,122,0.9); }
+        #oliveRing { width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; border: 1px solid rgba(201,169,110,0.55); box-shadow: 0 0 22px rgba(201,169,110,0.18), inset 0 0 14px rgba(201,169,110,0.10); transition: opacity .25s, width .3s, height .3s, margin .3s, border-color .3s; }
+        #oliveRing.hover { width: 32px; height: 32px; margin: -16px 0 0 -16px; border-color: rgba(212,184,122,0.9); }
         .olive-spark { position: fixed; z-index: 99998; pointer-events: none; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: radial-gradient(circle, #f1e3bd 0%, #c9a96e 55%, rgba(201,169,110,0) 72%); animation: oliveSpark .75s ease-out forwards; }
         @keyframes oliveSpark { from { opacity: .9; transform: translate(0,0) scale(1); } to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2); } }
         @media (prefers-reduced-motion: reduce) {
@@ -4032,6 +4032,8 @@ function gtag_report_conversion(url) {
               text: "Skvělý olivový olej z Itálie! Kvalitní olej s příjemnou chutí a vůní. Výborný do salátů, na vaření i pro každodenní použití. Oceňuji přímý dovoz z Apulie, kvalitní balení a profesionální přístup. Doporučuji všem, kteří mají rádi pravou italskou kvalitu!" },
             { name: "Anonymní zákazník", rating: 5, date: "2026-09-20",
               text: "🫒 Výborný olej! 😍 Moc nám chutná, určitě objednáme znovu. ❤️" },
+            { name: "Viktoria", rating: 5, date: "2026-10-05",
+              text: "Very positive! For cosmetic purposes it is a very good choice, especially the quality and the price. I recommend it." },
         ];
 
         function starsHTML(rating, size) {
