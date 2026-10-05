@@ -25,7 +25,13 @@ module.exports = async (req, res) => {
 
     try {
         const data = await getPaymentStatus(id);
-        res.status(200).json({ state: data.state, order_number: data.order_number });
+        res.status(200).json({
+            state: data.state,
+            order_number: data.order_number,
+            amount: data.amount,       // in haléře — the site verifies it against the order total
+            currency: data.currency,
+            sub_state: data.sub_state
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Could not fetch payment status', detail: String(err.message || err) });

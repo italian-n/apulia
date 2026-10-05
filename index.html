@@ -2266,6 +2266,14 @@ function gtag_report_conversion(url) {
             </div>
         </div>
         <div class="footer-bottom">
+            <div class="pay-logos" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-bottom:14px;">
+                <a href="https://www.gopay.cz" target="_blank" rel="noopener" aria-label="GoPay – platební brána"><img src="img/payments/gopay.png" alt="GoPay" style="height:28px;width:auto;" onerror="this.outerHTML='<span style=&quot;color:#fff;font-weight:700;&quot;>GoPay</span>'"></a>
+                <img src="img/payments/visa.png" alt="VISA" style="height:22px;width:auto;" onerror="this.remove()">
+                <img src="img/payments/mastercard.png" alt="Mastercard" style="height:26px;width:auto;" onerror="this.remove()">
+                <img src="img/payments/verified-by-visa.png" alt="Verified by VISA" style="height:26px;width:auto;" onerror="this.remove()">
+                <img src="img/payments/mastercard-securecode.png" alt="Mastercard SecureCode" style="height:26px;width:auto;" onerror="this.remove()">
+            </div>
+            <div class="footer-copy" style="margin-bottom:6px;">Prodávající: Eduard Korolov, OSVČ, IČO 22154396, není plátcem DPH · Terezy Novákové 178/29, Řečkovice, 621 00 Brno · +420 604 264 270</div>
             <div class="footer-copy" data-i18n="footer_copy">© 2026 Apulia Olive Oil CZ — Exkluzivní distribuce pro ČR</div>
             <div style="margin-top:10px;"><a href="legal.html" style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:underline;">Obchodní podmínky · Reklamační řád · GDPR</a></div>
         </div>
@@ -2753,6 +2761,7 @@ function gtag_report_conversion(url) {
                 <label data-i18n="co_payment">Způsob platby</label>
                 <div class="payment-options">
                     <label class="delivery-option"><input type="radio" name="payment" value="Platební karta (platební brána)" checked> <span data-i18n="pay_card">Platební karta</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Online převod (platební brána)"> <span data-i18n="pay_gopay_bank">Online převod z účtu (GoPay)</span></label>
                     <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> <span data-i18n="pay_cash">Hotově při převzetí</span></label>
                     <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> <span data-i18n="pay_transfer">Bankovní převod</span></label>
                 </div>
@@ -2768,7 +2777,7 @@ function gtag_report_conversion(url) {
     <div class="checkout-box order-success-box">
         <button class="checkout-close" id="orderSuccessClose"><i data-lucide="x"></i></button>
         <div class="order-success-icon"><i data-lucide="check"></i></div>
-        <h3 data-i18n="order_success_title">Objednávka odeslána</h3>
+        <h3 data-i18n="order_success_title" id="orderSuccessTitle">Objednávka odeslána</h3>
         <p class="checkout-sub" id="orderSuccessText"></p>
         <button type="button" class="checkout-submit" id="orderSuccessOk" data-i18n="order_success_ok">Zavřít</button>
     </div>
@@ -2833,6 +2842,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Máte problém s odesláním objednávky? Napište nám na {wa} nebo na {email}.",
             co_delivery: "Způsob doručení", co_payment: "Způsob platby",
             pay_card: "Platební karta", pay_cash: "Hotově při převzetí", pay_transfer: "Bankovní převod",
+            pay_gopay_bank: "Online převod z účtu (GoPay)", pay_pending: "Platba čeká na potvrzení banky. Jakmile ji obdržíme, pošleme Vám potvrzení e-mailem.", pay_failed: "Platba nebyla dokončena, nic Vám nebylo strženo. Košík zůstává zachovaný – zkuste to prosím znovu nebo zvolte jiný způsob platby.", pay_verify_error: "Platbu se nepodařilo ověřit. Pokud Vám byla částka stržena, kontaktujte nás prosím – objednávku dohledáme.", pay_status_title: "Stav platby",
             co_submit: "Odeslat objednávku",
             order_confirm: "Děkujeme za objednávku! Byla odeslána prodávajícímu. Brzy vás budeme kontaktovat s potvrzením a platebními údaji.",
             order_confirm_paid: "Děkujeme! Platba proběhla úspěšně a objednávka byla odeslána prodávajícímu. Potvrzení jsme Vám poslali e-mailem.",
@@ -2899,6 +2909,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Having trouble placing the order? Message us on {wa} or email {email}.",
             co_delivery: "Delivery method", co_payment: "Payment method",
             pay_card: "Card payment", pay_cash: "Cash on pick-up", pay_transfer: "Bank transfer",
+            pay_gopay_bank: "Online bank transfer (GoPay)", pay_pending: "Your payment is awaiting confirmation from the bank. We'll email you as soon as it arrives.", pay_failed: "The payment was not completed and nothing was charged. Your cart is kept – please try again or choose another payment method.", pay_verify_error: "We couldn't verify the payment. If you were charged, please contact us and we'll find your order.", pay_status_title: "Payment status",
             co_submit: "Send order",
             order_confirm: "Thank you for your order! It has been sent to the seller. We'll contact you shortly to confirm it and share payment details.",
             order_confirm_paid: "Thank you! Your payment was successful and the order has been sent to the seller. We've emailed you a confirmation.",
@@ -2965,6 +2976,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Виникла проблема з оформленням замовлення? Напишіть нам у {wa} або на {email}.",
             co_delivery: "Спосіб доставки", co_payment: "Спосіб оплати",
             pay_card: "Оплата карткою", pay_cash: "Готівкою при отриманні", pay_transfer: "Банківський переказ",
+            pay_gopay_bank: "Онлайн-переказ з рахунку (GoPay)", pay_pending: "Платіж очікує підтвердження банку. Щойно ми його отримаємо, надішлемо підтвердження на e-mail.", pay_failed: "Оплату не завершено, кошти не списано. Кошик збережено – спробуйте ще раз або оберіть інший спосіб оплати.", pay_verify_error: "Не вдалося перевірити платіж. Якщо кошти списано, зв'яжіться з нами – ми знайдемо замовлення.", pay_status_title: "Статус платежу",
             co_submit: "Надіслати замовлення",
             order_confirm: "Дякуємо за замовлення! Його надіслано продавцю. Незабаром ми зв'яжемося з вами для підтвердження та надання платіжних реквізитів.",
             order_confirm_paid: "Дякуємо! Оплата пройшла успішно, замовлення надіслано продавцю. Підтвердження ми надіслали вам на e-mail.",
@@ -3031,6 +3043,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Возникла проблема с оформлением заказа? Напишите нам в {wa} или на {email}.",
             co_delivery: "Способ доставки", co_payment: "Способ оплаты",
             pay_card: "Оплата картой", pay_cash: "Наличными при получении", pay_transfer: "Банковский перевод",
+            pay_gopay_bank: "Онлайн-перевод со счёта (GoPay)", pay_pending: "Платёж ожидает подтверждения банка. Как только он поступит, мы отправим подтверждение на e-mail.", pay_failed: "Оплата не завершена, средства не списаны. Корзина сохранена – попробуйте снова или выберите другой способ оплаты.", pay_verify_error: "Не удалось проверить платёж. Если средства списаны, свяжитесь с нами – мы найдём заказ.", pay_status_title: "Статус платежа",
             co_submit: "Отправить заказ",
             order_confirm: "Спасибо за заказ! Он отправлен продавцу. Мы скоро свяжемся с вами для подтверждения и платёжных реквизитов.",
             order_confirm_paid: "Спасибо! Оплата прошла успешно, заказ отправлен продавцу. Подтверждение мы отправили вам на e-mail.",
@@ -3097,6 +3110,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Problemi con l'ordine? Scrivici su {wa} o via email a {email}.",
             co_delivery: "Modalità di consegna", co_payment: "Modalità di pagamento",
             pay_card: "Carta di pagamento", pay_cash: "Contanti al ritiro", pay_transfer: "Bonifico bancario",
+            pay_gopay_bank: "Bonifico online (GoPay)", pay_pending: "Il pagamento è in attesa di conferma dalla banca. Appena arriva, ti invieremo la conferma via e-mail.", pay_failed: "Il pagamento non è stato completato e non è stato addebitato nulla. Il carrello è stato conservato – riprova o scegli un altro metodo di pagamento.", pay_verify_error: "Non è stato possibile verificare il pagamento. Se l'importo è stato addebitato, contattaci e troveremo l'ordine.", pay_status_title: "Stato del pagamento",
             co_submit: "Invia ordine",
             order_confirm: "Grazie per il tuo ordine! È stato inviato al venditore. Ti contatteremo a breve per confermarlo e per i dettagli di pagamento.",
             order_confirm_paid: "Grazie! Il pagamento è andato a buon fine e l'ordine è stato inviato al venditore. Ti abbiamo inviato una conferma via e-mail.",
@@ -3163,6 +3177,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Probleme bei der Bestellung? Schreiben Sie uns auf {wa} oder per E-Mail an {email}.",
             co_delivery: "Versandart", co_payment: "Zahlungsart",
             pay_card: "Kartenzahlung", pay_cash: "Bar bei Abholung", pay_transfer: "Banküberweisung",
+            pay_gopay_bank: "Online-Überweisung (GoPay)", pay_pending: "Ihre Zahlung wartet auf die Bestätigung der Bank. Sobald sie eingeht, senden wir Ihnen eine Bestätigung per E-Mail.", pay_failed: "Die Zahlung wurde nicht abgeschlossen, es wurde nichts abgebucht. Ihr Warenkorb bleibt erhalten – bitte versuchen Sie es erneut oder wählen Sie eine andere Zahlungsart.", pay_verify_error: "Die Zahlung konnte nicht verifiziert werden. Falls der Betrag abgebucht wurde, kontaktieren Sie uns bitte.", pay_status_title: "Zahlungsstatus",
             co_submit: "Bestellung senden",
             order_confirm: "Vielen Dank für Ihre Bestellung! Sie wurde an den Verkäufer gesendet. Wir melden uns in Kürze zur Bestätigung und mit den Zahlungsdetails.",
             order_confirm_paid: "Vielen Dank! Die Zahlung war erfolgreich und die Bestellung wurde an den Verkäufer gesendet. Wir haben Ihnen eine Bestätigung per E-Mail geschickt.",
@@ -3229,6 +3244,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Masz problem ze złożeniem zamówienia? Napisz do nas na {wa} lub na {email}.",
             co_delivery: "Sposób dostawy", co_payment: "Sposób płatności",
             pay_card: "Płatność kartą", pay_cash: "Gotówka przy odbiorze", pay_transfer: "Przelew bankowy",
+            pay_gopay_bank: "Przelew online (GoPay)", pay_pending: "Płatność oczekuje na potwierdzenie banku. Gdy tylko ją otrzymamy, wyślemy potwierdzenie e-mailem.", pay_failed: "Płatność nie została ukończona, nic nie pobrano. Koszyk został zachowany – spróbuj ponownie lub wybierz inną metodę płatności.", pay_verify_error: "Nie udało się zweryfikować płatności. Jeśli kwota została pobrana, skontaktuj się z nami.", pay_status_title: "Status płatności",
             co_submit: "Wyślij zamówienie",
             order_confirm: "Dziękujemy za zamówienie! Zostało wysłane do sprzedawcy. Wkrótce skontaktujemy się z Tobą w celu potwierdzenia i przekazania danych do płatności.",
             order_confirm_paid: "Dziękujemy! Płatność przebiegła pomyślnie, a zamówienie zostało wysłane do sprzedawcy. Potwierdzenie wysłaliśmy na Twój e-mail.",
@@ -3295,6 +3311,7 @@ function gtag_report_conversion(url) {
             err_contact_help: "Máte problém s odoslaním objednávky? Napíšte nám na {wa} alebo na {email}.",
             co_delivery: "Spôsob doručenia", co_payment: "Spôsob platby",
             pay_card: "Platobná karta", pay_cash: "Hotovosť pri prevzatí", pay_transfer: "Bankový prevod",
+            pay_gopay_bank: "Online prevod z účtu (GoPay)", pay_pending: "Platba čaká na potvrdenie banky. Hneď ako ju prijmeme, pošleme potvrdenie e-mailom.", pay_failed: "Platba nebola dokončená, nič vám nebolo stiahnuté. Košík zostáva zachovaný – skúste to prosím znova alebo zvoľte iný spôsob platby.", pay_verify_error: "Platbu sa nepodarilo overiť. Ak vám bola suma stiahnutá, kontaktujte nás.", pay_status_title: "Stav platby",
             co_submit: "Odoslať objednávku",
             order_confirm: "Ďakujeme za objednávku! Bola odoslaná predávajúcemu. Čoskoro sa vám ozveme s potvrdením a platobnými údajmi.",
             order_confirm_paid: "Ďakujeme! Platba prebehla úspešne a objednávka bola odoslaná predávajúcemu. Potvrdenie sme vám poslali e-mailom.",
@@ -3462,6 +3479,7 @@ function gtag_report_conversion(url) {
         // The exact text used for the "pay by card" radio option below —
         // must match the <input value="..."> for the branch to trigger.
         const GOPAY_PAYMENT_VALUE = 'Platební karta (platební brána)';
+        const GOPAY_BANK_VALUE = 'Online převod (platební brána)';
 
         if (EMAILJS_PUBLIC_KEY && typeof emailjs !== 'undefined') {
             try { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); } catch (e) { console.warn('EmailJS init failed:', e); }
@@ -3609,8 +3627,12 @@ function gtag_report_conversion(url) {
 
         // Styled order-success confirmation, shown instead of a plain
         // browser alert() once the order has been sent.
-        function showOrderSuccess(paidByCard) {
-            document.getElementById('orderSuccessText').textContent = ct(paidByCard ? 'order_confirm_paid' : 'order_confirm');
+        function showOrderSuccess(paidByCard, noticeKey) {
+            // noticeKey shows a payment-status notice (pending / failed)
+            // in the same modal instead of the "order sent" success text.
+            const title = document.getElementById('orderSuccessTitle');
+            if (title) title.textContent = ct(noticeKey ? 'pay_status_title' : 'order_success_title');
+            document.getElementById('orderSuccessText').textContent = ct(noticeKey || (paidByCard ? 'order_confirm_paid' : 'order_confirm'));
             document.getElementById('orderSuccessModal').classList.add('open');
             document.getElementById('orderSuccessOverlay').classList.add('open');
             document.body.style.overflow = 'hidden';
@@ -3724,7 +3746,10 @@ function gtag_report_conversion(url) {
             const orderData = {
                 lines, name, phone, email, address,
                 deliveryLabel: `${DELIVERY_LABEL_CS(delivery.key)} (${delivery.price} Kč)`,
-                payment, total
+                payment, total,
+                // used by the GoPay backend, which recomputes all prices itself
+                items: cart.map(i => ({ id: i.id, qty: i.qty })),
+                deliveryId: delivery.id
             };
 
             // Card payments go through GoPay: the browser is sent to
@@ -3734,7 +3759,7 @@ function gtag_report_conversion(url) {
             // see handleGopayReturn() below. Every other payment method
             // (cash on delivery, bank transfer) finalizes immediately, same
             // as before.
-            if (payment === GOPAY_PAYMENT_VALUE && GOPAY_BACKEND_URL) {
+            if ((payment === GOPAY_PAYMENT_VALUE || payment === GOPAY_BANK_VALUE) && GOPAY_BACKEND_URL) {
                 startGopayPayment(orderData).catch(err => {
                     console.warn('GoPay payment start failed:', err);
                     showCheckoutError([]);
@@ -3789,14 +3814,17 @@ function gtag_report_conversion(url) {
         // round trip to GoPay's payment page and back, then redirects the
         // browser to GoPay.
         async function startGopayPayment(orderData) {
-            const orderNumber = 'APO-' + Date.now();
+            // Unique per attempt (GoPay requires unique order numbers).
+            const orderNumber = 'APO-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
             const res = await fetch(GOPAY_BACKEND_URL.replace(/\/$/, '') + '/api/create-payment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     orderNumber,
-                    amountCzk: orderData.total,
-                    description: 'Apulia Olive Oil — objednávka ' + orderNumber,
+                    items: orderData.items,
+                    deliveryId: orderData.deliveryId,
+                    method: orderData.payment === GOPAY_BANK_VALUE ? 'bank' : 'card',
+                    lang: currentLang(),
                     customer: { name: orderData.name, email: orderData.email, phone: orderData.phone }
                 })
             });
@@ -3811,42 +3839,61 @@ function gtag_report_conversion(url) {
         }
 
         // Runs on every page load. If the URL shows we're coming back from
-        // GoPay (?gopay_order=...), verifies the payment status with the
-        // backend (never trusting the URL alone), then either finalizes
-        // the order (clears cart, sends the notification email, shows the
-        // success modal) or lets the customer know the payment didn't go
-        // through, without touching their cart.
+        // GoPay (?gopay_order=...&id=...), verifies the payment with the
+        // backend (never trusting the URL alone) and handles every state:
+        //   PAID                      -> verify amount, finalize order, success
+        //   CREATED / PAYMENT_METHOD_CHOSEN / AUTHORIZED -> "awaiting payment"
+        //   CANCELED / TIMEOUTED / other -> unsuccessful, cart kept
         async function handleGopayReturn() {
             const params = new URLSearchParams(window.location.search);
             const orderNumber = params.get('gopay_order');
             if (!orderNumber || !GOPAY_BACKEND_URL) return;
+            const urlPaymentId = params.get('id'); // GoPay appends ?id=<payment id>
 
             // Clean the query string immediately so a page refresh doesn't
             // re-run this.
             const cleanUrl = window.location.pathname + window.location.hash;
             window.history.replaceState({}, '', cleanUrl);
 
-            let pending;
+            let pending = null;
             try {
                 pending = JSON.parse(localStorage.getItem('gopay_pending_' + orderNumber) || 'null');
             } catch (e) { pending = null; }
-            if (!pending) return;
+            const paymentId = (pending && pending.id) || urlPaymentId;
+            if (!paymentId) return;
 
+            let final = false;
             try {
-                const res = await fetch(GOPAY_BACKEND_URL.replace(/\/$/, '') + '/api/payment-status?id=' + encodeURIComponent(pending.id));
+                const res = await fetch(GOPAY_BACKEND_URL.replace(/\/$/, '') + '/api/payment-status?id=' + encodeURIComponent(paymentId));
                 const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'status failed');
+                if (data.order_number && data.order_number !== orderNumber) throw new Error('order number mismatch');
+
                 if (data.state === 'PAID') {
-                    finalizeOrder(pending.order);
+                    final = true;
+                    const expected = pending ? Math.round(pending.order.total * 100) : null;
+                    if (expected !== null && data.amount !== expected) {
+                        console.error('GoPay amount mismatch', data.amount, expected);
+                        showOrderSuccess(false, 'pay_verify_error');
+                        return;
+                    }
+                    if (pending) finalizeOrder(pending.order);
                     saveCart([]);
                     renderCart();
                     showOrderSuccess(true);
+                } else if (data.state === 'CREATED' || data.state === 'PAYMENT_METHOD_CHOSEN' || data.state === 'AUTHORIZED') {
+                    // e.g. bank transfer still being confirmed — keep the
+                    // pending record so nothing is lost.
+                    showOrderSuccess(false, 'pay_pending');
                 } else {
-                    alert('Platba nebyla dokončena (stav: ' + (data.state || 'neznámý') + '). Košík zůstává zachovaný, zkuste to prosím znovu.');
+                    final = true; // CANCELED, TIMEOUTED, ...
+                    showOrderSuccess(false, 'pay_failed');
                 }
             } catch (err) {
                 console.warn('GoPay return handling failed:', err);
+                showOrderSuccess(false, 'pay_verify_error');
             } finally {
-                localStorage.removeItem('gopay_pending_' + orderNumber);
+                if (final) { try { localStorage.removeItem('gopay_pending_' + orderNumber); } catch (e) {} }
             }
         }
         handleGopayReturn();

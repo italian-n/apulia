@@ -6,9 +6,12 @@
 //
 // Docs: https://doc.gopay.com/
 
-const GOPAY_BASE = process.env.GOPAY_ENV === 'production'
-    ? 'https://gate.gopay.com/api'
-    : 'https://gw.sandbox.gopay.com/api';
+// Production gateway for Czech merchants is gate.gopay.cz (per GoPay docs);
+// override with GOPAY_API_URL if GoPay ever tells you otherwise.
+const GOPAY_BASE = process.env.GOPAY_API_URL
+    || (process.env.GOPAY_ENV === 'production'
+        ? 'https://gate.gopay.cz/api'
+        : 'https://gw.sandbox.gopay.com/api');
 
 function requireEnv(name) {
     const v = process.env[name];
