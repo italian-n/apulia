@@ -1,5 +1,5 @@
 const { withCors } = require('../lib/cors');
-const { getConfig, maskSecret } = require('../lib/config');
+const { getConfig } = require('../lib/config');
 
 // GET /api/health
 //
@@ -19,17 +19,10 @@ module.exports = async (req, res) => {
 
     try {
         const config = getConfig();
-        res.status(200).json({
-            ok: true,
-            gopayEnv: config.gopayEnv,
-            goid: config.goid,
-            clientId: config.clientId,
-            clientSecret: maskSecret(config.clientSecret),
-            allowedOrigin: config.allowedOrigin,
-            backendUrl: config.backendUrl,
-            notificationUrl: `${config.backendUrl}/api/gopay-notify`
-        });
+        // public endpoint: no ids, secrets or URLs
+        res.status(200).json({ ok: true, gopayEnv: config.gopayEnv });
     } catch (err) {
-        res.status(500).json({ ok: false, error: String(err.message || err) });
+        console.error('[health]', err.message || err);
+        res.status(500).json({ ok: false, error: 'Backend misconfigured – see Vercel logs' });
     }
 };

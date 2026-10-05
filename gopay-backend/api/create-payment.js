@@ -1,5 +1,6 @@
 const { createPayment } = require('../lib/gopay');
-const { withCors } = require('../lib/cors');
+const { withCors, foreignOrigin } = require('../lib/cors');
+const { rateLimit, clean } = require('../lib/guard');
 const { getConfig } = require('../lib/config');
 const { PRODUCTS, DELIVERY } = require('../lib/catalog');
 
@@ -26,17 +27,32 @@ module.exports = async (req, res) => {
         return;
     }
 
+    if (foreignOrigin(req)) {
+        res.status(403).json({ error: 'Forbidden' });
+        return;
+    }
+    if (!rateLimit(req, 'create-payment', 12, 60000)) {
+        res.status(429).json({ error: 'Too many requests, try again in a minute' });
+        return;
+    }
+
     try {
-        const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-        const { orderNumber, items: cartItems, deliveryId, method, customer, returnPath, lang, address } = body;
-        const addr = address && typeof address === 'object' ? address : {};
+        let body;
+        try { body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {}); }
+        catch (e) { res.status(400).json({ error: 'Invalid JSON' }); return; }
+        const { items: cartItems, deliveryId, method, returnPath, lang } = body;
+        const orderNumber = /^[A-Za-z0-9._-]{3,64}$/.test(String(body.orderNumber || '')) ? String(body.orderNumber) : '';
+        const rawAddr = body.address && typeof body.address === 'object' ? body.address : {};
+        const addr = { street: clean(rawAddr.street, 80), city: clean(rawAddr.city, 60), postalCode: clean(rawAddr.postalCode, 12), country: clean(rawAddr.country, 40) };
+        const rawCust = body.customer && typeof body.customer === 'object' ? body.customer : null;
+        const customer = rawCust && { name: clean(rawCust.name, 80), email: clean(rawCust.email, 200), phone: clean(rawCust.phone, 30) };
 
         const emailOk = customer && typeof customer.email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email) && customer.email.length <= 200;
         if (customer && !emailOk) {
             res.status(400).json({ error: 'Invalid customer.email' });
             return;
         }
-        if (!orderNumber || !Array.isArray(cartItems) || !cartItems.length || !customer || !customer.email) {
+        if (!orderNumber || !Array.isArray(cartItems) || !cartItems.length || cartItems.length > 20 || !customer || !customer.email) {
             res.status(400).json({ error: 'Missing orderNumber, items or customer.email' });
             return;
         }
@@ -67,7 +83,7 @@ module.exports = async (req, res) => {
         }
         const amountInHaliru = items.reduce((sum, i) => sum + i.amount * i.count, 0);
 
-        const path = returnPath && returnPath.startsWith('/') ? returnPath : '/';
+        const path = typeof returnPath === 'string' && /^\/(?!\/)[A-Za-z0-9._~\/-]{0,100}$/.test(returnPath) ? returnPath : '/';
 
         // Logged on every payment so a wrong notification_url shows up in
         // Vercel logs immediately, instead of only surfacing days later as
@@ -142,6 +158,6 @@ module.exports = async (req, res) => {
         res.status(200).json({ gw_url: result.gw_url, id: result.id, orderNumber });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'GoPay payment creation failed', detail: String(err.message || err) });
+        res.status(500).json({ error: 'GoPay payment creation failed' });
     }
 };

@@ -16,6 +16,8 @@ function withCors(req, res) {
     const origin = req.headers && req.headers.origin;
     res.setHeader('Access-Control-Allow-Origin', allowed.includes(origin) ? origin : allowed[0]);
     res.setHeader('Vary', 'Origin');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Cache-Control', 'no-store');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -26,4 +28,10 @@ function withCors(req, res) {
     return false;
 }
 
-module.exports = { withCors };
+// true if the request carries an Origin header that is not our site
+function foreignOrigin(req) {
+    const origin = req.headers && req.headers.origin;
+    return !!origin && !allowedOrigins().includes(origin);
+}
+
+module.exports = { withCors, foreignOrigin };

@@ -1,6 +1,7 @@
 const { getPaymentStatus } = require('../lib/gopay');
 const { withCors } = require('../lib/cors');
 const { isEnabled } = require('../lib/email');
+const { rateLimit } = require('../lib/guard');
 
 // GET /api/payment-status?id=<gopay payment id>
 //
@@ -18,8 +19,13 @@ module.exports = async (req, res) => {
         return;
     }
 
+    if (!rateLimit(req, 'payment-status', 60, 60000)) {
+        res.status(429).json({ error: 'Too many requests' });
+        return;
+    }
+
     const id = req.query && req.query.id;
-    if (!id) {
+    if (!id || !/^\d{1,20}$/.test(String(id))) {
         res.status(400).json({ error: 'Missing id' });
         return;
     }
@@ -36,6 +42,6 @@ module.exports = async (req, res) => {
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Could not fetch payment status', detail: String(err.message || err) });
+        res.status(500).json({ error: 'Could not fetch payment status' });
     }
 };
