@@ -1715,6 +1715,7 @@ function gtag_report_conversion(url) {
         .opt-logo svg { width: 20px; height: 20px; }
         .opt-logo img { max-height: 24px; max-width: 52px; width: auto; object-fit: contain; background: #fff; }
         .opt-logo.has-img svg { display: none; }
+        .opt-logo img.logo-full { height: 36px; width: auto; max-height: 36px; max-width: 58px; }
         .opt-logo.pair img { max-width: 25px; max-height: 18px; }
         .opt-logo.gold { background: rgba(212,175,55,0.15); color: var(--gold-400); }
         .opt-text { flex: 1; line-height: 1.3; }
@@ -3565,7 +3566,7 @@ function gtag_report_conversion(url) {
             };
             deliveryWrap.innerHTML = DELIVERY.map((d, idx) => {
                 const v = DELIVERY_VISUAL[d.id] || DELIVERY_VISUAL.osobne;
-                const img = v.img ? `<img src="${v.img}" alt="${v.alt}" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')">` : '';
+                const img = v.img ? `<img class="logo-full" src="${v.img}" alt="${v.alt}" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')">` : '';
                 return `
                 <label class="delivery-option">
                     <input type="radio" name="delivery" value="${d.id}" ${(checkedId ? checkedId === d.id : idx === 0) ? 'checked' : ''}>
