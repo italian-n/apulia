@@ -3749,7 +3749,8 @@ function gtag_report_conversion(url) {
                 payment, total,
                 // used by the GoPay backend, which recomputes all prices itself
                 items: cart.map(i => ({ id: i.id, qty: i.qty })),
-                deliveryId: delivery.id
+                deliveryId: delivery.id,
+                addr: { street: street + (houseNumber ? ' ' + houseNumber : ''), city, postalCode, country }
             };
 
             // Card payments go through GoPay: the browser is sent to
@@ -3828,7 +3829,7 @@ function gtag_report_conversion(url) {
                     orderNumber,
                     items: orderData.items,
                     deliveryId: orderData.deliveryId,
-                    address: orderData.address,
+                    address: orderData.addr,
                     method: orderData.payment === GOPAY_BANK_VALUE ? 'bank' : 'card',
                     lang: currentLang(),
                     customer: { name: orderData.name, email: orderData.email, phone: orderData.phone }

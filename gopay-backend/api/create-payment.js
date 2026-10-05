@@ -3,6 +3,9 @@ const { withCors } = require('../lib/cors');
 const { getConfig } = require('../lib/config');
 const { PRODUCTS, DELIVERY } = require('../lib/catalog');
 
+// ISO 3166-1 alpha-3 codes GoPay expects for payer.contact.country_code
+const COUNTRY_CODES = { 'Czech Republic': 'CZE', 'Czechia': 'CZE', 'Slovakia': 'SVK', 'Germany': 'DEU', 'Poland': 'POL', 'Austria': 'AUT', 'Italy': 'ITA', 'Ukraine': 'UKR' };
+
 // POST /api/create-payment
 //
 // Body (all required unless noted):
@@ -26,6 +29,7 @@ module.exports = async (req, res) => {
     try {
         const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
         const { orderNumber, items: cartItems, deliveryId, method, customer, returnPath, lang, address } = body;
+        const addr = address && typeof address === 'object' ? address : {};
 
         const emailOk = customer && typeof customer.email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email) && customer.email.length <= 200;
         if (customer && !emailOk) {
@@ -90,20 +94,35 @@ module.exports = async (req, res) => {
                     first_name: (customer.name || '').split(' ')[0] || customer.name || 'Zákazník',
                     last_name: (customer.name || '').split(' ').slice(1).join(' ') || '-',
                     email: customer.email,
-                    phone_number: customer.phone || undefined
+                    phone_number: customer.phone || undefined,
+                    street: String(addr.street || '').slice(0, 80) || undefined,
+                    city: String(addr.city || '').slice(0, 60) || undefined,
+                    postal_code: String(addr.postalCode || '').replace(/\s/g, '').slice(0, 12) || undefined,
+                    country_code: COUNTRY_CODES[addr.country] || undefined
                 }
             },
             // echoed back by GoPay, lets the server-side e-mail (see
             // lib/email.js) rebuild the full order without any database
             additional_params: [
                 { name: 'delivery', value: String(deliveryId) },
-                { name: 'method', value: method === 'bank' ? 'bank' : 'card' },
-                { name: 'address', value: String(address || '').slice(0, 200) }
+                { name: 'method', value: method === 'bank' ? 'bank' : 'card' }
             ],
             lang: ['CS','EN','DE','SK','PL','UK','RU','IT'].includes(String(lang||'').toUpperCase()) ? String(lang).toUpperCase() : 'CS'
         };
 
-        const result = await createPayment(payload);
+        let result;
+        try {
+            result = await createPayment(payload);
+        } catch (err) {
+            // Optional extras (address, additional params) must never block a
+            // payment: if GoPay rejects them, retry once with the bare minimum.
+            if (!/\((400|409)\)/.test(String(err.message))) throw err;
+            console.warn(`[create-payment] retrying without optional fields: ${String(err.message).slice(0, 300)}`);
+            const c = payload.payer.contact;
+            payload.payer.contact = { first_name: c.first_name, last_name: c.last_name, email: c.email, phone_number: c.phone_number };
+            payload.additional_params = [];
+            result = await createPayment(payload);
+        }
         res.status(200).json({ gw_url: result.gw_url, id: result.id, orderNumber });
     } catch (err) {
         console.error(err);

@@ -18,6 +18,9 @@ const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'eddigood2020@gmail.com';
 
 const isEnabled = () => !!process.env.EMAILJS_PRIVATE_KEY;
 
+const COUNTRY_NAMES = { CZE: 'Czech Republic', SVK: 'Slovakia', DEU: 'Germany', POL: 'Poland', AUT: 'Austria', ITA: 'Italy', UKR: 'Ukraine' };
+const countryName = (c) => COUNTRY_NAMES[c] || '';
+
 const kc = (n) => `${Number(n).toLocaleString('cs-CZ')} Kč`;
 
 async function send(templateId, params) {
@@ -59,7 +62,7 @@ async function sendOrderEmails(payment) {
         order_text: lines,
         customer_name: `${contact.first_name || ''} ${contact.last_name && contact.last_name !== '-' ? contact.last_name : ''}`.trim(),
         customer_phone: contact.phone_number || '—',
-        customer_address: extra.address || '—',
+        customer_address: [contact.street, [contact.postal_code, contact.city].filter(Boolean).join(' '), countryName(contact.country_code)].filter(Boolean).join(', ') || '—',
         delivery: deliveryLabel,
         payment: isBank ? 'Online převod (platební brána) — zaplaceno' : 'Platební karta (platební brána) — zaplaceno',
         total: kc(payment.amount / 100)
