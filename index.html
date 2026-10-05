@@ -1842,8 +1842,10 @@ function gtag_report_conversion(url) {
       gtag('js', new Date());
       gtag('config', 'AW-18385297819');
     </script>
+    <link rel="stylesheet" href="css/bgfx.css">
 </head>
 <body>
+<div id="bgFx" aria-hidden="true"><div class="bgfx-glow"></div><canvas id="bgDots"></canvas><div class="bgfx-vignette"></div></div>
 
 <div class="cursor-glow" id="cursorGlow"></div>
 
@@ -4385,5 +4387,6 @@ function gtag_report_conversion(url) {
     } catch (e) { console.warn('olive cursor disabled:', e); }
 })();
 </script>
+<script src="js/bgfx.js" defer></script>
 </body>
 </html>
