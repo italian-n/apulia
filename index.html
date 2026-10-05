@@ -1711,11 +1711,13 @@ function gtag_report_conversion(url) {
         .delivery-option:hover { border-color: rgba(212,175,55,0.45); }
         .delivery-option:has(input:checked) { border-color: var(--gold-400); background: rgba(212,175,55,0.08); }
         .delivery-option input { accent-color: var(--gold-400); flex-shrink: 0; }
-        .opt-logo { position: relative; flex-shrink: 0; width: 58px; height: 36px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; gap: 3px; overflow: hidden; color: #6b6b6b; }
+        .opt-logo { position: relative; flex-shrink: 0; width: 84px; height: 36px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; gap: 3px; overflow: hidden; color: #6b6b6b; }
         .opt-logo svg { width: 20px; height: 20px; }
         .opt-logo img { max-height: 24px; max-width: 52px; width: auto; object-fit: contain; background: #fff; }
         .opt-logo.has-img svg { display: none; }
-        .opt-logo img.logo-full { height: 36px; width: auto; max-height: 36px; max-width: 58px; }
+        .opt-logo img.logo-full { height: 36px; width: auto; max-height: 36px; max-width: 84px; }
+        .opt-logo img.logo-wide { height: auto; width: auto; max-height: 26px; max-width: 76px; }
+        .opt-logo img.logo-sq { height: 30px; width: auto; max-height: 30px; max-width: 40px; }
         .opt-logo.pair img { max-width: 25px; max-height: 18px; }
         .opt-logo.gold { background: rgba(212,175,55,0.15); color: var(--gold-400); }
         .opt-text { flex: 1; line-height: 1.3; }
@@ -2776,8 +2778,8 @@ function gtag_report_conversion(url) {
                 <div class="payment-options">
                     <label class="delivery-option"><input type="radio" name="payment" value="Platební karta (platební brána)" checked> <span class="opt-logo pair has-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><img src="img/payments/visa.png" alt="VISA" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"><img src="img/payments/mastercard.png" alt="Mastercard" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"></span> <span class="opt-text" data-i18n="pay_card">Platební karta</span></label>
                     <label class="delivery-option"><input type="radio" name="payment" value="Online převod (platební brána)"> <span class="opt-logo has-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg><img src="img/payments/gopay.png" alt="GoPay" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"></span> <span class="opt-text" data-i18n="pay_gopay_bank">Online převod z účtu (GoPay)</span></label>
-                    <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> <span class="opt-logo gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></span> <span class="opt-text" data-i18n="pay_cash">Hotově při převzetí</span></label>
-                    <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> <span class="opt-logo gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg></span> <span class="opt-text" data-i18n="pay_transfer">Bankovní převod</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> <span class="opt-logo has-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><img class="logo-sq" src="img/payments/cash.png" alt="Hotově" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"></span> <span class="opt-text" data-i18n="pay_cash">Hotově při převzetí</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> <span class="opt-logo has-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg><img class="logo-sq" src="img/payments/bank.png" alt="Bankovní převod" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"></span> <span class="opt-text" data-i18n="pay_transfer">Bankovní převod</span></label>
                 </div>
             </div>
             <div class="checkout-error" id="checkoutError"></div>
@@ -3560,13 +3562,13 @@ function gtag_report_conversion(url) {
             const deliveryWrap = document.getElementById('deliveryOptions');
             const checkedId = (deliveryWrap.querySelector('input[name="delivery"]:checked') || {}).value;
             const DELIVERY_VISUAL = {
-                zasilkovna: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>', img: 'img/carriers/zasilkovna.png', alt: 'Zásilkovna', cls: '' },
+                zasilkovna: { imgClass: 'logo-wide', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>', img: 'img/carriers/zasilkovna.png', alt: 'Zásilkovna', cls: '' },
                 balik_doruky: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13v10H1z"/><path d="M14 9h4l4 4v3h-8"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>', img: 'img/carriers/ceska-posta.png', alt: 'Česká pošta', cls: '' },
                 osobne: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>', img: null, alt: '', cls: ' gold' }
             };
             deliveryWrap.innerHTML = DELIVERY.map((d, idx) => {
                 const v = DELIVERY_VISUAL[d.id] || DELIVERY_VISUAL.osobne;
-                const img = v.img ? `<img class="logo-full" src="${v.img}" alt="${v.alt}" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')">` : '';
+                const img = v.img ? `<img class="${v.imgClass || 'logo-full'}" src="${v.img}" alt="${v.alt}" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')">` : '';
                 return `
                 <label class="delivery-option">
                     <input type="radio" name="delivery" value="${d.id}" ${(checkedId ? checkedId === d.id : idx === 0) ? 'checked' : ''}>
