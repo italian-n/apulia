@@ -1753,6 +1753,73 @@ function gtag_report_conversion(url) {
             .checkout-box { padding: 22px; }
             .checkout-field-row { grid-template-columns: 1fr; gap: 0; }
         }
+
+        /* ===== Elite polish: themed scrollbars, glass checkout, olive cursor ===== */
+        html { scrollbar-width: thin; scrollbar-color: #8a7140 rgba(7,14,7,0.9); }
+        *::-webkit-scrollbar { width: 10px; height: 10px; }
+        *::-webkit-scrollbar-track { background: rgba(7,14,7,0.55); border-radius: 10px; }
+        *::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            border: 2px solid transparent; background-clip: padding-box;
+            background-image: linear-gradient(180deg, #d4b87a 0%, #a58a52 45%, #588157 100%);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
+        }
+        *::-webkit-scrollbar-thumb:hover { background-image: linear-gradient(180deg, #e8d3a0 0%, #c9a96e 50%, #6f9a6d 100%); }
+        *::-webkit-scrollbar-corner { background: transparent; }
+
+        /* glass checkout panel */
+        .checkout-box {
+            background: linear-gradient(155deg, rgba(34,52,34,0.58) 0%, rgba(10,18,10,0.50) 55%, rgba(24,38,22,0.56) 100%);
+            -webkit-backdrop-filter: blur(22px) saturate(150%);
+            backdrop-filter: blur(22px) saturate(150%);
+            border: 1px solid rgba(201,169,110,0.28);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 0 60px rgba(88,129,87,0.08);
+        }
+        .checkout-box h3 { background: linear-gradient(90deg, #f1e3bd, #d4b87a 60%, #c5d4a0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .checkout-field input, .checkout-field select, .checkout-field textarea { background: rgba(255,255,255,0.06); transition: border-color .25s, box-shadow .25s, background .25s; }
+        .checkout-field input:focus, .checkout-field select:focus, .checkout-field textarea:focus { outline: none; border-color: var(--gold-400); background: rgba(255,255,255,0.09); box-shadow: 0 0 0 3px rgba(201,169,110,0.16), 0 0 24px rgba(201,169,110,0.12); }
+        #checkoutModal .cart-overlay { background: rgba(3,8,3,0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .checkout-box { background: rgba(12,22,12,0.96); } }
+
+        /* entrance animation */
+        @keyframes coIn { from { opacity: 0; transform: translateY(28px) scale(0.95); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+        @keyframes coField { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        @keyframes coShine { 0% { transform: translateX(-120%) skewX(-20deg); } 55%, 100% { transform: translateX(320%) skewX(-20deg); } }
+        .checkout-modal.open .checkout-box { animation: coIn .6s cubic-bezier(.16,1,.3,1) both; }
+        .checkout-modal.open .checkout-box > h3,
+        .checkout-modal.open .checkout-box > .checkout-sub,
+        .checkout-modal.open #checkoutForm > * { animation: coField .65s cubic-bezier(.16,1,.3,1) both; }
+        .checkout-modal.open #checkoutForm > *:nth-child(1) { animation-delay: .12s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(2) { animation-delay: .17s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(3) { animation-delay: .22s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(4) { animation-delay: .27s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(5) { animation-delay: .32s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(6) { animation-delay: .37s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(7) { animation-delay: .42s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(8) { animation-delay: .47s; }
+        .checkout-modal.open #checkoutForm > *:nth-child(n+9) { animation-delay: .52s; }
+        .checkout-submit { position: relative; overflow: hidden; transition: transform .25s, box-shadow .25s; box-shadow: 0 10px 30px rgba(201,169,110,0.25); }
+        .checkout-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(201,169,110,0.38); }
+        .checkout-submit:disabled { opacity: .6; }
+        .checkout-submit::after { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 30%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent); animation: coShine 3.6s ease-in-out infinite; pointer-events: none; }
+
+        /* olive cursor (only on devices with a real mouse) */
+        .olive-cursor-on, .olive-cursor-on * { cursor: none !important; }
+        .olive-cursor-on input, .olive-cursor-on textarea, .olive-cursor-on select, .olive-cursor-on [contenteditable] { cursor: text !important; }
+        #oliveCursor, #oliveRing { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 99999; opacity: 0; transition: opacity .25s; will-change: transform; }
+        #oliveCursor.show, #oliveRing.show { opacity: 1; }
+        #oliveCursor svg { display: block; width: 30px; height: 30px; margin: -15px 0 0 -15px; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.55)) drop-shadow(0 0 8px rgba(163,177,138,0.45)); transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
+        #oliveCursor.hover svg { transform: scale(1.3) rotate(-14deg); }
+        #oliveCursor.down svg { transform: scale(0.82) rotate(8deg); }
+        #oliveRing { width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; border: 1px solid rgba(201,169,110,0.55); box-shadow: 0 0 22px rgba(201,169,110,0.18), inset 0 0 14px rgba(201,169,110,0.10); transition: opacity .25s, width .3s, height .3s, margin .3s, border-color .3s; }
+        #oliveRing.hover { width: 64px; height: 64px; margin: -32px 0 0 -32px; border-color: rgba(212,184,122,0.9); }
+        .olive-spark { position: fixed; z-index: 99998; pointer-events: none; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: radial-gradient(circle, #f1e3bd 0%, #c9a96e 55%, rgba(201,169,110,0) 72%); animation: oliveSpark .75s ease-out forwards; }
+        @keyframes oliveSpark { from { opacity: .9; transform: translate(0,0) scale(1); } to { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.2); } }
+        @media (prefers-reduced-motion: reduce) {
+            .checkout-modal.open .checkout-box, .checkout-modal.open .checkout-box > *, .checkout-modal.open #checkoutForm > * { animation: none !important; }
+            .checkout-submit::after { animation: none; display: none; }
+            .olive-spark { display: none; }
+        }
     </style>
 
     <!-- Google Ads tag (gtag.js) — loaded with Consent Mode: ad/analytics
@@ -4248,6 +4315,75 @@ function gtag_report_conversion(url) {
     idleDrift();
     heroBg.addEventListener('mousemove', () => { idleRunning = false; heroHint.style.opacity = '0'; }, {once:true});
     heroBg.addEventListener('touchstart', () => { idleRunning = false; heroHint.style.opacity = '0'; }, {once:true});
+</script>
+
+<!-- Olive cursor -->
+<div id="oliveRing" aria-hidden="true"></div>
+<div id="oliveCursor" aria-hidden="true">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <radialGradient id="olG" cx="35%" cy="30%" r="80%"><stop offset="0%" stop-color="#b9cf8a"/><stop offset="45%" stop-color="#6f9a54"/><stop offset="100%" stop-color="#2a4a2a"/></radialGradient>
+            <linearGradient id="olL" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a3b18a"/><stop offset="100%" stop-color="#3a5a40"/></linearGradient>
+        </defs>
+        <path d="M19 6 C20 3.5 23 2.5 26 3 C25.5 6 22.5 7.8 19.6 7.4 Z" fill="url(#olL)"/>
+        <path d="M17.2 8.6 C17.6 6.8 18.4 5.8 19.4 5.2" stroke="#8a7140" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="15.5" cy="18" rx="9" ry="10.4" transform="rotate(-24 15.5 18)" fill="url(#olG)" stroke="#1f3320" stroke-width="0.8"/>
+        <ellipse cx="12" cy="13.8" rx="2.6" ry="3.9" transform="rotate(-24 12 13.8)" fill="rgba(255,255,255,0.55)"/>
+        <ellipse cx="20.5" cy="23.2" rx="2.2" ry="1.2" transform="rotate(-24 20.5 23.2)" fill="rgba(0,0,0,0.18)"/>
+    </svg>
+</div>
+
+<script>
+/* Olive cursor: follows the mouse with a soft trailing ring and golden
+   sparkles. Only runs where there is a real mouse and motion is allowed;
+   everywhere else the normal cursor is left untouched. */
+(function () {
+    try {
+        var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!fine || calm) return;
+        var cur = document.getElementById('oliveCursor');
+        var ring = document.getElementById('oliveRing');
+        if (!cur || !ring) return;
+        var x = -100, y = -100, rx = -100, ry = -100, lastSpark = 0, active = false;
+        var CLICKABLE = 'a, button, label, summary, select, [role="button"], .btn-buy, .delivery-option, input[type="radio"], input[type="checkbox"], input[type="submit"]';
+        var TEXTY = 'input:not([type="radio"]):not([type="checkbox"]):not([type="submit"]), textarea, [contenteditable]';
+        document.documentElement.classList.add('olive-cursor-on');
+
+        document.addEventListener('mousemove', function (e) {
+            x = e.clientX; y = e.clientY;
+            if (!active) { active = true; rx = x; ry = y; cur.classList.add('show'); ring.classList.add('show'); requestAnimationFrame(tick); }
+            var t = e.target;
+            var texty = t.closest && t.closest(TEXTY);
+            cur.style.visibility = texty ? 'hidden' : 'visible';
+            ring.style.visibility = texty ? 'hidden' : 'visible';
+            var hov = !!(t.closest && t.closest(CLICKABLE));
+            cur.classList.toggle('hover', hov); ring.classList.toggle('hover', hov);
+            var now = performance.now();
+            if (!texty && now - lastSpark > 55) { lastSpark = now; spark(e.clientX, e.clientY); }
+        }, { passive: true });
+        document.addEventListener('mousedown', function () { cur.classList.add('down'); });
+        document.addEventListener('mouseup', function () { cur.classList.remove('down'); });
+        document.addEventListener('mouseleave', function () { cur.classList.remove('show'); ring.classList.remove('show'); });
+        document.addEventListener('mouseenter', function () { if (active) { cur.classList.add('show'); ring.classList.add('show'); } });
+
+        function spark(px, py) {
+            var s = document.createElement('div');
+            s.className = 'olive-spark';
+            s.style.left = px + 'px'; s.style.top = py + 'px';
+            s.style.setProperty('--dx', ((Math.random() - 0.5) * 34).toFixed(1) + 'px');
+            s.style.setProperty('--dy', (8 + Math.random() * 22).toFixed(1) + 'px');
+            document.body.appendChild(s);
+            setTimeout(function () { s.remove(); }, 800);
+        }
+        function tick() {
+            rx += (x - rx) * 0.18; ry += (y - ry) * 0.18;
+            cur.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+            ring.style.transform = 'translate(' + rx.toFixed(1) + 'px,' + ry.toFixed(1) + 'px)';
+            requestAnimationFrame(tick);
+        }
+    } catch (e) { console.warn('olive cursor disabled:', e); }
+})();
 </script>
 </body>
 </html>
