@@ -8,7 +8,7 @@
 // "Allow EmailJS API for non-browser applications" switched on there.
 // Without the key this module is a no-op and the browser keeps sending the
 // e-mails itself (see `isEnabled`).
-const { DELIVERY } = require('./catalog');
+const { PRODUCTS, DELIVERY } = require('./catalog');
 
 const PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY || 'XINpTJLqloU4ddBs_';
 const SERVICE_ID = process.env.EMAILJS_SERVICE_ID || 'service_l7uo35p';
@@ -17,9 +17,6 @@ const CUSTOMER_TEMPLATE = process.env.EMAILJS_CUSTOMER_TEMPLATE_ID || 'template_
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'eddigood2020@gmail.com';
 
 const isEnabled = () => !!process.env.EMAILJS_PRIVATE_KEY;
-
-const COUNTRY_NAMES = { CZE: 'Czech Republic', SVK: 'Slovakia', DEU: 'Germany', POL: 'Poland', AUT: 'Austria', ITA: 'Italy', UKR: 'Ukraine' };
-const countryName = (c) => COUNTRY_NAMES[c] || '';
 
 const kc = (n) => `${Number(n).toLocaleString('cs-CZ')} Kč`;
 
@@ -46,15 +43,15 @@ async function sendOrderEmails(payment) {
     const extra = {};
     (payment.additional_params || []).forEach((p) => { extra[p.name] = p.value; });
 
-    const items = payment.items || [];
-    const lines = items.filter((i) => i.type !== 'DELIVERY')
-        .map((i) => `${i.name} x${i.count} — ${kc((i.amount * i.count) / 100)}`).join('\n');
-    const deliveryItem = items.find((i) => i.type === 'DELIVERY');
+    // GoPay doesn't echo basket items on GET, so rebuild the order from the
+    // ids/quantities carried in additional_params and the server catalog.
+    const cart = String(extra.items || '').split(',').map((x) => x.split(':')).filter(([id, q]) => PRODUCTS[id] && Number(q) > 0);
+    const lines = cart.map(([id, q]) => `${PRODUCTS[id].name} x${Number(q)} — ${kc(PRODUCTS[id].price * Number(q))}`).join('\n') || '—';
     const dlv = DELIVERY[extra.delivery];
-    const deliveryLabel = deliveryItem
-        ? `${deliveryItem.name} (${kc(deliveryItem.amount / 100)})`
-        : (dlv ? `${dlv.name} (0 Kč)` : '—');
+    const deliveryLabel = dlv ? `${dlv.name} (${kc(dlv.price)})` : '—';
     const isBank = extra.method === 'bank';
+    let address = '';
+    try { address = Buffer.from(String(extra.addr || ''), 'base64url').toString('utf8'); } catch (e) { address = ''; }
 
     const params = {
         to_email: NOTIFY_EMAIL,
@@ -62,7 +59,7 @@ async function sendOrderEmails(payment) {
         order_text: lines,
         customer_name: `${contact.first_name || ''} ${contact.last_name && contact.last_name !== '-' ? contact.last_name : ''}`.trim(),
         customer_phone: contact.phone_number || '—',
-        customer_address: [contact.street, [contact.postal_code, contact.city].filter(Boolean).join(' '), countryName(contact.country_code)].filter(Boolean).join(', ') || '—',
+        customer_address: address || '—',
         delivery: deliveryLabel,
         payment: isBank ? 'Online převod (platební brána) — zaplaceno' : 'Platební karta (platební brána) — zaplaceno',
         total: kc(payment.amount / 100)

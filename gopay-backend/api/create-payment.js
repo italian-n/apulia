@@ -74,6 +74,18 @@ module.exports = async (req, res) => {
         // a support email from GoPay about repeated 404s.
         console.log(`[create-payment] order=${orderNumber} notification_url=${backendUrl}/api/gopay-notify`);
 
+        // GoPay does NOT return basket items / address when the payment is
+        // queried later, so the order is carried in additional_params as
+        // plain ASCII (ids, quantities, base64url address) — see lib/email.js.
+        const itemsParam = cartItems.map((ci) => `${ci.id}:${Math.floor(Number(ci.qty))}`).join(',');
+        const addrRaw = [addr.street, [addr.postalCode, addr.city].filter(Boolean).join(' '), addr.country].filter(Boolean).join(', ').slice(0, 110);
+        const extraParams = [
+            { name: 'delivery', value: String(deliveryId) },
+            { name: 'method', value: method === 'bank' ? 'bank' : 'card' },
+            { name: 'items', value: itemsParam.slice(0, 150) },
+            { name: 'addr', value: Buffer.from(addrRaw, 'utf8').toString('base64url') }
+        ];
+
         const payload = {
             target: { type: 'ACCOUNT', goid: config.goid },
             amount: amountInHaliru,
@@ -103,10 +115,7 @@ module.exports = async (req, res) => {
             },
             // echoed back by GoPay, lets the server-side e-mail (see
             // lib/email.js) rebuild the full order without any database
-            additional_params: [
-                { name: 'delivery', value: String(deliveryId) },
-                { name: 'method', value: method === 'bank' ? 'bank' : 'card' }
-            ],
+            additional_params: extraParams,
             lang: ['CS','EN','DE','SK','PL','UK','RU','IT'].includes(String(lang||'').toUpperCase()) ? String(lang).toUpperCase() : 'CS'
         };
 
@@ -114,14 +123,21 @@ module.exports = async (req, res) => {
         try {
             result = await createPayment(payload);
         } catch (err) {
-            // Optional extras (address, additional params) must never block a
-            // payment: if GoPay rejects them, retry once with the bare minimum.
+            // Optional extras must never block a payment: if GoPay rejects
+            // them, retry without the address, then with the bare minimum.
             if (!/\((400|409)\)/.test(String(err.message))) throw err;
-            console.warn(`[create-payment] retrying without optional fields: ${String(err.message).slice(0, 300)}`);
+            console.warn(`[create-payment] retrying without address: ${String(err.message).slice(0, 300)}`);
             const c = payload.payer.contact;
             payload.payer.contact = { first_name: c.first_name, last_name: c.last_name, email: c.email, phone_number: c.phone_number };
-            payload.additional_params = [];
-            result = await createPayment(payload);
+            payload.additional_params = extraParams.filter((p) => p.name !== 'addr');
+            try {
+                result = await createPayment(payload);
+            } catch (err2) {
+                if (!/\((400|409)\)/.test(String(err2.message))) throw err2;
+                console.warn(`[create-payment] retrying minimal: ${String(err2.message).slice(0, 300)}`);
+                payload.additional_params = [];
+                result = await createPayment(payload);
+            }
         }
         res.status(200).json({ gw_url: result.gw_url, id: result.id, orderNumber });
     } catch (err) {
