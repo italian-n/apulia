@@ -1705,6 +1705,19 @@ function gtag_report_conversion(url) {
         .delivery-options, .payment-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
         .delivery-option { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; cursor: pointer; font-size: 13px; }
         .delivery-option input { width: auto; }
+        /* beats the generic ".checkout-field label" styling (small caps, block) */
+        .checkout-field .delivery-option { display: flex; align-items: center; gap: 12px; text-transform: none; letter-spacing: 0; font-size: 13.5px; font-weight: 500; color: inherit; margin: 0; }
+        .delivery-option { transition: border-color .15s, background .15s; }
+        .delivery-option:hover { border-color: rgba(212,175,55,0.45); }
+        .delivery-option:has(input:checked) { border-color: var(--gold-400); background: rgba(212,175,55,0.08); }
+        .delivery-option input { accent-color: var(--gold-400); flex-shrink: 0; }
+        .opt-logo { position: relative; flex-shrink: 0; width: 58px; height: 36px; border-radius: 8px; background: #fff; display: flex; align-items: center; justify-content: center; gap: 3px; overflow: hidden; color: #6b6b6b; }
+        .opt-logo svg { width: 20px; height: 20px; }
+        .opt-logo img { max-height: 24px; max-width: 52px; width: auto; object-fit: contain; background: #fff; }
+        .opt-logo.has-img svg { display: none; }
+        .opt-logo.pair img { max-width: 25px; max-height: 18px; }
+        .opt-logo.gold { background: rgba(212,175,55,0.15); color: var(--gold-400); }
+        .opt-text { flex: 1; line-height: 1.3; }
         .delivery-option-price { margin-left: auto; color: var(--gold-400); font-weight: 700; font-size: 12px; }
         .payment-options { margin-bottom: 20px; }
         .checkout-submit { width: 100%; padding: 16px; border-radius: 100px; border: none; cursor: pointer; background: linear-gradient(135deg, var(--gold-500), var(--gold-600)); color: var(--darker); font-weight: 700; font-size: 14px; }
@@ -2760,10 +2773,10 @@ function gtag_report_conversion(url) {
             <div class="checkout-field">
                 <label data-i18n="co_payment">Způsob platby</label>
                 <div class="payment-options">
-                    <label class="delivery-option"><input type="radio" name="payment" value="Platební karta (platební brána)" checked> <span data-i18n="pay_card">Platební karta</span></label>
-                    <label class="delivery-option"><input type="radio" name="payment" value="Online převod (platební brána)"> <span data-i18n="pay_gopay_bank">Online převod z účtu (GoPay)</span></label>
-                    <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> <span data-i18n="pay_cash">Hotově při převzetí</span></label>
-                    <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> <span data-i18n="pay_transfer">Bankovní převod</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Platební karta (platební brána)" checked> <span class="opt-logo pair has-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><img src="img/payments/visa.png" alt="VISA" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"><img src="img/payments/mastercard.png" alt="Mastercard" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"></span> <span class="opt-text" data-i18n="pay_card">Platební karta</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Online převod (platební brána)"> <span class="opt-logo has-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg><img src="img/payments/gopay.png" alt="GoPay" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')"></span> <span class="opt-text" data-i18n="pay_gopay_bank">Online převod z účtu (GoPay)</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Hotově při převzetí"> <span class="opt-logo gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></span> <span class="opt-text" data-i18n="pay_cash">Hotově při převzetí</span></label>
+                    <label class="delivery-option"><input type="radio" name="payment" value="Bankovní převod"> <span class="opt-logo gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg></span> <span class="opt-text" data-i18n="pay_transfer">Bankovní převod</span></label>
                 </div>
             </div>
             <div class="checkout-error" id="checkoutError"></div>
@@ -2832,7 +2845,7 @@ function gtag_report_conversion(url) {
             price_label: "Cena", per_liter: "litr", buy_btn: "Do košíku", footer_legal_h: "Právní informace",
             cart_title: "Váš košík", cart_total: "Celkem", cart_checkout: "Pokračovat k objednávce", cart_ask: "Mám dotaz na WhatsApp",
             cart_empty: "Košík je prázdný", cart_remove: "Odebrat",
-            del_balikovna: "Balíkovna", del_balik_doruky: "Balík Do ruky (Česká pošta)", del_osobne: "Osobní odběr v Brně", free: "zdarma",
+            del_zasilkovna: "Zásilkovna (výdejní místo / Z-BOX)", del_balik_doruky: "Balík Do ruky (Česká pošta)", del_osobne: "Osobní odběr v Brně", free: "zdarma",
             co_title: "Dokončit objednávku", co_sub: "Vyplňte údaje pro doručení. Odesláním formuláře objednávku potvrdíte prodávajícímu.",
             co_name: "Jméno a příjmení", co_phone: "Telefon", co_email: "E-mail",
             co_street: "Ulice", co_street_ph: "Hlavní", co_house_number: "Číslo popisné", co_house_number_ph: "12",
@@ -2899,7 +2912,7 @@ function gtag_report_conversion(url) {
             price_label: "Price", per_liter: "liter", buy_btn: "Add to cart", footer_legal_h: "Legal",
             cart_title: "Your cart", cart_total: "Total", cart_checkout: "Continue to order", cart_ask: "Ask a question on WhatsApp",
             cart_empty: "Your cart is empty", cart_remove: "Remove",
-            del_balikovna: "Balíkovna (parcel box)", del_balik_doruky: "Courier (Czech Post)", del_osobne: "Personal pick-up in Brno", free: "free",
+            del_zasilkovna: "Zásilkovna (pickup point / Z-BOX)", del_balik_doruky: "Courier (Czech Post)", del_osobne: "Personal pick-up in Brno", free: "free",
             co_title: "Complete your order", co_sub: "Fill in your delivery details. Submitting the form confirms the order with the seller.",
             co_name: "Full name", co_phone: "Phone", co_email: "Email",
             co_street: "Street", co_street_ph: "Main St", co_house_number: "House number", co_house_number_ph: "12",
@@ -2966,7 +2979,7 @@ function gtag_report_conversion(url) {
             price_label: "Ціна", per_liter: "літр", buy_btn: "До кошика", footer_legal_h: "Правова інформація",
             cart_title: "Ваш кошик", cart_total: "Разом", cart_checkout: "Перейти до замовлення", cart_ask: "Задати питання у WhatsApp",
             cart_empty: "Кошик порожній", cart_remove: "Прибрати",
-            del_balikovna: "Balíkovna (поштомат)", del_balik_doruky: "Кур'єр (Česká pošta)", del_osobne: "Особисте отримання в Брно", free: "безкоштовно",
+            del_zasilkovna: "Zásilkovna (пункт видачі / Z-BOX)", del_balik_doruky: "Кур'єр (Česká pošta)", del_osobne: "Особисте отримання в Брно", free: "безкоштовно",
             co_title: "Оформити замовлення", co_sub: "Заповніть дані для доставки. Надсиланням форми ви підтверджуєте замовлення продавцю.",
             co_name: "Ім'я та прізвище", co_phone: "Телефон", co_email: "Email",
             co_street: "Вулиця", co_street_ph: "Головна", co_house_number: "Номер будинку", co_house_number_ph: "12",
@@ -3033,7 +3046,7 @@ function gtag_report_conversion(url) {
             price_label: "Цена", per_liter: "литр", buy_btn: "В корзину", footer_legal_h: "Правовая информация",
             cart_title: "Ваша корзина", cart_total: "Итого", cart_checkout: "Перейти к заказу", cart_ask: "Задать вопрос в WhatsApp",
             cart_empty: "Корзина пуста", cart_remove: "Убрать",
-            del_balikovna: "Balíkovna (постамат)", del_balik_doruky: "Курьер (Česká pošta)", del_osobne: "Личное получение в Брно", free: "бесплатно",
+            del_zasilkovna: "Zásilkovna (пункт выдачи / Z-BOX)", del_balik_doruky: "Курьер (Česká pošta)", del_osobne: "Личное получение в Брно", free: "бесплатно",
             co_title: "Оформить заказ", co_sub: "Заполните данные для доставки. Отправкой формы вы подтверждаете заказ продавцу.",
             co_name: "Имя и фамилия", co_phone: "Телефон", co_email: "Email",
             co_street: "Улица", co_street_ph: "Главная", co_house_number: "Номер дома", co_house_number_ph: "12",
@@ -3100,7 +3113,7 @@ function gtag_report_conversion(url) {
             price_label: "Prezzo", per_liter: "litro", buy_btn: "Aggiungi al carrello", footer_legal_h: "Informazioni legali",
             cart_title: "Il tuo carrello", cart_total: "Totale", cart_checkout: "Procedi con l'ordine", cart_ask: "Fai una domanda su WhatsApp",
             cart_empty: "Il carrello è vuoto", cart_remove: "Rimuovi",
-            del_balikovna: "Balíkovna (locker)", del_balik_doruky: "Corriere (Česká pošta)", del_osobne: "Ritiro personale a Brno", free: "gratuito",
+            del_zasilkovna: "Zásilkovna (punto di ritiro / Z-BOX)", del_balik_doruky: "Corriere (Česká pošta)", del_osobne: "Ritiro personale a Brno", free: "gratuito",
             co_title: "Completa l'ordine", co_sub: "Inserisci i dati per la consegna. Inviando il modulo confermi l'ordine al venditore.",
             co_name: "Nome e cognome", co_phone: "Telefono", co_email: "Email",
             co_street: "Via", co_street_ph: "Via Roma", co_house_number: "Numero civico", co_house_number_ph: "12",
@@ -3167,7 +3180,7 @@ function gtag_report_conversion(url) {
             price_label: "Preis", per_liter: "Liter", buy_btn: "In den Warenkorb", footer_legal_h: "Rechtliches",
             cart_title: "Ihr Warenkorb", cart_total: "Gesamt", cart_checkout: "Weiter zur Bestellung", cart_ask: "Frage per WhatsApp stellen",
             cart_empty: "Ihr Warenkorb ist leer", cart_remove: "Entfernen",
-            del_balikovna: "Balíkovna (Paketbox)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Persönliche Abholung in Brünn", free: "kostenlos",
+            del_zasilkovna: "Zásilkovna (Abholstelle / Z-BOX)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Persönliche Abholung in Brünn", free: "kostenlos",
             co_title: "Bestellung abschließen", co_sub: "Geben Sie Ihre Lieferdaten ein. Mit dem Absenden bestätigen Sie die Bestellung beim Verkäufer.",
             co_name: "Vor- und Nachname", co_phone: "Telefon", co_email: "E-Mail",
             co_street: "Straße", co_street_ph: "Hauptstraße", co_house_number: "Hausnummer", co_house_number_ph: "12",
@@ -3234,7 +3247,7 @@ function gtag_report_conversion(url) {
             price_label: "Cena", per_liter: "litr", buy_btn: "Do koszyka", footer_legal_h: "Informacje prawne",
             cart_title: "Twój koszyk", cart_total: "Razem", cart_checkout: "Przejdź do zamówienia", cart_ask: "Zadaj pytanie na WhatsApp",
             cart_empty: "Koszyk jest pusty", cart_remove: "Usuń",
-            del_balikovna: "Balíkovna (paczkomat)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Odbiór osobisty w Brnie", free: "bezpłatnie",
+            del_zasilkovna: "Zásilkovna (punkt odbioru / Z-BOX)", del_balik_doruky: "Kurier (Česká pošta)", del_osobne: "Odbiór osobisty w Brnie", free: "bezpłatnie",
             co_title: "Dokończ zamówienie", co_sub: "Podaj dane do dostawy. Wysłanie formularza potwierdza zamówienie u sprzedawcy.",
             co_name: "Imię i nazwisko", co_phone: "Telefon", co_email: "Email",
             co_street: "Ulica", co_street_ph: "Główna", co_house_number: "Numer domu", co_house_number_ph: "12",
@@ -3301,7 +3314,7 @@ function gtag_report_conversion(url) {
             price_label: "Cena", per_liter: "liter", buy_btn: "Do košíka", footer_legal_h: "Právne informácie",
             cart_title: "Váš košík", cart_total: "Spolu", cart_checkout: "Pokračovať k objednávke", cart_ask: "Mám otázku na WhatsApp",
             cart_empty: "Košík je prázdny", cart_remove: "Odobrať",
-            del_balikovna: "Balíkovna", del_balik_doruky: "Kuriér (Česká pošta)", del_osobne: "Osobný odber v Brne", free: "zdarma",
+            del_zasilkovna: "Zásilkovna (výdajné miesto / Z-BOX)", del_balik_doruky: "Kuriér (Česká pošta)", del_osobne: "Osobný odber v Brne", free: "zdarma",
             co_title: "Dokončiť objednávku", co_sub: "Vyplňte údaje pre doručenie. Odoslaním formulára potvrdíte objednávku predávajúcemu.",
             co_name: "Meno a priezvisko", co_phone: "Telefón", co_email: "E-mail",
             co_street: "Ulica", co_street_ph: "Hlavná", co_house_number: "Číslo domu", co_house_number_ph: "12",
@@ -3488,7 +3501,7 @@ function gtag_report_conversion(url) {
         // of a hardcoded label, so the checkout form follows the site's
         // language switcher rather than always showing Czech.
         const DELIVERY = [
-            { id: 'balikovna', key: 'del_balikovna', price: 89 },
+            { id: 'zasilkovna', key: 'del_zasilkovna', price: 89 },
             { id: 'balik_doruky', key: 'del_balik_doruky', price: 129 },
             { id: 'osobne', key: 'del_osobne', price: 0 }
         ];
@@ -3545,13 +3558,22 @@ function gtag_report_conversion(url) {
         function renderDeliveryOptions() {
             const deliveryWrap = document.getElementById('deliveryOptions');
             const checkedId = (deliveryWrap.querySelector('input[name="delivery"]:checked') || {}).value;
-            deliveryWrap.innerHTML = DELIVERY.map((d, idx) => `
+            const DELIVERY_VISUAL = {
+                zasilkovna: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>', img: 'img/carriers/zasilkovna.png', alt: 'Zásilkovna', cls: '' },
+                balik_doruky: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13v10H1z"/><path d="M14 9h4l4 4v3h-8"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>', img: 'img/carriers/ceska-posta.png', alt: 'Česká pošta', cls: '' },
+                osobne: { icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>', img: null, alt: '', cls: ' gold' }
+            };
+            deliveryWrap.innerHTML = DELIVERY.map((d, idx) => {
+                const v = DELIVERY_VISUAL[d.id] || DELIVERY_VISUAL.osobne;
+                const img = v.img ? `<img src="${v.img}" alt="${v.alt}" onerror="var t=this.parentNode;this.remove();if(t&&!t.querySelector('img'))t.classList.remove('has-img')">` : '';
+                return `
                 <label class="delivery-option">
                     <input type="radio" name="delivery" value="${d.id}" ${(checkedId ? checkedId === d.id : idx === 0) ? 'checked' : ''}>
-                    ${ct(d.key)}
+                    <span class="opt-logo${v.img ? ' has-img' : ''}${v.cls}">${v.icon}${img}</span>
+                    <span class="opt-text">${ct(d.key)}</span>
                     <span class="delivery-option-price">${d.price ? d.price + ' Kč' : ct('free')}</span>
-                </label>
-            `).join('');
+                </label>`;
+            }).join('');
         }
 
         // Called by applyLang() whenever the visitor switches language, so

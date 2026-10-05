@@ -11,7 +11,7 @@ const COUNTRY_CODES = { 'Czech Republic': 'CZE', 'Czechia': 'CZE', 'Slovakia': '
 // Body (all required unless noted):
 //   orderNumber   string   unique id for this order (e.g. "APO-172..."))
 //   items         [{id, qty}]  cart lines; prices come from lib/catalog.js
-//   deliveryId    string   balikovna | balik_doruky | osobne
+//   deliveryId    string   zasilkovna | balik_doruky | osobne
 //   method        string   optional: 'card' (default) | 'bank'
 //   customer      { name, email, phone (optional) }
 //   returnPath    string   optional, defaults to "/" — path on the site to

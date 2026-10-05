@@ -7,7 +7,7 @@ const PRODUCTS = {
     'smazeni-10l': { name: 'Olivový Olej na Smažení 10 L', price: 1490 }
 };
 const DELIVERY = {
-    balikovna: { name: 'Doprava – Balíkovna (výdejní místo)', price: 89 },
+    zasilkovna: { name: 'Doprava – Zásilkovna (výdejní místo / Z-BOX)', price: 89 },
     balik_doruky: { name: 'Doprava – Balík do ruky (Česká pošta)', price: 129 },
     osobne: { name: 'Osobní odběr (Brno)', price: 0 }
 };
