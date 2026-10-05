@@ -3760,7 +3760,11 @@ function gtag_report_conversion(url) {
             // (cash on delivery, bank transfer) finalizes immediately, same
             // as before.
             if ((payment === GOPAY_PAYMENT_VALUE || payment === GOPAY_BANK_VALUE) && GOPAY_BACKEND_URL) {
+                // lock the button so a double-click can't create two payments
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                if (submitBtn) submitBtn.disabled = true;
                 startGopayPayment(orderData).catch(err => {
+                    if (submitBtn) submitBtn.disabled = false;
                     console.warn('GoPay payment start failed:', err);
                     showCheckoutError([]);
                     const errBox = document.getElementById('checkoutError');
@@ -3817,6 +3821,7 @@ function gtag_report_conversion(url) {
             // Unique per attempt (GoPay requires unique order numbers).
             const orderNumber = 'APO-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
             const res = await fetch(GOPAY_BACKEND_URL.replace(/\/$/, '') + '/api/create-payment', {
+                signal: AbortSignal.timeout ? AbortSignal.timeout(20000) : undefined,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -1,9 +1,21 @@
 // The site (apuliaoliveoil.cz) and this backend live on different
 // domains, so every response needs CORS headers — and the browser will
 // send an OPTIONS preflight before the real POST/GET.
+function allowedOrigins() {
+    const main = (process.env.ALLOWED_ORIGIN || 'https://apuliaoliveoil.cz').replace(/\/$/, '');
+    const list = [main];
+    // accept the www / non-www twin of the main origin, so the site works
+    // whichever way the customer reached it
+    const m = main.match(/^(https?:\/\/)(www\.)?(.+)$/);
+    if (m) list.push(m[1] + (m[2] ? '' : 'www.') + m[3]);
+    return list;
+}
+
 function withCors(req, res) {
-    const allowedOrigin = process.env.ALLOWED_ORIGIN || 'https://apuliaoliveoil.cz';
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+    const allowed = allowedOrigins();
+    const origin = req.headers && req.headers.origin;
+    res.setHeader('Access-Control-Allow-Origin', allowed.includes(origin) ? origin : allowed[0]);
+    res.setHeader('Vary', 'Origin');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 

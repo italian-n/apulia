@@ -27,6 +27,11 @@ module.exports = async (req, res) => {
         const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
         const { orderNumber, items: cartItems, deliveryId, method, customer, returnPath, lang } = body;
 
+        const emailOk = customer && typeof customer.email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email) && customer.email.length <= 200;
+        if (customer && !emailOk) {
+            res.status(400).json({ error: 'Invalid customer.email' });
+            return;
+        }
         if (!orderNumber || !Array.isArray(cartItems) || !cartItems.length || !customer || !customer.email) {
             res.status(400).json({ error: 'Missing orderNumber, items or customer.email' });
             return;

@@ -13,6 +13,23 @@ const GOPAY_BASE = process.env.GOPAY_API_URL
         ? 'https://gate.gopay.cz/api'
         : 'https://gw.sandbox.gopay.com/api');
 
+// fetch with a hard timeout, so a slow GoPay never leaves a customer
+// waiting on a hung request until Vercel kills the function.
+async function fetchT(url, opts = {}, ms = 8000) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), ms);
+    try {
+        return await fetch(url, { ...opts, signal: ctrl.signal });
+    } catch (err) {
+        if (err && err.name === 'AbortError') throw new Error(`GoPay request timed out after ${ms} ms`);
+        throw err;
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+let cachedToken = null; // { value, expires }
+
 function requireEnv(name) {
     const v = process.env[name];
     if (!v) throw new Error(`Missing required env var: ${name}`);
@@ -22,11 +39,12 @@ function requireEnv(name) {
 // Gets an OAuth2 access token using Client Credentials (Client ID + Secret).
 // Scope "payment-create" is enough to create and inspect payments.
 async function getAccessToken() {
+    if (cachedToken && cachedToken.expires > Date.now()) return cachedToken.value;
     const clientId = requireEnv('GOPAY_CLIENT_ID');
     const clientSecret = requireEnv('GOPAY_CLIENT_SECRET');
     const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
-    const res = await fetch(`${GOPAY_BASE}/oauth2/token`, {
+    const res = await fetchT(`${GOPAY_BASE}/oauth2/token`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -44,6 +62,9 @@ async function getAccessToken() {
         throw new Error(`GoPay OAuth failed (${res.status}): ${text}`);
     }
     const data = await res.json();
+    if (!data.access_token) throw new Error('GoPay OAuth returned no access_token');
+    // GoPay tokens live 30 min; reuse for 20 to save a round trip per call
+    cachedToken = { value: data.access_token, expires: Date.now() + 20 * 60 * 1000 };
     return data.access_token;
 }
 
@@ -51,7 +72,7 @@ async function getAccessToken() {
 // URL the customer's browser must be redirected to in order to pay.
 async function createPayment(payload) {
     const token = await getAccessToken();
-    const res = await fetch(`${GOPAY_BASE}/payments/payment`, {
+    const res = await fetchT(`${GOPAY_BASE}/payments/payment`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -71,7 +92,7 @@ async function createPayment(payload) {
 // Fetches the current state of a payment by its GoPay payment id.
 async function getPaymentStatus(paymentId) {
     const token = await getAccessToken();
-    const res = await fetch(`${GOPAY_BASE}/payments/payment/${encodeURIComponent(paymentId)}`, {
+    const res = await fetchT(`${GOPAY_BASE}/payments/payment/${encodeURIComponent(paymentId)}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`,
