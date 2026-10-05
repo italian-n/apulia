@@ -7,6 +7,7 @@
 // so GoPay does not retry it as failed.
 const { withCors } = require('../lib/cors');
 const { getPaymentStatus } = require('../lib/gopay');
+const { isEnabled, sendOrderEmails } = require('../lib/email');
 
 module.exports = async (req, res) => {
     if (withCors(req, res)) return;
@@ -16,6 +17,12 @@ module.exports = async (req, res) => {
         try {
             const data = await getPaymentStatus(paymentId);
             console.log(`[gopay-notify] payment=${paymentId} state=${data.state} order=${data.order_number || ''}`);
+            // The order e-mails go out from here, so they are sent even if
+            // the customer never returns to the site after paying.
+            if (data.state === 'PAID' && isEnabled()) {
+                const ok = await sendOrderEmails(data);
+                console.log(`[gopay-notify] order e-mails ${ok ? 'sent' : 'FAILED'} for order=${data.order_number}`);
+            }
         } catch (err) {
             console.error(`[gopay-notify] failed to fetch status for payment=${paymentId}:`, err.message || err);
         }

@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
 
     try {
         const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-        const { orderNumber, items: cartItems, deliveryId, method, customer, returnPath, lang } = body;
+        const { orderNumber, items: cartItems, deliveryId, method, customer, returnPath, lang, address } = body;
 
         const emailOk = customer && typeof customer.email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email) && customer.email.length <= 200;
         if (customer && !emailOk) {
@@ -93,6 +93,13 @@ module.exports = async (req, res) => {
                     phone_number: customer.phone || undefined
                 }
             },
+            // echoed back by GoPay, lets the server-side e-mail (see
+            // lib/email.js) rebuild the full order without any database
+            additional_params: [
+                { name: 'delivery', value: String(deliveryId) },
+                { name: 'method', value: method === 'bank' ? 'bank' : 'card' },
+                { name: 'address', value: String(address || '').slice(0, 200) }
+            ],
             lang: ['CS','EN','DE','SK','PL','UK','RU','IT'].includes(String(lang||'').toUpperCase()) ? String(lang).toUpperCase() : 'CS'
         };
 

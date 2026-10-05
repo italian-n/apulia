@@ -3828,6 +3828,7 @@ function gtag_report_conversion(url) {
                     orderNumber,
                     items: orderData.items,
                     deliveryId: orderData.deliveryId,
+                    address: orderData.address,
                     method: orderData.payment === GOPAY_BANK_VALUE ? 'bank' : 'card',
                     lang: currentLang(),
                     customer: { name: orderData.name, email: orderData.email, phone: orderData.phone }
@@ -3882,7 +3883,9 @@ function gtag_report_conversion(url) {
                         showOrderSuccess(false, 'pay_verify_error');
                         return;
                     }
-                    if (pending) finalizeOrder(pending.order);
+                    // when the backend has e-mail configured it already sent
+                    // both order e-mails from GoPay's notification
+                    if (pending && !data.server_email) finalizeOrder(pending.order);
                     saveCart([]);
                     renderCart();
                     showOrderSuccess(true);

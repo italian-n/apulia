@@ -1,5 +1,6 @@
 const { getPaymentStatus } = require('../lib/gopay');
 const { withCors } = require('../lib/cors');
+const { isEnabled } = require('../lib/email');
 
 // GET /api/payment-status?id=<gopay payment id>
 //
@@ -30,7 +31,8 @@ module.exports = async (req, res) => {
             order_number: data.order_number,
             amount: data.amount,       // in haléře — the site verifies it against the order total
             currency: data.currency,
-            sub_state: data.sub_state
+            sub_state: data.sub_state,
+            server_email: isEnabled() // true => the backend sends the order e-mails, the site must not
         });
     } catch (err) {
         console.error(err);
