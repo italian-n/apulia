@@ -5,5 +5,8 @@
   "description": "Tiny serverless backend that creates GoPay payments for apuliaoliveoil.cz (a static site with no server of its own).",
   "engines": {
     "node": ">=18"
+  },
+  "scripts": {
+    "test": "node test/run.js"
   }
 }

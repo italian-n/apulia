@@ -2,7 +2,7 @@ const { createPayment } = require('../lib/gopay');
 const { withCors, foreignOrigin } = require('../lib/cors');
 const { rateLimit, clean } = require('../lib/guard');
 const { getConfig } = require('../lib/config');
-const { PRODUCTS, DELIVERY } = require('../lib/catalog');
+const { getProduct, getDelivery } = require('../lib/catalog');
 
 // ISO 3166-1 alpha-3 codes GoPay expects for payer.contact.country_code
 const COUNTRY_CODES = { 'Czech Republic': 'CZE', 'Czechia': 'CZE', 'Slovakia': 'SVK', 'Germany': 'DEU', 'Poland': 'POL', 'Austria': 'AUT', 'Italy': 'ITA', 'Ukraine': 'UKR' };
@@ -65,7 +65,7 @@ module.exports = async (req, res) => {
         // from the browser).
         const items = [];
         for (const ci of cartItems) {
-            const product = PRODUCTS[ci && ci.id];
+            const product = getProduct(ci && ci.id);
             const qty = Math.floor(Number(ci && ci.qty));
             if (!product || !(qty >= 1 && qty <= 100)) {
                 res.status(400).json({ error: 'Unknown product or invalid quantity' });
@@ -73,7 +73,7 @@ module.exports = async (req, res) => {
             }
             items.push({ type: 'ITEM', name: product.name, amount: product.price * 100, count: qty, product_url: `${siteUrl}/#produkty` });
         }
-        const delivery = DELIVERY[deliveryId];
+        const delivery = getDelivery(deliveryId);
         if (!delivery) {
             res.status(400).json({ error: 'Unknown delivery method' });
             return;

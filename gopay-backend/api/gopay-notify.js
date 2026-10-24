@@ -23,6 +23,11 @@ module.exports = async (req, res) => {
     }
 
     const paymentId = req.query && req.query.id;
+    // shortcut: per-instance cap on repeats of one id; a durable "already mailed" flag needs a store (KV), add if duplicates show up
+    if (paymentId && !rateLimit(req, `gopay-notify:${paymentId}`, 5, 600000)) {
+        res.status(200).send('OK');
+        return;
+    }
     if (paymentId && /^\d{1,20}$/.test(String(paymentId))) {
         try {
             const data = await getPaymentStatus(paymentId);

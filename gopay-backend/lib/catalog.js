@@ -11,4 +11,10 @@ const DELIVERY = {
     balik_doruky: { name: 'Doprava – Balík do ruky (Česká pošta)', price: 129 },
     osobne: { name: 'Osobní odběr (Brno)', price: 0 }
 };
-module.exports = { PRODUCTS, DELIVERY };
+// Own-property lookups only: PRODUCTS['constructor'] / DELIVERY['__proto__']
+// are truthy and would otherwise slip through validation (free shipping).
+const own = (obj, id) => (typeof id === 'string' && Object.hasOwn(obj, id) ? obj[id] : undefined);
+const getProduct = (id) => own(PRODUCTS, id);
+const getDelivery = (id) => own(DELIVERY, id);
+
+module.exports = { PRODUCTS, DELIVERY, getProduct, getDelivery };

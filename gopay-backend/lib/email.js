@@ -8,7 +8,7 @@
 // "Allow EmailJS API for non-browser applications" switched on there.
 // Without the key this module is a no-op and the browser keeps sending the
 // e-mails itself (see `isEnabled`).
-const { PRODUCTS, DELIVERY } = require('./catalog');
+const { getProduct, getDelivery } = require('./catalog');
 
 const PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY || 'XINpTJLqloU4ddBs_';
 const SERVICE_ID = process.env.EMAILJS_SERVICE_ID || 'service_l7uo35p';
@@ -45,9 +45,9 @@ async function sendOrderEmails(payment) {
 
     // GoPay doesn't echo basket items on GET, so rebuild the order from the
     // ids/quantities carried in additional_params and the server catalog.
-    const cart = String(extra.items || '').split(',').map((x) => x.split(':')).filter(([id, q]) => PRODUCTS[id] && Number(q) > 0);
-    const lines = cart.map(([id, q]) => `${PRODUCTS[id].name} x${Number(q)} — ${kc(PRODUCTS[id].price * Number(q))}`).join('\n') || '—';
-    const dlv = DELIVERY[extra.delivery];
+    const cart = String(extra.items || '').split(',').map((x) => x.split(':')).filter(([id, q]) => getProduct(id) && Number(q) > 0);
+    const lines = cart.map(([id, q]) => `${getProduct(id).name} x${Number(q)} — ${kc(getProduct(id).price * Number(q))}`).join('\n') || '—';
+    const dlv = getDelivery(extra.delivery);
     const deliveryLabel = dlv ? `${dlv.name} (${kc(dlv.price)})` : '—';
     const isBank = extra.method === 'bank';
     let address = '';

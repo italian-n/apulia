@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://apulia-gopay-backend.vercel.app https://api.emailjs.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net https://www.google.com https://*.google.com https://www.googleadservices.com; frame-src https://www.googletagmanager.com https://*.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self' https://gate.gopay.cz https://gw.sandbox.gopay.com; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; media-src 'self'; connect-src 'self' https://apulia-gopay-backend.vercel.app https://api.emailjs.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net https://www.google.com https://*.google.com https://www.googleadservices.com; frame-src https://www.googletagmanager.com https://*.doubleclick.net; object-src 'none'; base-uri 'self'; form-action 'self' https://gate.gopay.cz https://gate.gopay.com https://gw.sandbox.gopay.com; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.style.display="none"}}</script>
 
@@ -3586,6 +3586,8 @@ function gtag_report_conversion(url) {
             return (dict && dict[key] !== undefined) ? dict[key] : (translations.cs[key] || key);
         }
 
+        // localStorage is attacker-writable (self-XSS), so cart text is escaped before innerHTML
+        const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         function getCart() {
             try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { return []; }
         }
@@ -3609,14 +3611,14 @@ function gtag_report_conversion(url) {
                 itemsEl.innerHTML = cart.map(i => `
                     <div class="cart-item">
                         <div class="cart-item-info">
-                            <div class="cart-item-name">${i.name}</div>
-                            <div class="cart-item-weight">${i.weight}</div>
+                            <div class="cart-item-name">${esc(i.name)}</div>
+                            <div class="cart-item-weight">${esc(i.weight)}</div>
                             <div class="cart-item-qty">
-                                <button type="button" class="qty-btn" onclick="changeQty('${i.id}',-1)">−</button>
-                                <span>${i.qty}</span>
-                                <button type="button" class="qty-btn" onclick="changeQty('${i.id}',1)">+</button>
+                                <button type="button" class="qty-btn" onclick="changeQty('${esc(i.id)}',-1)">−</button>
+                                <span>${Number(i.qty) || 0}</span>
+                                <button type="button" class="qty-btn" onclick="changeQty('${esc(i.id)}',1)">+</button>
                             </div>
-                            <button type="button" class="cart-item-remove" onclick="removeItem('${i.id}')">${ct('cart_remove')}</button>
+                            <button type="button" class="cart-item-remove" onclick="removeItem('${esc(i.id)}')">${ct('cart_remove')}</button>
                         </div>
                         <div class="cart-item-price">${(i.price * i.qty).toLocaleString('cs-CZ')} Kč</div>
                     </div>
