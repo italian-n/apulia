@@ -2,6 +2,7 @@ const { createPayment } = require('../lib/gopay');
 const { withCors, foreignOrigin } = require('../lib/cors');
 const { rateLimit, clean } = require('../lib/guard');
 const { getConfig } = require('../lib/config');
+const orders = require('../lib/orders');
 const { getProduct, getDelivery } = require('../lib/catalog');
 
 // ISO 3166-1 alpha-3 codes GoPay expects for payer.contact.country_code
@@ -154,6 +155,16 @@ module.exports = async (req, res) => {
                 payload.additional_params = [];
                 result = await createPayment(payload);
             }
+        }
+        if (orders.isEnabled()) {
+            try {
+                await orders.save({
+                    payment_id: String(result.id), order_number: orderNumber, state: 'CREATED', amount: amountInHaliru / 100,
+                    method: method === 'bank' ? 'bank' : 'card', customer_name: customer.name, email: customer.email, phone: customer.phone || null,
+                    address: addrRaw, delivery: delivery.name,
+                    items: items.filter((i) => i.type === 'ITEM').map((i) => ({ name: i.name, qty: i.count, sum: i.amount * i.count / 100 }))
+                });
+            } catch (e) { console.error('[orders] save failed:', e.message || e); } // never block the payment
         }
         res.status(200).json({ gw_url: result.gw_url, id: result.id, orderNumber });
     } catch (err) {
