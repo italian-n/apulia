@@ -10,7 +10,8 @@ const validId = (id) => /^\d{1,20}$/.test(String(id));
 async function rest(query, { method = 'GET', body, prefer } = {}) {
     const res = await fetch(`${url()}/rest/v1/shop_orders${query}`, {
         method,
-        headers: { apikey: key(), Authorization: `Bearer ${key()}`, 'Content-Type': 'application/json', ...(prefer ? { Prefer: prefer } : {}) },
+        // new sb_secret_ keys go in `apikey` only; Bearer is for legacy JWT service_role keys
+        headers: { apikey: key(), ...(key().startsWith('eyJ') ? { Authorization: `Bearer ${key()}` } : {}), 'Content-Type': 'application/json', ...(prefer ? { Prefer: prefer } : {}) },
         body: body ? JSON.stringify(body) : undefined,
         signal: AbortSignal.timeout(6000)
     });

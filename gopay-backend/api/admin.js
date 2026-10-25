@@ -27,7 +27,7 @@ async function load(){
   $('list').textContent='…';try{sessionStorage.setItem('t',T.value)}catch(e){}
   const r=await fetch('/api/admin-orders?limit=100'+(S?'&state='+S:''),{headers:H()});
   const d=await r.json().catch(()=>({}));
-  if(!r.ok){$('list').innerHTML='<div class="card bad">'+esc(d.error||r.status)+'</div>';return}
+  if(!r.ok){$('list').innerHTML='<div class="card bad">'+esc(d.error||r.status)+(d.detail?'<br><small class="mut">'+esc(d.detail)+'</small>':'')+'</div>';return}
   ORD=d.orders;draw();
 }
 function draw(){

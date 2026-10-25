@@ -25,6 +25,6 @@ module.exports = async (req, res) => {
         res.status(200).json({ order: rows[0] });
     } catch (err) {
         console.error('[admin-orders]', err.message || err);
-        res.status(502).json({ error: 'Order storage failed' });
+        res.status(502).json({ error: 'Order storage failed', detail: String(err.message || err).slice(0, 200) }); // admin-only, helps diagnose setup
     }
 };
