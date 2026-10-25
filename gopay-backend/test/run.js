@@ -7,6 +7,12 @@ for (const k of ['constructor', '__proto__', 'toString', 'hasOwnProperty', 42, n
 }
 assert.ok(getDelivery('zasilkovna') && getProduct('vergine-10l'));
 
+const { fromPayment } = require('../lib/orders');
+const row = fromPayment({ id: 7, state: 'PAID', amount: 129000, currency: 'CZK', order_number: 'APO-1', payer: { contact: { first_name: 'A', last_name: '-', email: 'a@b.cz' } },
+    additional_params: [{ name: 'items', value: 'extra-virgin-5l:1,constructor:1' }, { name: 'delivery', value: 'osobne' }, { name: 'addr', value: Buffer.from('Brno').toString('base64url') }] });
+assert.deepStrictEqual(row.items, [{ name: 'Extra Panenský Olivový Olej 5 L', qty: 1, sum: 1290 }]);
+assert.strictEqual(row.amount, 1290); assert.strictEqual(row.address, 'Brno'); assert.strictEqual(row.customer_name, 'A');
+
 const mock = () => { const r = { code: 200, h: {} }; r.setHeader = (k, v) => { r.h[k] = v; }; r.status = (c) => { r.code = c; return r; }; r.json = (b) => { r.body = b; return r; }; r.send = (b) => { r.body = b; return r; }; r.end = () => r; return r; };
 const call = async (mod, req) => { const res = mock(); await require(mod)({ headers: {}, query: {}, method: 'GET', socket: { remoteAddress: '1.1.1.1' }, ...req }, res); return res; };
 

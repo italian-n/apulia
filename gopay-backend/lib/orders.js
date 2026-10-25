@@ -1,5 +1,6 @@
 // Order store on Supabase (PostgREST over fetch, service_role key, server-side only).
 // Best effort: every caller catches, so a DB outage never blocks a payment.
+const { getProduct, getDelivery } = require('./catalog');
 const url = () => (process.env.SUPABASE_URL || '').replace(/\/$/, '');
 const key = () => process.env.SUPABASE_SERVICE_KEY || '';
 const isEnabled = () => !!(url() && key());
@@ -50,4 +51,23 @@ function updateAdmin(paymentId, { fulfillment, note }) {
     return rest(`?payment_id=eq.${paymentId}`, { method: 'PATCH', body: patch, prefer: 'return=representation' });
 }
 
-module.exports = { isEnabled, save, setState, claimEmail, releaseEmail, list, updateAdmin, validId, FULFILLMENT, STATES };
+// Rebuilds our order row from a GoPay payment (additional_params carry items/delivery/address)
+function fromPayment(p) {
+    const extra = {};
+    (p.additional_params || []).forEach((x) => { extra[x.name] = x.value; });
+    const c = (p.payer && p.payer.contact) || {};
+    const items = String(extra.items || '').split(',').map((x) => x.split(':'))
+        .filter(([id, q]) => getProduct(id) && Number(q) > 0)
+        .map(([id, q]) => ({ name: getProduct(id).name, qty: Number(q), sum: getProduct(id).price * Number(q) }));
+    const d = getDelivery(extra.delivery);
+    let address = '';
+    try { address = Buffer.from(String(extra.addr || ''), 'base64url').toString('utf8'); } catch (e) { /* keep empty */ }
+    return {
+        payment_id: String(p.id), order_number: p.order_number || null, state: p.state, amount: p.amount / 100, currency: p.currency,
+        method: extra.method === 'bank' ? 'bank' : 'card',
+        customer_name: [c.first_name, c.last_name].filter((v) => v && v !== '-').join(' '), email: c.email || null, phone: c.phone_number || null,
+        address, delivery: d ? d.name : null, items
+    };
+}
+
+module.exports = { fromPayment, isEnabled, save, setState, claimEmail, releaseEmail, list, updateAdmin, validId, FULFILLMENT, STATES };

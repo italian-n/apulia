@@ -54,8 +54,14 @@ async function find(id){
   const r=await fetch('/api/admin-payment?id='+encodeURIComponent(id),{headers:H()});
   const d=await r.json().catch(()=>({}));
   if(!r.ok){$('out').innerHTML='<div class="card bad">'+esc(d.error||r.status)+'</div>';return}
-  $('out').innerHTML='<div class="card"><h3 class="'+stCls(d.state)+'">'+esc(d.state)+(d.sub_state?' / '+esc(d.sub_state):'')+'</h3>'+esc(d.order_number)+' · '+kc(d.amount)+' '+esc(d.currency)+' · '+esc(d.customer.email||'')+'</div>';
+  $('out').innerHTML='<div class="card"><h3 class="'+stCls(d.state)+'">'+esc(d.state)+(d.sub_state?' / '+esc(d.sub_state):'')+'</h3>'+esc(d.order_number)+' · '+kc(d.amount)+' '+esc(d.currency)+'<br>'+esc(d.customer_name)+' · '+esc(d.email||'')+'<br>'+(d.items||[]).map(i=>esc(i.name)+' ×'+Number(i.qty)).join(', ')+
+  '<div class="row"><button id="imp" data-id="'+esc(d.payment_id)+'">Přidat do seznamu objednávek</button></div></div>';
 }
+$('out').onclick=async e=>{
+  if(e.target.id!=='imp')return;e.target.textContent='…';
+  const r=await fetch('/api/admin-orders',{method:'POST',headers:H(),body:JSON.stringify({import:e.target.dataset.id})});
+  e.target.textContent=r.ok?'Přidáno ✓':'Chyba';if(r.ok){S='';[...$('tabs').children].forEach(x=>x.classList.toggle('on',x.dataset.s===''));load()}
+};
 $('go').onclick=()=>{const v=$('pid').value.trim();if(/^\d{1,20}$/.test(v))find(v);else $('out').innerHTML='<div class="card bad">Neplatné ID</div>'};
 if(T.value)load();
 </script></body></html>`;
