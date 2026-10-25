@@ -15,7 +15,16 @@ module.exports = async (req, res) => {
 
     try {
         if (req.method === 'GET') {
-            res.status(200).json({ orders: await orders.list(req.query || {}) });
+            const list = await orders.list(req.query || {});
+            // self-heal: a missed GoPay notification must not leave a paid order stuck on CREATED
+            const stale = list.filter((o) => o.state === 'CREATED' && Date.now() - new Date(o.created_at) < 7 * 864e5).slice(0, 10);
+            await Promise.all(stale.map(async (o) => {
+                try {
+                    const p = await getPaymentStatus(o.payment_id);
+                    if (p.state !== o.state) { await orders.setState({ ...p, id: o.payment_id }); o.state = p.state; }
+                } catch (e) { console.error('[admin-orders] refresh', o.payment_id, e.message || e); }
+            }));
+            res.status(200).json({ orders: list });
             return;
         }
         let b = req.body;
