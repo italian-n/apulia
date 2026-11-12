@@ -1473,6 +1473,92 @@ function gtag_report_conversion(url) {
         .footer-col a:hover { color: var(--olive-400); transform: translateX(4px); }
         .footer-col a i { width: 15px; height: 15px; flex-shrink: 0; }
 
+
+        /* VIA BASILICATA: complementary product and B2B partnership feature */
+        .footer-partner {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 30px;
+            margin: 0 0 36px;
+            padding: 30px 34px;
+            overflow: hidden;
+            border: 1px solid rgba(201, 169, 110, 0.28);
+            border-radius: 18px;
+            background: linear-gradient(115deg, rgba(45, 70, 42, 0.56), rgba(8, 19, 11, 0.96));
+            box-shadow: 0 16px 44px rgba(0, 0, 0, 0.16);
+        }
+        .footer-partner::before {
+            content: '';
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 3px;
+            background: linear-gradient(180deg, #e1c489, #7f9d64);
+        }
+        .footer-partner-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--gold-400);
+            font-size: 10px;
+            font-weight: 600;
+            line-height: 1.5;
+            letter-spacing: .17em;
+            text-transform: uppercase;
+        }
+        .footer-partner-title {
+            margin: 0 0 10px;
+            color: #f6f2e8;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 2.3vw, 29px);
+            font-weight: 600;
+            line-height: 1.25;
+        }
+        .footer-partner-title span { color: var(--gold-400); }
+        .footer-partner-desc {
+            max-width: 650px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.66);
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 1.75;
+        }
+        .footer-partner-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 15px 20px;
+            border: 1px solid rgba(230, 196, 135, 0.65);
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e2c88e, #c9a96e);
+            color: #142013;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.4;
+            text-decoration: none;
+            text-align: center;
+            white-space: nowrap;
+            transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+        }
+        .footer-partner-link:hover,
+        .footer-partner-link:focus-visible {
+            transform: translateY(-3px);
+            background: #efd7a5;
+            box-shadow: 0 10px 24px rgba(201, 169, 110, 0.22);
+        }
+        .footer-partner-link:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+        .footer-partner-arrow { font-size: 18px; line-height: 1; }
+        @media (max-width: 820px) {
+            .footer-partner { grid-template-columns: 1fr; gap: 22px; padding: 26px; }
+            .footer-partner-link { justify-self: start; white-space: normal; }
+        }
+        @media (max-width: 480px) {
+            .footer-partner { padding: 22px 19px; border-radius: 14px; }
+            .footer-partner-title { font-size: 22px; }
+            .footer-partner-link { width: 100%; }
+        }
+
         .footer-bottom {
             padding-top: 28px;
             border-top: 1px solid rgba(255,255,255,0.04);
@@ -2377,6 +2463,18 @@ function gtag_report_conversion(url) {
                 <a href="legal.html#gdpr"><i data-lucide="lock"></i> Ochrana osobních údajů</a>
             </div>
         </div>
+        <!-- Discover more Italian origins and direct B2B cooperation -->
+        <section class="footer-partner" aria-labelledby="footerPartnerTitle">
+            <div class="footer-partner-content">
+                <span class="footer-partner-label" data-i18n="vb_partner_label">Další italské speciality a B2B spolupráce</span>
+                <h3 class="footer-partner-title" id="footerPartnerTitle">VIA BASILICATA <span>· SELECTED ORIGINS</span></h3>
+                <p class="footer-partner-desc" data-i18n="vb_partner_desc">Objevte vybraná italská vína, olivové oleje a regionální speciality. Restauracím, vinotékám a distributorům pomáháme navázat přímou spolupráci s výrobci.</p>
+            </div>
+            <a class="footer-partner-link" href="https://viabasilicata.com/" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="vb_partner_cta">Prohlédnout produkty a B2B služby</span>
+                <span class="footer-partner-arrow" aria-hidden="true">↗</span>
+            </a>
+        </section>
         <div class="footer-bottom">
             <a class="pay-banner" href="https://www.gopay.cz" target="_blank" rel="noopener noreferrer" aria-label="Platby zabezpečuje GoPay – VISA, Mastercard, 3D Secure" style="display:block;width:min(100%,420px);margin:0 auto 14px;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.35);opacity:.92;transition:opacity .2s,transform .2s;" onmouseover="this.style.opacity=1;this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity=.92;this.style.transform='none'"><img src="img/payments/payments-strip.jpg" alt="GoPay, VISA, Mastercard, Verified by VISA, Mastercard SecureCode" width="900" height="126" loading="lazy" style="display:block;width:100%;height:auto;"></a>
             <div class="footer-copy" style="margin-bottom:6px;">Prodávající: Eduard Korolov, OSVČ, IČO 22154396, není plátcem DPH · Terezy Novákové 178/29, Řečkovice, 621 00 Brno · +420 604 264 270</div>
@@ -2969,6 +3067,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Exkluzivní distribuce prémiového olivového oleje z Apulie v České republice. Přímý dovoz od výrobce — bez zprostředkovatelů.",
             footer_prices_h: "Ceny", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exkluzivní distribuce pro ČR",
+            vb_partner_label: "Další italské speciality a B2B spolupráce",
+            vb_partner_desc: "Objevte vybraná italská vína, olivové oleje a regionální speciality. Restauracím, vinotékám a distributorům pomáháme navázat přímou spolupráci s výrobci.",
+            vb_partner_cta: "Prohlédnout produkty a B2B služby",
             cookie_text: "Tento web používá cookies pro analytiku a marketingovou reklamu (Google, Meta). Kliknutím na \"Souhlasím\" nám pomůžete zlepšovat nabídku. Více v <a href=\"#\">zásadách ochrany soukromí</a>.",
             cookie_accept: "Souhlasím", cookie_decline: "Pouze nezbytné",
             certs_heading: "Certifikáty a rozbory", certs_sub: "Kvalita ověřená nezávislou laboratoří. Stáhněte si oficiální technické listy a rozbory přímo od výrobce.",
@@ -3036,6 +3137,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Exclusive distribution of premium olive oil from Apulia in the Czech Republic. Direct import from the producer — no middlemen.",
             footer_prices_h: "Prices", footer_contact_h: "Contact",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exclusive distribution for Czechia",
+            vb_partner_label: "More Italian specialties & B2B partnerships",
+            vb_partner_desc: "Discover selected Italian wines, olive oils and regional specialties. We connect restaurants, wine shops and distributors directly with producers.",
+            vb_partner_cta: "Explore products & B2B services",
             cookie_text: "This site uses cookies for analytics and marketing ads (Google, Meta). Clicking \"Accept\" helps us improve our offering. More in our <a href=\"#\">privacy policy</a>.",
             cookie_accept: "Accept", cookie_decline: "Essential only",
             certs_heading: "Certificates & Lab Reports", certs_sub: "Quality verified by an independent laboratory. Download official technical data sheets and analyses directly from the producer.",
@@ -3103,6 +3207,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Ексклюзивна дистрибуція преміальної оливкової олії з Апулії в Чехії. Прямий імпорт від виробника — без посередників.",
             footer_prices_h: "Ціни", footer_contact_h: "Контакти",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Ексклюзивна дистрибуція для Чехії",
+            vb_partner_label: "Більше італійських продуктів та B2B-партнерства",
+            vb_partner_desc: "Відкрийте добірні італійські вина, оливкову олію та регіональні делікатеси. Допомагаємо ресторанам, винотекам і дистриб’юторам співпрацювати безпосередньо з виробниками.",
+            vb_partner_cta: "Переглянути товари та B2B-послуги",
             cookie_text: "Цей сайт використовує cookies для аналітики та маркетингової реклами (Google, Meta). Натискаючи \"Погоджуюсь\", ви допомагаєте нам покращувати пропозицію. Детальніше в <a href=\"#\">політиці конфіденційності</a>.",
             cookie_accept: "Погоджуюсь", cookie_decline: "Лише необхідні",
             certs_heading: "Сертифікати та аналізи", certs_sub: "Якість підтверджена незалежною лабораторією. Завантажте офіційні технічні листи та аналізи прямо від виробника.",
@@ -3170,6 +3277,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Эксклюзивная дистрибуция премиального оливкового масла из Апулии в Чехии. Прямой импорт от производителя — без посредников.",
             footer_prices_h: "Цены", footer_contact_h: "Контакты",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Эксклюзивная дистрибуция для Чехии",
+            vb_partner_label: "Больше итальянских продуктов и B2B-партнёрства",
+            vb_partner_desc: "Откройте отборные итальянские вина, оливковое масло и региональные деликатесы. Помогаем ресторанам, винотекам и дистрибьюторам работать напрямую с производителями.",
+            vb_partner_cta: "Смотреть товары и B2B-услуги",
             cookie_text: "Этот сайт использует cookies для аналитики и маркетинговой рекламы (Google, Meta). Нажимая \"Согласен\", вы помогаете нам улучшать предложение. Подробнее в <a href=\"#\">политике конфиденциальности</a>.",
             cookie_accept: "Согласен", cookie_decline: "Только необходимые",
             certs_heading: "Сертификаты и анализы", certs_sub: "Качество подтверждено независимой лабораторией. Скачайте официальные технические листы и анализы напрямую от производителя.",
@@ -3237,6 +3347,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Distribuzione esclusiva di olio d'oliva premium dalla Puglia nella Repubblica Ceca. Importazione diretta dal produttore — senza intermediari.",
             footer_prices_h: "Prezzi", footer_contact_h: "Contatti",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Distribuzione esclusiva per la Rep. Ceca",
+            vb_partner_label: "Altre specialità italiane e collaborazioni B2B",
+            vb_partner_desc: "Scoprite vini italiani selezionati, oli d’oliva e specialità regionali. Mettiamo in contatto diretto ristoranti, enoteche e distributori con i produttori.",
+            vb_partner_cta: "Scoprite prodotti e servizi B2B",
             cookie_text: "Questo sito utilizza cookie per analisi e pubblicità marketing (Google, Meta). Cliccando \"Accetto\" ci aiuti a migliorare la nostra offerta. Maggiori info nella <a href=\"#\">informativa sulla privacy</a>.",
             cookie_accept: "Accetto", cookie_decline: "Solo essenziali",
             certs_heading: "Certificati e analisi", certs_sub: "Qualità verificata da un laboratorio indipendente. Scarica le schede tecniche e le analisi ufficiali direttamente dal produttore.",
@@ -3304,6 +3417,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Exklusiver Vertrieb von Premium-Olivenöl aus Apulien in der Tschechischen Republik. Direktimport vom Hersteller — ohne Zwischenhändler.",
             footer_prices_h: "Preise", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exklusiver Vertrieb für Tschechien",
+            vb_partner_label: "Weitere italienische Spezialitäten & B2B-Partnerschaften",
+            vb_partner_desc: "Entdecken Sie ausgewählte italienische Weine, Olivenöle und regionale Spezialitäten. Wir verbinden Restaurants, Weinhandlungen und Händler direkt mit den Produzenten.",
+            vb_partner_cta: "Produkte & B2B-Angebot entdecken",
             cookie_text: "Diese Website verwendet Cookies für Analytics und Marketing-Werbung (Google, Meta). Mit Klick auf \"Zustimmen\" helfen Sie uns, unser Angebot zu verbessern. Mehr in unserer <a href=\"#\">Datenschutzerklärung</a>.",
             cookie_accept: "Zustimmen", cookie_decline: "Nur notwendige",
             certs_heading: "Zertifikate & Analysen", certs_sub: "Qualität von einem unabhängigen Labor bestätigt. Laden Sie offizielle technische Datenblätter und Analysen direkt vom Hersteller herunter.",
@@ -3371,6 +3487,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Ekskluzywna dystrybucja premium oliwy z oliwek z Apulii w Czechach. Import bezpośrednio od producenta — bez pośredników.",
             footer_prices_h: "Ceny", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Ekskluzywna dystrybucja dla Czech",
+            vb_partner_label: "Więcej włoskich specjałów i współpraca B2B",
+            vb_partner_desc: "Poznaj wyselekcjonowane włoskie wina, oliwy z oliwek i regionalne specjały. Łączymy restauracje, sklepy z winem i dystrybutorów bezpośrednio z producentami.",
+            vb_partner_cta: "Poznaj produkty i usługi B2B",
             cookie_text: "Ta strona używa plików cookie do analityki i reklam marketingowych (Google, Meta). Klikając \"Zgadzam się\", pomagasz nam ulepszać ofertę. Więcej w <a href=\"#\">polityce prywatności</a>.",
             cookie_accept: "Zgadzam się", cookie_decline: "Tylko niezbędne",
             certs_heading: "Certyfikaty i analizy", certs_sub: "Jakość potwierdzona przez niezależne laboratorium. Pobierz oficjalne karty techniczne i analizy bezpośrednio od producenta.",
@@ -3438,6 +3557,9 @@ function gtag_report_conversion(url) {
             footer_desc: "Exkluzívna distribúcia prémiového olivového oleja z Apúlie v Českej republike. Priamy dovoz od výrobcu — bez sprostredkovateľov.",
             footer_prices_h: "Ceny", footer_contact_h: "Kontakt",
             footer_copy: "© 2026 Apulia Olive Oil CZ — Exkluzívna distribúcia pre ČR",
+            vb_partner_label: "Ďalšie talianske špeciality a B2B spolupráca",
+            vb_partner_desc: "Objavte vybrané talianske vína, olivové oleje a regionálne špeciality. Reštauráciám, vinotékam a distribútorom pomáhame nadviazať priamu spoluprácu s výrobcami.",
+            vb_partner_cta: "Pozrieť produkty a B2B služby",
             cookie_text: "Táto stránka používa cookies na analytiku a marketingovú reklamu (Google, Meta). Kliknutím na \"Súhlasím\" nám pomôžete zlepšovať ponuku. Viac v <a href=\"#\">zásadách ochrany súkromia</a>.",
             cookie_accept: "Súhlasím", cookie_decline: "Iba nevyhnutné",
             certs_heading: "Certifikáty a rozbory", certs_sub: "Kvalita overená nezávislým laboratóriom. Stiahnite si oficiálne technické listy a rozbory priamo od výrobcu.",
